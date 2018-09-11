@@ -19,7 +19,7 @@ namespace Models {
             r.Move(4.6, 0, 13);
             l.Move(4.6, 0, 8);
             s.Move(8.6, 0, 13);
-            p.Move(8.6, 0, 8);
+            p.Move(8.6, 1, 8);
         }
 
         private Robot CreateRobot(double x, double y, double z) {

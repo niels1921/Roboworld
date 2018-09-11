@@ -67,6 +67,7 @@
             exampleSocket.onmessage = function (event) {
                 var command = parseCommand(event.data);
 
+
                 if (command.command === "update") {
                     if (Object.keys(worldObjects).indexOf(command.parameters.guid) < 0) {
                         if (command.parameters.type === "shelf") {
@@ -133,7 +134,7 @@
                         }
 
                         if (command.parameters.type === "product") {
-                            var geometryProduct = new THREE.BoxGeometry(0.9, 0.3, 0.9);
+                            var geometryProduct = new THREE.BoxGeometry(1.8, 0.6, 1.8);
                             var MaterialsProduct = [
                                 new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_side.png"), side: THREE.DoubleSide }), //LEFT
                                 new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_side.png"), side: THREE.DoubleSide }), //RIGHT
@@ -164,15 +165,37 @@
                     object.rotation.y = command.parameters.rotationY;
                     object.rotation.z = command.parameters.rotationZ;
                 }
+
+                var loader = new THREE.OBJLoader();
+
+                // load a resource
+                loader.load(
+                    // resource URL
+                    'textures/Isuzu.obj',
+                    // called when resource is loaded
+                    function (object) {
+
+                        scene.add(object);
+
+                    }
+
+                )
+
+
+
+
             }
+
 
             init();
             animate();
         }
     </script>
-
+    <script src="MTLLoader.js"></script>
     <script src="three.min.js"></script>
+    <script src="OBJLoader.js"></script>
     <script src="OrbitControls.js"></script>
+
 </body>
 
 </html>
