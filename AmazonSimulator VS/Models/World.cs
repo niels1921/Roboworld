@@ -11,7 +11,15 @@ namespace Models {
         
         public World() {
             Robot r = CreateRobot(0,0,0);
+            Lorry l = CreateLorry(0, 0, 0);
+            Shelf s = CreateShelf(0, 0, 0);
+            Product p = CreateProduct(0, 0, 0);
+
+
             r.Move(4.6, 0, 13);
+            l.Move(4.6, 0, 8);
+            s.Move(8.6, 0, 13);
+            p.Move(8.6, 0, 8);
         }
 
         private Robot CreateRobot(double x, double y, double z) {
@@ -20,6 +28,26 @@ namespace Models {
             return r;
         }
 
+        private Product CreateProduct(double x, double y, double z)
+        {
+            Product p = new Product(x, y, z, 0, 0, 0);
+            worldObjects.Add(p);
+            return p;
+        }
+
+        private Lorry CreateLorry(double x, double y, double z)
+        {
+            Lorry l = new Lorry(x, y, z, 0, 0, 0);
+            worldObjects.Add(l);
+            return l;
+        }
+
+        private Shelf CreateShelf(double x, double y, double z)
+        {
+            Shelf s = new Shelf(x, y, z, 0, 0, 0);
+            worldObjects.Add(s);
+            return s;
+        }
         public IDisposable Subscribe(IObserver<Command> observer)
         {
             if (!observers.Contains(observer)) {
@@ -37,7 +65,7 @@ namespace Models {
         }
 
         private void SendCreationCommandsToObserver(IObserver<Command> obs) {
-            foreach(Robot m3d in worldObjects) {
+            foreach(_3DModel m3d in worldObjects) {
                 obs.OnNext(new UpdateModel3DCommand(m3d));
             }
         }
