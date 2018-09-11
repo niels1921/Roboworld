@@ -1,10 +1,13 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json;
+using System.Threading.Tasks;
+using Models;
 
-namespace Models {
-    public class Robot : _3DModel , IUpdatable {
+namespace Models
+{
+    public class Product : _3DModel, IUpdatable
+    {
         private double _x = 0;
         private double _y = 0;
         private double _z = 0;
@@ -23,8 +26,9 @@ namespace Models {
 
         public bool needsUpdate = true;
 
-        public Robot(double x, double y, double z, double rotationX, double rotationY, double rotationZ) {
-            this.Type = "robot";
+        public Product(double x, double y, double z, double rotationX, double rotationY, double rotationZ)
+        {
+            this.Type = "product";
             this.Guid = Guid.NewGuid();
 
             this._x = x;
@@ -62,6 +66,6 @@ namespace Models {
                 return true;
             }
             return false;
-        }
+        }    
     }
 }
