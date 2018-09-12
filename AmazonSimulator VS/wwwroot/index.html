@@ -166,10 +166,23 @@
                     object.rotation.z = command.parameters.rotationZ;
                 }
 
-                var loader = new THREE.OBJLoader();
+                var mtlLoader = new THREE.MTLLoader();
+                mtlLoader.load('textures/Isuzu.mtl', function (materials) {
+
+                    materials.preload();
+
+                    var objLoader = new THREE.OBJLoader();
+                    objLoader.setMaterials(materials);
+                    objLoader.load('textures/Isuzu.obj', function (mesh) {
+                        scene.add(mesh);
+                        mesh.position.set(8, 0, 4);
+                    });
+                });
+
+                /*var objLoader = new THREE.OBJLoader();
 
                 // load a resource
-                loader.load(
+                objLoader.load(
                     // resource URL
                     'textures/Isuzu.obj',
                     // called when resource is loaded
@@ -179,20 +192,21 @@
 
                     }
 
-                )
+                )*/
 
 
 
 
-            }
+            };
 
 
             init();
             animate();
         }
     </script>
-    <script src="MTLLoader.js"></script>
+
     <script src="three.min.js"></script>
+    <script src="MTLLoader.js"></script>
     <script src="OBJLoader.js"></script>
     <script src="OrbitControls.js"></script>
 
