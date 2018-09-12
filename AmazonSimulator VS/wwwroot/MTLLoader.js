@@ -41,7 +41,7 @@ THREE.MTLLoader.prototype = {
 
 	},
 
-	/**
+	/*
 	 * Set base path for resolving references.
 	 * If set this path will be prepended to each loaded and found reference.
 	 *
@@ -60,7 +60,7 @@ THREE.MTLLoader.prototype = {
 
 	},
 
-	/**
+	/*
 	 * Set base path for resolving texture references.
 	 * If set this path will be prepended found texture reference.
 	 * If not set and setPath is, it will be used as texture base path.
@@ -103,7 +103,7 @@ THREE.MTLLoader.prototype = {
 
 	},
 
-	/**
+	/*
 	 * Parses a MTL file.
 	 *
 	 * @param {String} text - Content of MTL file

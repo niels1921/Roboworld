@@ -166,20 +166,20 @@
                     object.rotation.z = command.parameters.rotationZ;
                 }
 
-                var loader = new THREE.OBJLoader();
+                //var loader = new THREE.OBJLoader();
 
-                // load a resource
-                loader.load(
-                    // resource URL
-                    'textures/Isuzu.obj',
-                    // called when resource is loaded
-                    function (object) {
+                //// load a resource
+                //loader.load(
+                //    // resource URL
+                //    'textures/Isuzu.obj',
+                //    // called when resource is loaded
+                //    function (object) {
 
-                        scene.add(object);
+                //        scene.add(object);
 
-                    }
+                //    }
 
-                )
+                //)
 
 
 
@@ -194,6 +194,7 @@
     <script src="MTLLoader.js"></script>
     <script src="three.min.js"></script>
     <script src="OBJLoader.js"></script>
+    <script src="Detector.js"></script>
     <script src="OrbitControls.js"></script>
 
 </body>
