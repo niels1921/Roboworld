@@ -66,12 +66,13 @@
             exampleSocket = new WebSocket("ws://" + window.location.hostname + ":" + window.location.port + "/connect_client");
             exampleSocket.onmessage = function (event) {
                 var command = parseCommand(event.data);
-                            
+
+
                 if (command.command === "update") {
                     if (Object.keys(worldObjects).indexOf(command.parameters.guid) < 0) {
-                        if (command.parameters.type === "robot") {
-                            var geometry = new THREE.BoxGeometry(0.9, 0.3, 0.9);
-                            var cubeMaterials = [
+                        if (command.parameters.type === "shelf") {
+                            var geometryShelf = new THREE.BoxGeometry(0.9, 0.3, 0.9);
+                            var MaterialsShelf = [
                                 new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_side.png"), side: THREE.DoubleSide }), //LEFT
                                 new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_side.png"), side: THREE.DoubleSide }), //RIGHT
                                 new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_top.png"), side: THREE.DoubleSide }), //TOP
@@ -79,15 +80,78 @@
                                 new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_front.png"), side: THREE.DoubleSide }), //FRONT
                                 new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_front.png"), side: THREE.DoubleSide }), //BACK
                             ];
-                            var material = new THREE.MeshFaceMaterial(cubeMaterials);
-                            var robot = new THREE.Mesh(geometry, material);
-                            robot.position.y = 0.15;
+                            var materialShelf = new THREE.MeshFaceMaterial(MaterialsShelf);
+                            var modelShelf = new THREE.Mesh(geometryShelf, materialShelf);
+                            modelShelf.position.y = 0.15;
 
-                            var group = new THREE.Group();
-                            group.add(robot);
+                            var groupShelf = new THREE.Group();
+                            groupShelf.add(modelShelf);
 
-                            scene.add(group);
-                            worldObjects[command.parameters.guid] = group;
+                            scene.add(groupShelf);
+                            worldObjects[command.parameters.guid] = groupShelf;
+                        }
+
+                        if (command.parameters.type === "robot") {
+                            var geometryRobot = new THREE.BoxGeometry(0.9, 0.3, 0.9);
+                            var MaterialsRobot = [
+                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_side.png"), side: THREE.DoubleSide }), //LEFT
+                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_side.png"), side: THREE.DoubleSide }), //RIGHT
+                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_top.png"), side: THREE.DoubleSide }), //TOP
+                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_bottom.png"), side: THREE.DoubleSide }), //BOTTOM
+                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_front.png"), side: THREE.DoubleSide }), //FRONT
+                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_front.png"), side: THREE.DoubleSide }), //BACK
+                            ];
+                            var materialRobot = new THREE.MeshFaceMaterial(MaterialsRobot);
+                            var modelRobot = new THREE.Mesh(geometryRobot, materialRobot);
+                            modelRobot.position.y = 0.15;
+
+                            var groupRobot = new THREE.Group();
+                            groupRobot.add(modelRobot);
+
+                            scene.add(groupRobot);
+                            worldObjects[command.parameters.guid] = groupRobot;
+                        }
+
+                        if (command.parameters.type === "lorry") {
+                            var geometryLorry = new THREE.BoxGeometry(0.9, 0.3, 0.9);
+                            var MaterialsLorry = [
+                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_side.png"), side: THREE.DoubleSide }), //LEFT
+                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_side.png"), side: THREE.DoubleSide }), //RIGHT
+                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_top.png"), side: THREE.DoubleSide }), //TOP
+                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_bottom.png"), side: THREE.DoubleSide }), //BOTTOM
+                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_front.png"), side: THREE.DoubleSide }), //FRONT
+                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_front.png"), side: THREE.DoubleSide }), //BACK
+                            ];
+                            var materialLorry = new THREE.MeshFaceMaterial(MaterialsLorry);
+                            var modelLorry = new THREE.Mesh(geometryLorry, materialLorry);
+                            modelLorry.position.y = 0.15;
+
+                            var groupLorry = new THREE.Group();
+                            groupLorry.add(modelLorry);
+
+                            scene.add(groupLorry);
+                            worldObjects[command.parameters.guid] = groupLorry;
+                        }
+
+                        if (command.parameters.type === "product") {
+                            var geometryProduct = new THREE.BoxGeometry(1.8, 0.6, 1.8);
+                            var MaterialsProduct = [
+                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_side.png"), side: THREE.DoubleSide }), //LEFT
+                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_side.png"), side: THREE.DoubleSide }), //RIGHT
+                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_top.png"), side: THREE.DoubleSide }), //TOP
+                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_bottom.png"), side: THREE.DoubleSide }), //BOTTOM
+                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_front.png"), side: THREE.DoubleSide }), //FRONT
+                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_front.png"), side: THREE.DoubleSide }), //BACK
+                            ];
+                            var materialProduct = new THREE.MeshFaceMaterial(MaterialsProduct);
+                            var modelProduct = new THREE.Mesh(geometryProduct, materialProduct);
+                            modelProduct.position.y = 0.15;
+
+                            var groupProduct = new THREE.Group();
+                            groupProduct.add(modelProduct);
+
+                            scene.add(groupProduct);
+                            worldObjects[command.parameters.guid] = groupProduct;
                         }
                     }
 
@@ -101,15 +165,37 @@
                     object.rotation.y = command.parameters.rotationY;
                     object.rotation.z = command.parameters.rotationZ;
                 }
+
+                var loader = new THREE.OBJLoader();
+
+                // load a resource
+                loader.load(
+                    // resource URL
+                    'textures/Isuzu.obj',
+                    // called when resource is loaded
+                    function (object) {
+
+                        scene.add(object);
+
+                    }
+
+                )
+
+
+
+
             }
+
 
             init();
             animate();
         }
     </script>
-
+    <script src="MTLLoader.js"></script>
     <script src="three.min.js"></script>
+    <script src="OBJLoader.js"></script>
     <script src="OrbitControls.js"></script>
+
 </body>
 
 </html>
