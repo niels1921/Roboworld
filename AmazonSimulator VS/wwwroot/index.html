@@ -31,10 +31,31 @@
                 cameraControls.update();
                 scene = new THREE.Scene();
 
+                new THREE.MTLLoader()
+                    .setPath('/textures/')
+                    .load('CUPIC_TRUCK.mtl', function (materials) {
+
+                        materials.preload();
+
+                        new THREE.OBJLoader()
+                            .setMaterials(materials)
+                            .setPath('/textures/')
+                            .load('CUPIC_TRUCK.obj', function (object) {
+
+                                object.scale.set(0.01, 0.01, 0.01);
+                                scene.add(object);
+
+                            });
+
+                    });
+
                 renderer = new THREE.WebGLRenderer({ antialias: true });
                 renderer.setPixelRatio(window.devicePixelRatio);
                 renderer.setSize(window.innerWidth, window.innerHeight + 5);
                 document.body.appendChild(renderer.domElement);
+
+
+
 
                 window.addEventListener('resize', onWindowResize, false);
 
@@ -47,30 +68,8 @@
                 scene.add(plane);
 
                 var light = new THREE.AmbientLight(0x404040);
-                light.intensity = 10;
+                light.intensity = 4;
                 scene.add(light);
-
-                /*var gltfLoader = new THREE.GLTFLoader();
-                gltfLoader.load('textures/car_02.gltf', function (gltf) {
-                    scene.add(gltf.scene);
-                });*/
-
-
-                var mtlLoader = new THREE.MTLLoader();
-                mtlLoader.setPath('textures/');
-                mtlLoader.load('Isuzu.mtl', function (materials) {
-
-                    materials.preload();
-
-                    var objLoader = new THREE.OBJLoader();
-                    objLoader.setMaterials(materials);
-                    objLoader.setPath('textures/');
-                    objLoader.load('Isuzu.obj', function (mesh) {
-                        //mesh.scale.set(0.01, 0.01, 0.01);
-                        scene.add(mesh);
-                        mesh.position.set(20, 0, 10);
-                    });
-                });
             }
 
             function onWindowResize() {
@@ -188,6 +187,21 @@
                     object.rotation.z = command.parameters.rotationZ;
                 }
 
+
+                //var mtlLoader = new THREE.MTLLoader();
+                //mtlLoader.load('textures/Goat_Truck.mtl', function (materials) {
+
+                //    materials.preload();
+
+                //    var objLoader = new THREE.OBJLoader();
+                //    objLoader.setMaterials(materials);
+                //    objLoader.load('textures/Goat_Truck.obj', function (mesh) {
+                //        scene.add(mesh);
+                //        mesh.position.set(8, 9, 4);
+                //        mesh.scale.set(0.1, 0.1, 0.1);
+                //    });
+                //});
+
                 /*var objLoader = new THREE.OBJLoader();
 
                 // load a resource
@@ -211,14 +225,13 @@
 
             init();
             animate();
-        };
+        }
     </script>
 
     <script src="three.min.js"></script>
-    <script src="GLTFLoader.js"></script>
-    <script src="OrbitControls.js"></script>
     <script src="MTLLoader.js"></script>
     <script src="OBJLoader.js"></script>
+    <script src="OrbitControls.js"></script>
 
 </body>
 
