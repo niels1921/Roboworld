@@ -1,0 +1,175 @@
+# Blender MTL File: 'minitruck.blend'
+# Material Count: 16
+
+newmtl None
+Ns 0
+Ka 0.000000 0.000000 0.000000
+Kd 0.8 0.8 0.8
+Ks 0.8 0.8 0.8
+d 1
+illum 2
+
+newmtl None_depositphotos_55991561-stock-photo-texture-honeycomb-radiator-c
+Ns 0
+Ka 0.000000 0.000000 0.000000
+Kd 0.8 0.8 0.8
+Ks 0.8 0.8 0.8
+d 1
+illum 2
+map_Kd C:\Users\Hannah\Desktop\depositphotos_55991561-stock-photo-texture-honeycomb-radiator-cooling.jpg
+
+newmtl baixo_do_banco
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.000000 0.000000 0.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Bump -bm -0.034482 C:\\Users\\Hannah\\Desktop\\texture-headlight-1508273.jpg
+map_Kd C:\\Users\\Hannah\\Desktop\\texture-headlight-1508273.jpg
+map_Ks C:\\Users\\Hannah\\Desktop\\texture-headlight-1508273.jpg
+
+newmtl baixo_do_banco_texture-headlight-1508273.jpg
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.000000 0.000000 0.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd C:\Users\Hannah\Desktop\texture-headlight-1508273.jpg
+map_Bump -bm -0.034482 C:\\Users\\Hannah\\Desktop\\texture-headlight-1508273.jpg
+map_Ks C:\\Users\\Hannah\\Desktop\\texture-headlight-1508273.jpg
+
+newmtl banco
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.166332 0.166332 0.166332
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+
+newmtl carroceria
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.310640 0.310640 0.310640
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+
+newmtl carroceria.001
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.124131 0.013317 0.016300
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+
+newmtl chassis
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.061532 0.061532 0.061532
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+
+newmtl grade_frente
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.090838 0.090838 0.090838
+Ks 0.514286 0.514286 0.514286
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+
+newmtl pisca_alerta
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.175959 0.175959 0.175959
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd C:\Users\Hannah\Desktop\car-flasher-light-1194186.jpg
+
+newmtl pneu
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.015680 0.015680 0.015680
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd C:\Users\Hannah\Desktop\textura-do-pneu-26914487.jpg
+map_Bump -bm 0.391304 C:\\Users\\Hannah\\Desktop\\textura-do-pneu-26914487.jpg
+
+newmtl pneu.001
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.015680 0.015680 0.015680
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd C:\Users\Hannah\Desktop\textura-do-pneu-26914487.jpg
+map_Bump -bm 0.391304 C:\\Users\\Hannah\\Desktop\\textura-do-pneu-26914487.jpg
+
+newmtl pneu.002
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.015680 0.015680 0.015680
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd C:\Users\Hannah\Desktop\textura-do-pneu-26914487.jpg
+map_Bump -bm 0.391304 C:\\Users\\Hannah\\Desktop\\textura-do-pneu-26914487.jpg
+
+newmtl pneu.003
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.015680 0.015680 0.015680
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd C:\Users\Hannah\Desktop\textura-do-pneu-26914487.jpg
+map_Bump -bm 0.391304 C:\\Users\\Hannah\\Desktop\\textura-do-pneu-26914487.jpg
+
+newmtl roda
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.106294 0.106294 0.106294
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+
+newmtl vermelho
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.140660 0.006288 0.006288
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd C:\Users\Hannah\Desktop\sinal-vermelho_2875740.jpg

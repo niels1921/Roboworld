@@ -31,10 +31,31 @@
                 cameraControls.update();
                 scene = new THREE.Scene();
 
+                new THREE.MTLLoader()
+                    .setPath('/textures/')
+                    .load('CUPIC_TRUCK.mtl', function (materials) {
+
+                        materials.preload();
+
+                        new THREE.OBJLoader()
+                            .setMaterials(materials)
+                            .setPath('/textures/')
+                            .load('CUPIC_TRUCK.obj', function (object) {
+
+                                object.scale.set(0.01, 0.01, 0.01);
+                                scene.add(object);
+
+                            });
+
+                    });
+
                 renderer = new THREE.WebGLRenderer({ antialias: true });
                 renderer.setPixelRatio(window.devicePixelRatio);
                 renderer.setSize(window.innerWidth, window.innerHeight + 5);
                 document.body.appendChild(renderer.domElement);
+
+
+
 
                 window.addEventListener('resize', onWindowResize, false);
 
@@ -165,18 +186,20 @@
                     object.rotation.z = command.parameters.rotationZ;
                 }
 
-                var mtlLoader = new THREE.MTLLoader();
-                mtlLoader.load('textures/Isuzu.mtl', function (materials) {
 
-                    materials.preload();
+                //var mtlLoader = new THREE.MTLLoader();
+                //mtlLoader.load('textures/Goat_Truck.mtl', function (materials) {
 
-                    var objLoader = new THREE.OBJLoader();
-                    objLoader.setMaterials(materials);
-                    objLoader.load('textures/Isuzu.obj', function (mesh) {
-                        scene.add(mesh);
-                        mesh.position.set(8, 0, 4);
-                    });
-                });
+                //    materials.preload();
+
+                //    var objLoader = new THREE.OBJLoader();
+                //    objLoader.setMaterials(materials);
+                //    objLoader.load('textures/Goat_Truck.obj', function (mesh) {
+                //        scene.add(mesh);
+                //        mesh.position.set(8, 9, 4);
+                //        mesh.scale.set(0.1, 0.1, 0.1);
+                //    });
+                //});
 
                 /*var objLoader = new THREE.OBJLoader();
 
