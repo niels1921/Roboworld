@@ -8,7 +8,8 @@ namespace Models {
     {
         private List<_3DModel> worldObjects = new List<_3DModel>();
         private List<IObserver<Command>> observers = new List<IObserver<Command>>();
-        
+        private Dijkstra Nodes = new Dijkstra();
+
         public World() {
             Robot r = CreateRobot(0,0,0);
             Lorry l = CreateLorry(0, 0, 0);
@@ -20,6 +21,18 @@ namespace Models {
             l.Move(4.6, 0, 8);
             s.Move(8.6, 0, 13);
             p.Move(8.6, 0, 8);
+
+            Nodes.add_vertex('A', new Dictionary<char, int>() { { 'B', 7 }, { 'C', 8 } });
+            Nodes.add_vertex('B', new Dictionary<char, int>() { { 'A', 7 }, { 'F', 2 } });
+            Nodes.add_vertex('C', new Dictionary<char, int>() { { 'A', 8 }, { 'F', 6 }, { 'G', 4 } });
+            Nodes.add_vertex('D', new Dictionary<char, int>() { { 'F', 8 } });
+            Nodes.add_vertex('E', new Dictionary<char, int>() { { 'H', 1 } });
+            Nodes.add_vertex('F', new Dictionary<char, int>() { { 'B', 2 }, { 'C', 6 }, { 'D', 8 }, { 'G', 9 }, { 'H', 3 } });
+            Nodes.add_vertex('G', new Dictionary<char, int>() { { 'C', 4 }, { 'F', 9 } });
+            Nodes.add_vertex('H', new Dictionary<char, int>() { { 'E', 1 }, { 'F', 3 } });
+
+            Nodes.shortest_path('A', 'H').ForEach(x => Console.WriteLine(x));
+
         }
 
         private Robot CreateRobot(double x, double y, double z) {
@@ -48,6 +61,8 @@ namespace Models {
             worldObjects.Add(s);
             return s;
         }
+        
+
         public IDisposable Subscribe(IObserver<Command> observer)
         {
             if (!observers.Contains(observer)) {

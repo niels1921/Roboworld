@@ -8,6 +8,8 @@ namespace Models
 {
     public abstract class _3DModel
     {
+        //public abstract double _x { get; }
+
         public abstract void Move(double x, double y, double z);
 
         public abstract void Rotate(double rotationX, double rotationY, double rotationZ);
