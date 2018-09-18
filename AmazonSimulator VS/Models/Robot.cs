@@ -59,6 +59,8 @@ namespace Models
 
         public override bool Update(int tick)
         {
+            //this.Move(this._x += 0.1,this._y,this._z);
+ 
             if (needsUpdate)
             {
                 needsUpdate = false;
