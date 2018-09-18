@@ -24,7 +24,7 @@ namespace Models {
 
         private Robot CreateRobot(double x, double y, double z) {
             Robot r = new Robot(x,y,z,0,0,0);
-            worldObjects.Add(r);
+            worldObjects.Add(r);            
             return r;
         }
 
