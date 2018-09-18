@@ -33,16 +33,16 @@
 
                 new THREE.MTLLoader()
                     .setPath('/textures/')
-                    .load('CUPIC_TRUCK.mtl', function (materials) {
+                    .load('truck3.mtl', function (materials) {
 
                         materials.preload();
 
                         new THREE.OBJLoader()
                             .setMaterials(materials)
                             .setPath('/textures/')
-                            .load('CUPIC_TRUCK.obj', function (object) {
+                            .load('truck3.obj', function (object) {
 
-                                object.scale.set(0.01, 0.01, 0.01);
+                              //  object.scale.set(0.01, 0.01, 0.01);
                                 scene.add(object);
 
                             });
