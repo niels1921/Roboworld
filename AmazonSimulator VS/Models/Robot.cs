@@ -60,7 +60,8 @@ namespace Models
         public override bool Update(int tick)
         {
             //this.Move(this._x += 0.1,this._y,this._z);
- 
+            //eerst y gelijk stellen. vervolgens x gelijkstellen daarna weer x dan weer y of iig zoiets
+            // a --> c --> stelling --> hoogte b --> b eindpunt
             if (needsUpdate)
             {
                 needsUpdate = false;

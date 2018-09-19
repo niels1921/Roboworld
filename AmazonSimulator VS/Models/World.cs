@@ -9,6 +9,7 @@ namespace Models {
         private List<_3DModel> worldObjects = new List<_3DModel>();
         private List<IObserver<Command>> observers = new List<IObserver<Command>>();
         private Dijkstra Nodes = new Dijkstra();
+        private List<Node> Punten = new List<Node>();
 
         public World() {
             Robot r = CreateRobot(0,0,0);
@@ -22,6 +23,9 @@ namespace Models {
             s.Move(8.6, 0, 13);
             p.Move(8.6, 0, 8);
 
+            Node a = new Node(){Id = 'A', X = 0, Y = 0, Z = 0};
+            Punten.Add(a);
+            // afstand aanpassen
             Nodes.add_vertex('A', new Dictionary<char, int>() { { 'B', 7 }, { 'C', 8 } });
             Nodes.add_vertex('B', new Dictionary<char, int>() { { 'A', 7 }, { 'F', 2 } });
             Nodes.add_vertex('C', new Dictionary<char, int>() { { 'A', 8 }, { 'F', 6 }, { 'G', 4 } });
@@ -30,7 +34,8 @@ namespace Models {
             Nodes.add_vertex('F', new Dictionary<char, int>() { { 'B', 2 }, { 'C', 6 }, { 'D', 8 }, { 'G', 9 }, { 'H', 3 } });
             Nodes.add_vertex('G', new Dictionary<char, int>() { { 'C', 4 }, { 'F', 9 } });
             Nodes.add_vertex('H', new Dictionary<char, int>() { { 'E', 1 }, { 'F', 3 } });
-
+            //randomize deze node zet deze in de list voor de robot die je aanspreekt en laat hem zo deze nodes afwerken
+            //match deze waardes met de id van de nodes(id zij nu char misschien toch int houden voor random numbergenerator)
             Nodes.shortest_path('A', 'H').ForEach(x => Console.WriteLine(x));
 
         }
