@@ -22,8 +22,10 @@ namespace Models
         public double rotationX { get { return _rX; } }
         public double rotationY { get { return _rY; } }
         public double rotationZ { get { return _rZ; } }
+        public List<Node> Route { get; set; }
 
         public bool needsUpdate = true;
+        double moveX, moveZ;
 
         public Robot(double x, double y, double z, double rotationX, double rotationY, double rotationZ)
         {
@@ -59,7 +61,36 @@ namespace Models
 
         public override bool Update(int tick)
         {
-            //this.Move(this._x += 0.1,this._y,this._z);
+
+            foreach (Node x in this.Route)
+            {
+                
+                if (Math.Round(this._z) < x.Z)
+                {
+                    this.Move(this._x, this._y, this._z += 0.1);
+                    Console.WriteLine(this._z);
+                }
+                else if (Math.Round(this._z) > x.Z)
+                {
+                    this.Move(this._x, this._y, this._z -= 0.1);
+                    Console.WriteLine(this._z);
+                }
+                else if (this._x < x.X)
+                {
+                    this.Move(this._x += 0.10, this._y, this._z);
+                    Console.WriteLine("x= " + this._x);
+                }
+                else if (this._x > x.X)
+                {
+                    this.Move(this._x -= 0.10, this._y, this._z);
+                    Console.WriteLine("x= " + this._x);
+                }
+            }
+
+            /*if (this._x <= X)
+            {
+                this.Move(this._x += 0.1, this._y, this._z);
+            }*/
             //eerst y gelijk stellen. vervolgens x gelijkstellen daarna weer x dan weer y of iig zoiets
             // a --> c --> stelling --> hoogte b --> b eindpunt
             if (needsUpdate)
