@@ -18,9 +18,9 @@ namespace Models {
             Product p = CreateProduct(0, 0, 0);
 
 
-            r.Move(4.6, 0, 13);
+            r.Move(8.6, 0, 13);
             l.Move(4.6, 0, 8);
-            s.Move(8.6, 0, 13);
+            s.Move(4.6, 0, 13);
             p.Move(8.6, 0, 8);
 
             Node a = new Node(){Id = 'A', X = 0, Y = 0, Z = 0};
