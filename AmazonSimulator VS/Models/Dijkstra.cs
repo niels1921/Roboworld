@@ -9,16 +9,12 @@ namespace Models
     {
         Dictionary<char, Dictionary<char, int>> vertices = new Dictionary<char, Dictionary<char, int>>();
 
-
-
         public void add_vertex(char name, Dictionary<char, int> edges)
         {
 
             vertices[name] = edges;
 
         }
-
-
 
         public List<char> shortest_path(char start, char finish)
 
