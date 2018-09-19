@@ -19,7 +19,6 @@
         window.onload = function () {
             var camera, scene, renderer;
             var cameraControls;
-
             var worldObjects = {};
 
             function init() {
@@ -35,9 +34,6 @@
                 var sphericalSkyboxMaterial = new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/skybox8.jpg"), side: THREE.DoubleSide });
                 var sphericalSkybox = new THREE.Mesh(sphericalSkyboxGeometry, sphericalSkyboxMaterial);
                 scene.add(sphericalSkybox);           
-
-
-
 
                 new THREE.MTLLoader()
                     .setPath('/textures/')
@@ -87,7 +83,7 @@
                         window.addEventListener('resize', onWindowResize, false);
 
                         var geometry = new THREE.PlaneGeometry(30, 30,32);
-                        var material = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide });
+                var material = new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("/textures/vloer.jpg"), side: THREE.DoubleSide });
                         var plane = new THREE.Mesh(geometry, material);
                         plane.rotation.x = Math.PI / 2.0;
                         //plane.position.y = -200;
