@@ -38,21 +38,21 @@ namespace Models {
             ///////////////////////////////////////////
             Nodes.shortest_path('A', 'H');
             List<Node> route = new List<Node>();
+            List<Node> reverseRoute = new List<Node>();
             r1.Route = route;
+
             foreach(char x in Nodes.shortest_path('A', 'H'))
             {
                 var b = from point in Punten
                         where point.Id == x
                         select point;
-                r1.Route.Add(b.Single());
-                r1.Route.Reverse();
+                reverseRoute.Add(b.Single());
             }
-            foreach (var x in r1.Route)
-            {
-                Console.WriteLine(x.Id);
-            }
-            //Nodes.shortest_path('A', 'H').ForEach(x => Console.WriteLine(x));
 
+            foreach(Node i in reverseRoute.Reverse<Node>())
+            {
+                r1.Route.Add(i);
+            }
         }
 
         private void AddNodes()
@@ -131,7 +131,7 @@ namespace Models {
         {
             for(int i = 0; i < worldObjects.Count; i++) {
                 _3DModel u = worldObjects[i];
-
+                
                 if(u is IUpdatable) {
                     bool needsCommand = ((IUpdatable)u).Update(tick);
 
