@@ -15,6 +15,7 @@ namespace Models
         private double _rY = 0;
         private double _rZ = 0;
 
+
         public string type { get; }
         public Guid guid { get; }
         public double x { get { return _x; } }
@@ -25,6 +26,7 @@ namespace Models
         public double rotationZ { get { return _rZ; } }
 
         public bool needsUpdate = true;
+        public Node Node { get; set; }
 
         public Shelf(double x, double y, double z, double rotationX, double rotationY, double rotationZ)
         {
