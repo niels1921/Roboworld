@@ -70,6 +70,29 @@ namespace Models
                     {
                         DeltaX = this.Route[0].X - this._x;
                         DeltaZ = this.Route[0].Z - this._z;
+                        if (DeltaX != 0)
+                        {
+                            if (DeltaX > this._x)
+                            {
+                                this.Rotate(this._rX, this._rY + (0.5 * Math.PI), this._rZ);
+                                Console.WriteLine("huh???" + this._rY);
+                            }
+                            else if (DeltaX < this._x)
+                            {
+                                this.Rotate(this._rX, this._rY + (-0.5 * Math.PI), this._rZ);
+                            }
+                        }
+                        else if (DeltaZ != 0)
+                        {
+                            if (this._rY > 3.5 && DeltaZ > this._z)
+                            {
+                                this.Rotate(this._rX, this._rY + (-0.5 * Math.PI), this._rZ);
+                            }
+                            else if(this._rY < 3.1 && DeltaZ < this._z)
+                            {
+                                this.Rotate(this._rX, this._rY + (0.5 * Math.PI), this._rZ);
+                            }
+                        }
                         this.Route.RemoveAt(0);
                     }
                 }
@@ -77,7 +100,6 @@ namespace Models
                 {
                     this.Move(this._x, this._y, this._z += 0.1);
                     DeltaZ -= 0.1;
-                    Console.WriteLine(DeltaZ);
                 }
                 else if (Math.Round(DeltaZ) < 0)
                 {
@@ -88,7 +110,6 @@ namespace Models
                 {
                     this.Move(this._x += 0.1, this._y, this._z);
                     DeltaX -= 0.1;
-                    Console.WriteLine(DeltaX);
                 }
                 else if (Math.Round(DeltaX) < 0)
                 {
