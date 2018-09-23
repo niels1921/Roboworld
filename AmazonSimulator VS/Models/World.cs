@@ -17,7 +17,7 @@ namespace Models {
             Shelf s = CreateShelf(0, 0, 0);
             Product p = CreateProduct(0, 0, 0);
 
-            //AddNodes();
+            AddNodes();
 
             r1.Move(2.0, 0, 4);
             l.Move(28.0, 0, 4);
@@ -33,7 +33,7 @@ namespace Models {
             Node g = new Node() { Id = 'G', X = 14, Y = 0, Z = 8 }; 
             Node h = new Node() { Id = 'H', X = 14, Y = 0, Z = 20 };
 
-            Nodes.Add_Nodes('A', new Dictionary<char, Node>() { {'A', a }, {'B', b}, { 'E', e } });
+            Nodes.Add_Nodes('A', new Dictionary<char, Node>() { { 'A', a }, { 'B', b }, { 'E', e } });
             Nodes.Add_Nodes('B', new Dictionary<char, Node>() { { 'B', b }, { 'A', a }, { 'C', c }, { 'G', g }, { 'H', h } });
             Nodes.Add_Nodes('C', new Dictionary<char, Node>() { { 'C', c }, { 'B', b }, { 'D', d } });
             Nodes.Add_Nodes('D', new Dictionary<char, Node>() { { 'D', d }, { 'A', a }, { 'C', c } });
@@ -42,7 +42,6 @@ namespace Models {
             Nodes.Add_Nodes('G', new Dictionary<char, Node>() { { 'G', g }, { 'B', b }, { 'E', e } });
             Nodes.Add_Nodes('H', new Dictionary<char, Node>() { { 'H', h }, { 'B', b }, { 'F', f } });
             Nodes.CalculateDistance();
-
 
             //Nodes.add_vertex('A', new Dictionary<char, int>() { { 'B', 26 },{ 'E', 4 } });
             //Nodes.add_vertex('B', new Dictionary<char, int>() { { 'A', 26 }, { 'C', 24}, { 'G', 18 }, { 'H', 30} });
@@ -59,41 +58,41 @@ namespace Models {
             List<Node> route = new List<Node>();
             List<Node> reverseRoute = new List<Node>();
             r1.Route = route;
-
             foreach(char x in Nodes.shortest_path('A', 'H'))
             {
+                ///////////////////////////////////////////////////////////////////
                 Console.WriteLine(x);
                 var punt = from point in Punten
                            where point.Id == x
                            select point;
                 reverseRoute.Add(punt.Single());
             }
-
-            foreach(Node i in reverseRoute.Reverse<Node>())
+ 
+            foreach (Node i in reverseRoute.Reverse<Node>())
             {
                 r1.Route.Add(i);
             }
         }
 
-        //private void AddNodes()
-        //{
-        //    Node a = new Node() { Id = 'A', X = 2, Y = 0, Z = 4 };
-        //    Punten.Add(a);
-        //    Node b = new Node() { Id = 'B', X = 28, Y = 0, Z = 4 };
-        //    Punten.Add(b);
-        //    Node c = new Node() { Id = 'C', X = 28, Y = 0, Z = 28 };
-        //    Punten.Add(c);
-        //    Node d = new Node() { Id = 'D', X = 2, Y = 0, Z = 28 };
-        //    Punten.Add(d);
-        //    Node e = new Node() { Id = 'E', X = 2, Y = 0, Z = 8 };
-        //    Punten.Add(e);
-        //    Node f = new Node() { Id = 'F', X = 2, Y = 0, Z = 20 };
-        //    Punten.Add(f);
-        //    Node g = new Node() { Id = 'G', X = 14, Y = 0, Z = 8 };
-        //    Punten.Add(g);
-        //    Node h = new Node() { Id = 'H', X = 14, Y = 0, Z = 20 };
-        //    Punten.Add(h);
-        //}
+        private void AddNodes()
+        {
+            Node a = new Node() { Id = 'A', X = 2, Y = 0, Z = 4 };
+            Punten.Add(a);
+            Node b = new Node() { Id = 'B', X = 28, Y = 0, Z = 4 };
+            Punten.Add(b);
+            Node c = new Node() { Id = 'C', X = 28, Y = 0, Z = 28 };
+            Punten.Add(c);
+            Node d = new Node() { Id = 'D', X = 2, Y = 0, Z = 28 };
+            Punten.Add(d);
+            Node e = new Node() { Id = 'E', X = 2, Y = 0, Z = 8 };
+            Punten.Add(e);
+            Node f = new Node() { Id = 'F', X = 2, Y = 0, Z = 20 };
+            Punten.Add(f);
+            Node g = new Node() { Id = 'G', X = 14, Y = 0, Z = 8 };
+            Punten.Add(g);
+            Node h = new Node() { Id = 'H', X = 14, Y = 0, Z = 20 };
+            Punten.Add(h);
+        }
 
 
 

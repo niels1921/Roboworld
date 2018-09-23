@@ -7,7 +7,7 @@ namespace Models
 {
     public class Dijkstra
     {
-        Dictionary<char, Dictionary<char, Node>> tijdelijk = new Dictionary<char, Dictionary<char, Node>>();
+        public Dictionary<char, Dictionary<char, Node>> tijdelijk = new Dictionary<char, Dictionary<char, Node>>();
         Dictionary<char, Dictionary<char, int>> vertices = new Dictionary<char, Dictionary<char, int>>();
         double OriginX, OriginZ;
 
