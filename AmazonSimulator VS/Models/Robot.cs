@@ -75,7 +75,6 @@ namespace Models
                             if (DeltaX > this._x)
                             {
                                 this.Rotate(this._rX, this._rY + (0.5 * Math.PI), this._rZ);
-                                Console.WriteLine("huh???" + this._rY);
                             }
                             else if (DeltaX < this._x)
                             {
