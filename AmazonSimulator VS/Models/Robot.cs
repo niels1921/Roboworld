@@ -65,7 +65,6 @@ namespace Models
         public override bool Update(int tick)
         {
 
-            Console.WriteLine(ended);
             if (this.Route.Count() >= 0)
             {
                 if (this.Route.Count() != 0)
@@ -74,7 +73,7 @@ namespace Models
                     {
                         DeltaX = this.Route[0].X - this._x;
                         DeltaZ = this.Route[0].Z - this._z;
-                        if (DeltaX != 0)
+                        if (Math.Round(DeltaX) != 0)
                         {
                             if (DeltaX > this._x)
                             {
@@ -102,7 +101,7 @@ namespace Models
                 else
                 {
                     ended = true;
-                    //this.Route.Add(World.Punten[1]);
+                    this.Route.Add(World.Punten[1]);
                 }
                 if (Math.Round(DeltaZ) > 0)
                 {

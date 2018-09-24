@@ -10,7 +10,17 @@ namespace Models {
         private List<_3DModel> worldObjects = new List<_3DModel>();
         private List<IObserver<Command>> observers = new List<IObserver<Command>>();
         private Dijkstra Nodes = new Dijkstra();
-        private List<Node> Punten = new List<Node>();
+        public static List<Node> Punten = new List<Node>()
+        {
+            new Node() { Id = 'A', X = 2, Y = 0, Z = 4 },
+            new Node() { Id = 'B', X = 28, Y = 0, Z = 4 },
+            new Node() { Id = 'C', X = 28, Y = 0, Z = 28 },
+            new Node() { Id = 'D', X = 2, Y = 0, Z = 28 },
+            new Node() { Id = 'E', X = 2, Y = 0, Z = 8 },
+            new Node() { Id = 'F', X = 2, Y = 0, Z = 20 },
+            new Node() { Id = 'G', X = 14, Y = 0, Z = 8 },
+            new Node() { Id = 'H', X = 14, Y = 0, Z = 20 },
+    };
         private List<Node> route = new List<Node>();
 
 
@@ -30,31 +40,31 @@ namespace Models {
             s.Move(28, 0, 28);
             p.Move(2, 0, 28);
 
-            Node a = new Node() { Id = 'A', X = 2, Y = 0, Z = 4 };
-            Punten.Add(a);
-            Node b = new Node() { Id = 'B', X = 28, Y = 0, Z = 4 };
-            Punten.Add(b);
-            Node c = new Node() { Id = 'C', X = 28, Y = 0, Z = 28 };
-            Punten.Add(c);
-            Node d = new Node() { Id = 'D', X = 2, Y = 0, Z = 28 };
-            Punten.Add(d);
-            Node e = new Node() { Id = 'E', X = 2, Y = 0, Z = 8 };
-            Punten.Add(e);
-            Node f = new Node() { Id = 'F', X = 2, Y = 0, Z = 20 };
-            Punten.Add(f);
-            Node g = new Node() { Id = 'G', X = 14, Y = 0, Z = 8 };
-            Punten.Add(g);
-            Node h = new Node() { Id = 'H', X = 14, Y = 0, Z = 20 };
-            Punten.Add(h);
+            //Node a = new Node() { Id = 'A', X = 2, Y = 0, Z = 4 };
+            //Punten.Add(a);
+            //Node b = new Node() { Id = 'B', X = 28, Y = 0, Z = 4 };
+            //Punten.Add(b);
+            //Node c = new Node() { Id = 'C', X = 28, Y = 0, Z = 28 };
+            //Punten.Add(c);
+            //Node d = new Node() { Id = 'D', X = 2, Y = 0, Z = 28 };
+            //Punten.Add(d);
+            //Node e = new Node() { Id = 'E', X = 2, Y = 0, Z = 8 };
+            //Punten.Add(e);
+            //Node f = new Node() { Id = 'F', X = 2, Y = 0, Z = 20 };
+            //Punten.Add(f);
+            //Node g = new Node() { Id = 'G', X = 14, Y = 0, Z = 8 };
+            //Punten.Add(g);
+            //Node h = new Node() { Id = 'H', X = 14, Y = 0, Z = 20 };
+            //Punten.Add(h);
 
-            Nodes.Add_Nodes('A', new Dictionary<char, Node>() { { 'A', a }, { 'B', b }, { 'E', e } });
-            Nodes.Add_Nodes('B', new Dictionary<char, Node>() { { 'B', b }, { 'A', a }, { 'C', c }, { 'G', g }, { 'H', h } });
-            Nodes.Add_Nodes('C', new Dictionary<char, Node>() { { 'C', c }, { 'B', b }, { 'D', d } });
-            Nodes.Add_Nodes('D', new Dictionary<char, Node>() { { 'D', d }, { 'A', a }, { 'C', c } });
-            Nodes.Add_Nodes('E', new Dictionary<char, Node>() { { 'E', e }, { 'A', a }, { 'F', f } });
-            Nodes.Add_Nodes('F', new Dictionary<char, Node>() { { 'F', f }, { 'D', d }, { 'E', e }, { 'H', h } });
-            Nodes.Add_Nodes('G', new Dictionary<char, Node>() { { 'G', g }, { 'B', b }, { 'E', e } });
-            Nodes.Add_Nodes('H', new Dictionary<char, Node>() { { 'H', h }, { 'B', b }, { 'F', f } });
+            Nodes.Add_Nodes('A', new Dictionary<char, Node>() { { 'A', Punten[0] }, { 'B', Punten[1] }, { 'E', Punten[4] } });
+            Nodes.Add_Nodes('B', new Dictionary<char, Node>() { { 'B', Punten[1] }, { 'A', Punten[0] }, { 'C', Punten[2] }, { 'G', Punten[6] }, { 'H', Punten[7] } });
+            Nodes.Add_Nodes('C', new Dictionary<char, Node>() { { 'C', Punten[2] }, { 'B', Punten[1] }, { 'D', Punten[3] } });
+            Nodes.Add_Nodes('D', new Dictionary<char, Node>() { { 'D', Punten[3] }, { 'A', Punten[0] }, { 'C', Punten[2] } });
+            Nodes.Add_Nodes('E', new Dictionary<char, Node>() { { 'E', Punten[4] }, { 'A', Punten[0] }, { 'F', Punten[5] } });
+            Nodes.Add_Nodes('F', new Dictionary<char, Node>() { { 'F', Punten[5] }, { 'D', Punten[3] }, { 'E', Punten[4] }, { 'H', Punten[7] } });
+            Nodes.Add_Nodes('G', new Dictionary<char, Node>() { { 'G', Punten[6] }, { 'B', Punten[1] }, { 'E', Punten[4] } });
+            Nodes.Add_Nodes('H', new Dictionary<char, Node>() { { 'H', Punten[7] }, { 'B', Punten[1] }, { 'F', Punten[5] } });
             Nodes.CalculateDistance();
 
             //randomize deze node zet deze in de list voor de robot die je aanspreekt en laat hem zo deze nodes afwerken
@@ -77,13 +87,13 @@ namespace Models {
                 var punt = from point in Punten
                            where point.Id == x
                            select point;
-                reverseRoute.Add(punt.Single());
+                r1.Route.Add(punt.Single());
             }
  
-            foreach (Node i in reverseRoute.Reverse<Node>())
-            {
-                r1.Route.Add(i);
-            }
+            //foreach (Node i in reverseRoute.Reverse<Node>())
+            //{
+              //  r1.Route.Add(i);
+            //}
         }
 
         private Robot CreateRobot(double x, double y, double z, List<Node> puntjes) {
