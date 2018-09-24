@@ -7,14 +7,50 @@ namespace Models
 {
     public class Dijkstra
     {
+        public Dictionary<char, Dictionary<char, Node>> tijdelijk = new Dictionary<char, Dictionary<char, Node>>();
         Dictionary<char, Dictionary<char, int>> vertices = new Dictionary<char, Dictionary<char, int>>();
+        double OriginX, OriginZ;
 
-        public void add_vertex(char name, Dictionary<char, int> edges)
+        public void Add_Nodes(char name, Dictionary<char, Node> randen)
         {
-
-            vertices[name] = edges;
-
+            tijdelijk[name] = randen;
         }
+
+        public void CalculateDistance()
+        {
+            foreach (KeyValuePair<char, Dictionary<Char, Node>> node in tijdelijk)
+            {
+                Dictionary<char, int> vert = new Dictionary<char, int>();
+                foreach (var iets in node.Value)
+                {
+                    if (node.Key == iets.Key)
+                    {
+                        OriginX = iets.Value.X;
+                        OriginZ = iets.Value.Z;
+                    }
+                    else
+                    {
+                        int g = (int)iets.Value.X - (int)OriginX;
+                        if (g < 0)
+                            g = g * -1;
+                        int h = (int)iets.Value.Z - (int)OriginZ;
+                        if (h < 0)
+                            h = h * -1;
+                        int tot = g + h;
+                        
+                        vert.Add(iets.Key, tot);                        
+                    }
+                }
+                vertices.Add(node.Key, vert);
+            }
+        }
+
+        //public void add_vertex(char name, Dictionary<char, int> edges)
+        //{
+
+        //    vertices[name] = edges;
+
+        //}
 
         public List<char> shortest_path(char start, char finish)
 
@@ -107,6 +143,14 @@ namespace Models
                 }
 
 
+                //foreach (KeyValuePair<char, Dictionary<Char, int>> node in vertices)
+                //{
+                //    Console.WriteLine("Key:" + node.Key + ", Value: ");
+                //    foreach (var iets in node.Value)
+                //    {
+                //        Console.Write(iets.Value + "   ");
+                //    }
+                //}
 
                 foreach (var neighbor in vertices[smallest])
 

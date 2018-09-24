@@ -60,6 +60,7 @@ namespace Models
 
         public override bool Update(int tick)
         {
+
             if (needsUpdate)
             {
                 needsUpdate = false;

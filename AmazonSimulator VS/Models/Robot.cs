@@ -25,7 +25,8 @@ namespace Models
         public List<Node> Route { get; set; }
 
         public bool needsUpdate = true;
-        double moveX, moveZ;
+        
+        private double DeltaX, DeltaZ;
 
         public Robot(double x, double y, double z, double rotationX, double rotationY, double rotationZ)
         {
@@ -61,46 +62,75 @@ namespace Models
 
         public override bool Update(int tick)
         {
-            List<double> list = new List<double>();
-            foreach (Node x in this.Route)
+            if (this.Route.Count() >= 0)
             {
-                double totpos = Math.Round(this._x) + Math.Round(this._y) + Math.Round(this._z);
-                double totnode = x.X + x.Y + x.Z;
-
-                if(totpos != totnode)
+                if (this.Route.Count() != 0)
                 {
-                    if (Math.Round(this._z) < x.Z)
+                    if (Math.Round(DeltaX) == 0 && Math.Round(DeltaZ) == 0)
                     {
-                        this.Move(this._x, this._y, this._z += 0.1);
-                        Console.WriteLine(this._z);
-                    }
-                    else if (Math.Round(this._z) > x.Z)
-                    {
-                        this.Move(this._x, this._y, this._z -= 0.1);
-                        Console.WriteLine(this._z);
-                    }
-                    else if (this._x < x.X)
-                    {
-                        this.Move(this._x += 0.10, this._y, this._z);
-                        Console.WriteLine("x= " + this._x);
-                    }
-                    else if (this._x > x.X)
-                    {
-
-                        this.Move(this._x -= 0.10, this._y, this._z);
-                        Console.WriteLine("x= " + this._x);
+                        DeltaX = this.Route[0].X - this._x;
+                        DeltaZ = this.Route[0].Z - this._z;
+                        if (DeltaX != 0)
+                        {
+                            if (DeltaX > this._x)
+                            {
+                                this.Rotate(this._rX, this._rY + (0.5 * Math.PI), this._rZ);
+                            }
+                            else if (DeltaX < this._x)
+                            {
+                                this.Rotate(this._rX, this._rY + (-0.5 * Math.PI), this._rZ);
+                            }
+                        }
+                        else if (DeltaZ != 0)
+                        {
+                            if (this._rY > 3.5 && DeltaZ > this._z)
+                            {
+                                this.Rotate(this._rX, this._rY + (-0.5 * Math.PI), this._rZ);
+                            }
+                            else if(this._rY < 3.1 && DeltaZ < this._z)
+                            {
+                                this.Rotate(this._rX, this._rY + (0.5 * Math.PI), this._rZ);
+                            }
+                        }
+                        this.Route.RemoveAt(0);
                     }
                 }
-
+                if (Math.Round(DeltaZ) > 0)
+                {
+                    this.Move(this._x, this._y, this._z += 0.1);
+                    DeltaZ -= 0.1;
+                }
+                else if (Math.Round(DeltaZ) < 0)
+                {
+                    this.Move(this._x, this._y, this._z -= 0.1);
+                    DeltaZ += 0.1;
+                }
+                else if (Math.Round(DeltaX) > 0)
+                {
+                    this.Move(this._x += 0.1, this._y, this._z);
+                    DeltaX -= 0.1;
+                }
+                else if (Math.Round(DeltaX) < 0)
+                {
+                    this.Move(this._x -= 0.1, this._y, this._z);
+                    DeltaX += 0.1;
+                }
             }
-
-
-
-
-
-            /*if (this._x <= X)
+            /*
+            for (int i = this.Route.Count(); i >= 0; i--)
             {
-                this.Move(this._x += 0.1, this._y, this._z);
+                if (this.Route.Count() != 0)
+                {
+                    while (Math.Round(this.Route[0].Z) >= this._z)
+                    {
+                        this.Move(this._x, this._y, this._z += 1);
+                    }
+                    while (this.Route[0].X >= this._x)
+                    {
+                        this.Move(this._x += 1, this._y, this._z);
+                    }
+                    this.Route.RemoveAt(0);
+                }
             }*/
             //eerst y gelijk stellen. vervolgens x gelijkstellen daarna weer x dan weer y of iig zoiets
             // a --> c --> stelling --> hoogte b --> b eindpunt
