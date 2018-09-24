@@ -60,8 +60,13 @@ namespace Models
             needsUpdate = true;
         }
 
+        public bool ended = false;
+
+
         public override bool Update(int tick)
         {
+
+            Console.WriteLine(ended);
             if (this.Route.Count() >= 0)
             {
                 if (this.Route.Count() != 0)
@@ -95,6 +100,11 @@ namespace Models
                         this.Route.RemoveAt(0);
                     }
                 }
+                else
+                {
+                    ended = true;
+                    //this.Route.Add(World.Punten[1]);
+                }
                 if (Math.Round(DeltaZ) > 0)
                 {
                     this.Move(this._x, this._y, this._z += 0.1);
@@ -116,6 +126,8 @@ namespace Models
                     DeltaX += 0.1;
                 }
             }
+
+
             /*
             for (int i = this.Route.Count(); i >= 0; i--)
             {
