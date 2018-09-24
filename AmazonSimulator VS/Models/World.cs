@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Controllers;
+using Models;
 
 namespace Models {
     public class World : IObservable<Command>, IUpdatable
@@ -10,72 +11,25 @@ namespace Models {
         private List<IObserver<Command>> observers = new List<IObserver<Command>>();
         private Dijkstra Nodes = new Dijkstra();
         private List<Node> Punten = new List<Node>();
+        private List<Node> route = new List<Node>();
+
 
         public World() {
-            Robot r1 = CreateRobot(0, 0, 0);
+            //Robot r0 = CreateRobot(0, 0, 0);
+            Robot r1 = CreateRobot(0, 0, 0, route);
+            
+            //Robot r2 = CreateRobot(0, 0, 0);
+            //Robot r3 = CreateRobot(0, 0, 0);
+
             Lorry l = CreateLorry(0, 0, 0);
             Shelf s = CreateShelf(0, 0, 0);
             Product p = CreateProduct(0, 0, 0);
-
-            AddNodes();
 
             r1.Move(2.0, 0, 4);
             l.Move(28.0, 0, 4);
             s.Move(28, 0, 28);
             p.Move(2, 0, 28);
 
-            Node a = new Node() { Id = 'A', X = 2, Y = 0, Z = 4 };
-            Node b = new Node() { Id = 'B', X = 28, Y = 0, Z = 4 };
-            Node c = new Node() { Id = 'C', X = 28, Y = 0, Z = 28 };
-            Node d = new Node() { Id = 'D', X = 2, Y = 0, Z = 28 };
-            Node e = new Node() { Id = 'E', X = 2, Y = 0, Z = 8 };
-            Node f = new Node() { Id = 'F', X = 2, Y = 0, Z = 20 };
-            Node g = new Node() { Id = 'G', X = 14, Y = 0, Z = 8 }; 
-            Node h = new Node() { Id = 'H', X = 14, Y = 0, Z = 20 };
-
-            Nodes.Add_Nodes('A', new Dictionary<char, Node>() { { 'A', a }, { 'B', b }, { 'E', e } });
-            Nodes.Add_Nodes('B', new Dictionary<char, Node>() { { 'B', b }, { 'A', a }, { 'C', c }, { 'G', g }, { 'H', h } });
-            Nodes.Add_Nodes('C', new Dictionary<char, Node>() { { 'C', c }, { 'B', b }, { 'D', d } });
-            Nodes.Add_Nodes('D', new Dictionary<char, Node>() { { 'D', d }, { 'A', a }, { 'C', c } });
-            Nodes.Add_Nodes('E', new Dictionary<char, Node>() { { 'E', e }, { 'A', a }, { 'F', f } });
-            Nodes.Add_Nodes('F', new Dictionary<char, Node>() { { 'F', f }, { 'D', d }, { 'E', e }, { 'H', h } });
-            Nodes.Add_Nodes('G', new Dictionary<char, Node>() { { 'G', g }, { 'B', b }, { 'E', e } });
-            Nodes.Add_Nodes('H', new Dictionary<char, Node>() { { 'H', h }, { 'B', b }, { 'F', f } });
-            Nodes.CalculateDistance();
-
-            //Nodes.add_vertex('A', new Dictionary<char, int>() { { 'B', 26 },{ 'E', 4 } });
-            //Nodes.add_vertex('B', new Dictionary<char, int>() { { 'A', 26 }, { 'C', 24}, { 'G', 18 }, { 'H', 30} });
-            //Nodes.add_vertex('C', new Dictionary<char, int>() { { 'B', 24 }, { 'D', 26 }});
-            //Nodes.add_vertex('D', new Dictionary<char, int>() { { 'A', 24 }, { 'C', 26} });
-            //Nodes.add_vertex('E', new Dictionary<char, int>() { { 'A', 4 }, { 'F', 12 } });
-            //Nodes.add_vertex('F', new Dictionary<char, int>() { { 'E', 12 }, { 'D', 8 }, { 'H', 12} });
-            //Nodes.add_vertex('G', new Dictionary<char, int>() { { 'B', 18 }, { 'E', 2 } });
-            //Nodes.add_vertex('H', new Dictionary<char, int>() { { 'F', 12 }, { 'B', 30 } });
-            //randomize deze node zet deze in de list voor de robot die je aanspreekt en laat hem zo deze nodes afwerken
-            //match deze waardes met de id van de nodes(id zij nu char misschien toch int houden voor random numbergenerator)
-            ///////////////////////////////////////////
-            //Nodes.shortest_path('A', 'H');
-            List<Node> route = new List<Node>();
-            List<Node> reverseRoute = new List<Node>();
-            r1.Route = route;
-            foreach(char x in Nodes.shortest_path('A', 'H'))
-            {
-                ///////////////////////////////////////////////////////////////////
-                Console.WriteLine(x);
-                var punt = from point in Punten
-                           where point.Id == x
-                           select point;
-                reverseRoute.Add(punt.Single());
-            }
- 
-            foreach (Node i in reverseRoute.Reverse<Node>())
-            {
-                r1.Route.Add(i);
-            }
-        }
-
-        private void AddNodes()
-        {
             Node a = new Node() { Id = 'A', X = 2, Y = 0, Z = 4 };
             Punten.Add(a);
             Node b = new Node() { Id = 'B', X = 28, Y = 0, Z = 4 };
@@ -92,11 +46,47 @@ namespace Models {
             Punten.Add(g);
             Node h = new Node() { Id = 'H', X = 14, Y = 0, Z = 20 };
             Punten.Add(h);
+
+            Nodes.Add_Nodes('A', new Dictionary<char, Node>() { { 'A', a }, { 'B', b }, { 'E', e } });
+            Nodes.Add_Nodes('B', new Dictionary<char, Node>() { { 'B', b }, { 'A', a }, { 'C', c }, { 'G', g }, { 'H', h } });
+            Nodes.Add_Nodes('C', new Dictionary<char, Node>() { { 'C', c }, { 'B', b }, { 'D', d } });
+            Nodes.Add_Nodes('D', new Dictionary<char, Node>() { { 'D', d }, { 'A', a }, { 'C', c } });
+            Nodes.Add_Nodes('E', new Dictionary<char, Node>() { { 'E', e }, { 'A', a }, { 'F', f } });
+            Nodes.Add_Nodes('F', new Dictionary<char, Node>() { { 'F', f }, { 'D', d }, { 'E', e }, { 'H', h } });
+            Nodes.Add_Nodes('G', new Dictionary<char, Node>() { { 'G', g }, { 'B', b }, { 'E', e } });
+            Nodes.Add_Nodes('H', new Dictionary<char, Node>() { { 'H', h }, { 'B', b }, { 'F', f } });
+            Nodes.CalculateDistance();
+
+            //randomize deze node zet deze in de list voor de robot die je aanspreekt en laat hem zo deze nodes afwerken
+            //match deze waardes met de id van de nodes(id zij nu char misschien toch int houden voor random numbergenerator)
+            ///////////////////////////////////////////
+            //Nodes.shortest_path('A', 'H');
+            List<Node> reverseRoute = new List<Node>();
+            r1.Route = route;
+
+            foreach(var robot in worldObjects)
+            {
+                
+                //var j = from x in worldObjects
+                //        where x
+                //        select x;
+            }
+            foreach(char x in Nodes.shortest_path('A', 'H'))
+            {
+                Console.WriteLine(x);
+                var punt = from point in Punten
+                           where point.Id == x
+                           select point;
+                reverseRoute.Add(punt.Single());
+            }
+ 
+            foreach (Node i in reverseRoute.Reverse<Node>())
+            {
+                r1.Route.Add(i);
+            }
         }
 
-
-
-        private Robot CreateRobot(double x, double y, double z) {
+        private Robot CreateRobot(double x, double y, double z, List<Node> puntjes) {
             Robot r = new Robot(x,y,z,0,0,0);
             worldObjects.Add(r);            
             return r;
