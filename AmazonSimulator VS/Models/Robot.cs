@@ -14,8 +14,8 @@ namespace Models
         private double _rY = 0;
         private double _rZ = 0;
 
-        public string type { get; }
-        public Guid guid { get; }
+        public string type { get; set; }
+        public Guid guid { get; set; }
         public double x { get { return _x; } }
         public double y { get { return _y; } }
         public double z { get { return _z; } }
@@ -24,8 +24,7 @@ namespace Models
         public double rotationZ { get { return _rZ; } }
         public List<Node> Route { get; set; }
 
-        public bool needsUpdate = true;
-        
+
         private double DeltaX, DeltaZ;
 
         public Robot(double x, double y, double z, double rotationX, double rotationY, double rotationZ)

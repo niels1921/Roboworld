@@ -15,6 +15,8 @@
         }
 
         var exampleSocket;
+        var textMap = 'mp_cloud9';
+        var textName = 'cloud9';
 
         window.onload = function () {
             var camera, scene, renderer;
@@ -30,10 +32,43 @@
                 cameraControls.update();
                 scene = new THREE.Scene();
 
-                var sphericalSkyboxGeometry = new THREE.SphereGeometry(1000, 32, 32);
-                var sphericalSkyboxMaterial = new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/skybox8.jpg"), side: THREE.DoubleSide });
-                var sphericalSkybox = new THREE.Mesh(sphericalSkyboxGeometry, sphericalSkyboxMaterial);
-                scene.add(sphericalSkybox);
+                var cubicalSkyboxGeometry = new THREE.BoxGeometry(1000, 1000, 1000);
+                var cubeMaterials = [
+                    //front side
+                    new THREE.MeshBasicMaterial({
+                        map: new THREE.TGALoader().load('/textures/' + textMap + '/' + textName + '_ft.tga'),
+                        side: THREE.DoubleSide
+                    }),
+                    //back side
+                    new THREE.MeshBasicMaterial({
+                        map: new THREE.TGALoader().load('/textures/' + textMap + '/' + textName + '_bk.tga'),
+                        side: THREE.DoubleSide
+                    }),
+                    //top side
+                    new THREE.MeshBasicMaterial({
+                        map: new THREE.TGALoader().load('/textures/' + textMap + '/' + textName + '_up.tga'),
+                        side: THREE.DoubleSide
+                    }),
+                    //bottom side
+                    new THREE.MeshBasicMaterial({
+                        map: new THREE.TGALoader().load('/textures/' + textMap + '/' + textName + '_dn.tga'),
+                        side: THREE.DoubleSide
+                    }),
+                    //right side
+                    new THREE.MeshBasicMaterial({
+                        map: new THREE.TGALoader().load('/textures/' + textMap + '/' + textName + '_rt.tga'),
+                        side: THREE.DoubleSide
+                    }),
+                    //left side
+                    new THREE.MeshBasicMaterial({
+                        map: new THREE.TGALoader().load('/textures/' + textMap + '/' + textName + '_lf.tga'),
+                        side: THREE.DoubleSide
+                    })
+                ];
+
+                var cubeMaterial = new THREE.MeshFaceMaterial(cubeMaterials);
+                var mesh = new THREE.Mesh(cubicalSkyboxGeometry, cubeMaterial);
+                scene.add(mesh);
 
                 new THREE.MTLLoader()
                     .setPath('/textures/')
@@ -118,7 +153,6 @@
                 var material = new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("/textures/vloer.jpg"), side: THREE.DoubleSide });
                 var plane = new THREE.Mesh(geometry, material);
                 plane.rotation.x = Math.PI / 2.0;
-                //plane.position.y = -200;
                 plane.position.x = 15;
                 plane.position.z = 15;
                 scene.add(plane);
@@ -256,6 +290,7 @@
     </script>
 
     <script src="three.min.js"></script>
+    <script src="TGALoader.js"></script>
     <script src="MTLLoader.js"></script>
     <script src="OBJLoader.js"></script>
     <script src="OrbitControls.js"></script>

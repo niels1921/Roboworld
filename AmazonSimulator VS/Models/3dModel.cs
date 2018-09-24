@@ -8,9 +8,7 @@ namespace Models
 {
     public abstract class _3DModel
     {
-        //public abstract double _x { get; set; }
-        //public abstract double _y { get; set; }
-        //public abstract double _z { get; set; }
+        public bool needsUpdate = true;
 
         public abstract void Move(double x, double y, double z);
 
