@@ -65,6 +65,13 @@ namespace Models
                 return true;
             }
             return false;
-        }    
+        }
+
+        public override string getType()
+        {
+            type = this.type;
+
+            return type;
+        }
     }
 }

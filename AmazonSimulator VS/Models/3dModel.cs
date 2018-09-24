@@ -15,5 +15,7 @@ namespace Models
         public abstract void Rotate(double rotationX, double rotationY, double rotationZ);
 
         public abstract bool Update(int tick);
+
+        public abstract string getType();
     }
 }
