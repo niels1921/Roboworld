@@ -11,12 +11,11 @@ namespace Models {
         private List<IObserver<Command>> observers = new List<IObserver<Command>>();
         private Dijkstra Nodes = new Dijkstra();
         private List<Node> Punten = new List<Node>();
-        private List<Node> route = new List<Node>();
 
 
         public World() {
             //Robot r0 = CreateRobot(0, 0, 0);
-            Robot r1 = CreateRobot(0, 0, 0, route);
+            Robot r1 = CreateRobot(0, 0, 0);
             
             //Robot r2 = CreateRobot(0, 0, 0);
             //Robot r3 = CreateRobot(0, 0, 0);
@@ -62,15 +61,7 @@ namespace Models {
             ///////////////////////////////////////////
             //Nodes.shortest_path('A', 'H');
             List<Node> reverseRoute = new List<Node>();
-            r1.Route = route;
 
-            foreach(var robot in worldObjects)
-            {
-                
-                //var j = from x in worldObjects
-                //        where x
-                //        select x;
-            }
             foreach(char x in Nodes.shortest_path('A', 'H'))
             {
                 Console.WriteLine(x);
@@ -86,8 +77,10 @@ namespace Models {
             }
         }
 
-        private Robot CreateRobot(double x, double y, double z, List<Node> puntjes) {
+        private Robot CreateRobot(double x, double y, double z) {
             Robot r = new Robot(x,y,z,0,0,0);
+            List<Node> route = new List<Node>();
+            r.Route = route;
             worldObjects.Add(r);            
             return r;
         }
