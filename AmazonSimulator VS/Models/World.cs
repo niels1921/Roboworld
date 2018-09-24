@@ -26,7 +26,7 @@ namespace Models {
 
         public World() {
             //Robot r0 = CreateRobot(0, 0, 0);
-            Robot r1 = CreateRobot(0, 0, 0, route);
+            Robot r1 = CreateRobot(0, 0, 0);
             
             //Robot r2 = CreateRobot(0, 0, 0);
             //Robot r3 = CreateRobot(0, 0, 0);
@@ -96,8 +96,10 @@ namespace Models {
             //}
         }
 
-        private Robot CreateRobot(double x, double y, double z, List<Node> puntjes) {
+        private Robot CreateRobot(double x, double y, double z) {
             Robot r = new Robot(x,y,z,0,0,0);
+            List<Node> route = new List<Node>();
+            r.Route = route;
             worldObjects.Add(r);            
             return r;
         }
