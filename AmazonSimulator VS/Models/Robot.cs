@@ -61,31 +61,42 @@ namespace Models
 
         public override bool Update(int tick)
         {
-
+            List<double> list = new List<double>();
             foreach (Node x in this.Route)
             {
-                
-                if (Math.Round(this._z) < x.Z)
+                double totpos = Math.Round(this._x) + Math.Round(this._y) + Math.Round(this._z);
+                double totnode = x.X + x.Y + x.Z;
+
+                if(totpos != totnode)
                 {
-                    this.Move(this._x, this._y, this._z += 0.1);
-                    Console.WriteLine(this._z);
+                    if (Math.Round(this._z) < x.Z)
+                    {
+                        this.Move(this._x, this._y, this._z += 0.1);
+                        Console.WriteLine(this._z);
+                    }
+                    else if (Math.Round(this._z) > x.Z)
+                    {
+                        this.Move(this._x, this._y, this._z -= 0.1);
+                        Console.WriteLine(this._z);
+                    }
+                    else if (this._x < x.X)
+                    {
+                        this.Move(this._x += 0.10, this._y, this._z);
+                        Console.WriteLine("x= " + this._x);
+                    }
+                    else if (this._x > x.X)
+                    {
+
+                        this.Move(this._x -= 0.10, this._y, this._z);
+                        Console.WriteLine("x= " + this._x);
+                    }
                 }
-                else if (Math.Round(this._z) > x.Z)
-                {
-                    this.Move(this._x, this._y, this._z -= 0.1);
-                    Console.WriteLine(this._z);
-                }
-                else if (this._x < x.X)
-                {
-                    this.Move(this._x += 0.10, this._y, this._z);
-                    Console.WriteLine("x= " + this._x);
-                }
-                else if (this._x > x.X)
-                {
-                    this.Move(this._x -= 0.10, this._y, this._z);
-                    Console.WriteLine("x= " + this._x);
-                }
+
             }
+
+
+
+
 
             /*if (this._x <= X)
             {

@@ -50,6 +50,9 @@ namespace Models {
             foreach (var x in r1.Route)
             {
                 Console.WriteLine(x.Id);
+                Console.WriteLine(x.X);
+                Console.WriteLine(x.Y);
+                Console.WriteLine(x.Z);
             }
             //Nodes.shortest_path('A', 'H').ForEach(x => Console.WriteLine(x));
 
