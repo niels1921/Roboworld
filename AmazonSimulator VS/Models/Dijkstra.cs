@@ -7,7 +7,7 @@ namespace Models
 {
     public class Dijkstra
     {
-        public Dictionary<char, Dictionary<char, Node>> tijdelijk = new Dictionary<char, Dictionary<char, Node>>();
+        Dictionary<char, Dictionary<char, Node>> tijdelijk = new Dictionary<char, Dictionary<char, Node>>();
         Dictionary<char, Dictionary<char, int>> vertices = new Dictionary<char, Dictionary<char, int>>();
         double OriginX, OriginZ;
 
@@ -36,21 +36,14 @@ namespace Models
                         int h = (int)iets.Value.Z - (int)OriginZ;
                         if (h < 0)
                             h = h * -1;
-                        int tot = g + h;
+                        int TotaalAfstand = g + h;     
                         
-                        vert.Add(iets.Key, tot);                        
+                        vert.Add(iets.Key, TotaalAfstand);                   
                     }
                 }
                 vertices.Add(node.Key, vert);
             }
         }
-
-        //public void add_vertex(char name, Dictionary<char, int> edges)
-        //{
-
-        //    vertices[name] = edges;
-
-        //}
 
         public List<char> shortest_path(char start, char finish)
 
@@ -142,16 +135,6 @@ namespace Models
 
                 }
 
-
-                //foreach (KeyValuePair<char, Dictionary<Char, int>> node in vertices)
-                //{
-                //    Console.WriteLine("Key:" + node.Key + ", Value: ");
-                //    foreach (var iets in node.Value)
-                //    {
-                //        Console.Write(iets.Value + "   ");
-                //    }
-                //}
-
                 foreach (var neighbor in vertices[smallest])
 
                 {
@@ -171,6 +154,8 @@ namespace Models
                 }
 
             }
+
+            path.Reverse();
 
             return path;
         }

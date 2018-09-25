@@ -14,8 +14,8 @@ namespace Models
         private double _rY = 0;
         private double _rZ = 0;
 
-        public string type { get; }
-        public Guid guid { get; }
+        public string type { get; set; }
+        public Guid guid { get; set; }
         public double x { get { return _x; } }
         public double y { get { return _y; } }
         public double z { get { return _z; } }
@@ -23,10 +23,12 @@ namespace Models
         public double rotationY { get { return _rY; } }
         public double rotationZ { get { return _rZ; } }
         public List<Node> Route { get; set; }
+        public Shelf shelf { get; set; }
 
-        public bool needsUpdate = true;
-        
+
         private double DeltaX, DeltaZ;
+        public static bool ended = false;
+        public static bool shelfStatus = false;
 
         public Robot(double x, double y, double z, double rotationX, double rotationY, double rotationZ)
         {
@@ -62,6 +64,7 @@ namespace Models
 
         public override bool Update(int tick)
         {
+
             if (this.Route.Count() >= 0)
             {
                 if (this.Route.Count() != 0)
@@ -70,7 +73,7 @@ namespace Models
                     {
                         DeltaX = this.Route[0].X - this._x;
                         DeltaZ = this.Route[0].Z - this._z;
-                        if (DeltaX != 0)
+                        if (Math.Round(DeltaX) != 0)
                         {
                             if (DeltaX > this._x)
                             {
@@ -95,6 +98,11 @@ namespace Models
                         this.Route.RemoveAt(0);
                     }
                 }
+                else
+                {
+                    ended = true;
+                    //this.Route.Add(World.Punten[1]);
+                }
                 if (Math.Round(DeltaZ) > 0)
                 {
                     this.Move(this._x, this._y, this._z += 0.1);
@@ -116,22 +124,7 @@ namespace Models
                     DeltaX += 0.1;
                 }
             }
-            /*
-            for (int i = this.Route.Count(); i >= 0; i--)
-            {
-                if (this.Route.Count() != 0)
-                {
-                    while (Math.Round(this.Route[0].Z) >= this._z)
-                    {
-                        this.Move(this._x, this._y, this._z += 1);
-                    }
-                    while (this.Route[0].X >= this._x)
-                    {
-                        this.Move(this._x += 1, this._y, this._z);
-                    }
-                    this.Route.RemoveAt(0);
-                }
-            }*/
+
             //eerst y gelijk stellen. vervolgens x gelijkstellen daarna weer x dan weer y of iig zoiets
             // a --> c --> stelling --> hoogte b --> b eindpunt
             if (needsUpdate)
@@ -141,5 +134,24 @@ namespace Models
             }
             return false;
         }
+
+        public bool returnShelf()
+        {
+            if(shelf != null)
+            {
+                shelfStatus = true;
+                return true;
+            }
+            shelfStatus = false;
+            return false;
+        }
+
+        public override string getType()
+        {
+            type = this.type;
+
+            return type;
+        }
+
     }
 }
