@@ -95,7 +95,7 @@ namespace Models {
                             //r1.Route.Add(punt.Single());
                         }
                     }
-                    else if(route.Count() == 0 && Robot.shelfStatus == true)
+                    if(route.Count() == 0 && Robot.shelfStatus == true)
                     {//////////////////////////////////////////////////////////////////////////////////////////////////////
                         foreach (char x in Nodes.shortest_path(punt1, 'B'))
                         {
