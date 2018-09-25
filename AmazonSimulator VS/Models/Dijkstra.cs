@@ -7,20 +7,20 @@ namespace Models
 {
     public class Dijkstra
     {
-        Dictionary<char, Dictionary<char, Node>> tijdelijk = new Dictionary<char, Dictionary<char, Node>>();
-        Dictionary<char, Dictionary<char, int>> vertices = new Dictionary<char, Dictionary<char, int>>();
+        Dictionary<string, Dictionary<string, Node>> tijdelijk = new Dictionary<string, Dictionary<string, Node>>();
+        Dictionary<string, Dictionary<string, int>> vertices = new Dictionary<string, Dictionary<string, int>>();
         double OriginX, OriginZ;
 
-        public void Add_Nodes(char name, Dictionary<char, Node> randen)
+        public void Add_Nodes(string name, Dictionary<string, Node> randen)
         {
             tijdelijk[name] = randen;
         }
 
         public void CalculateDistance()
         {
-            foreach (KeyValuePair<char, Dictionary<Char, Node>> node in tijdelijk)
+            foreach (KeyValuePair<string, Dictionary<string, Node>> node in tijdelijk)
             {
-                Dictionary<char, int> vert = new Dictionary<char, int>();
+                Dictionary<string, int> vert = new Dictionary<string, int>();
                 foreach (var iets in node.Value)
                 {
                     if (node.Key == iets.Key)
@@ -45,19 +45,18 @@ namespace Models
             }
         }
 
-        public List<char> shortest_path(char start, char finish)
-
+        public List<string> shortest_path(string start, string finish)
         {
 
-            var previous = new Dictionary<char, char>();
+            var previous = new Dictionary<string, string>();
 
-            var distances = new Dictionary<char, int>();
+            var distances = new Dictionary<string, int>();
 
-            var nodes = new List<char>();
+            var nodes = new List<string>();
 
 
 
-            List<char> path = null;
+            List<string> path = null;
 
 
 
@@ -107,7 +106,7 @@ namespace Models
 
                 {
 
-                    path = new List<char>();
+                    path = new List<string>();
 
                     while (previous.ContainsKey(smallest))
 
