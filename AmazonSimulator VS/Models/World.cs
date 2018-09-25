@@ -122,7 +122,6 @@ namespace Models {
             worldObjects.Add(s);
             return s;
         }
-        
 
         public IDisposable Subscribe(IObserver<Command> observer)
         {

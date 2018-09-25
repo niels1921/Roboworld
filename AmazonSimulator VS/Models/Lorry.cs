@@ -63,6 +63,7 @@ namespace Models
 
             if (needsUpdate)
             {
+               // this.Move(this.x += 1, this.y, this.z);
                 needsUpdate = false;
                 return true;
             }

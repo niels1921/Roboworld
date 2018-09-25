@@ -15,7 +15,6 @@ var Detector = {
 		} catch ( e ) {
 
 			return false;
-
 		}
 
 	} )(),
