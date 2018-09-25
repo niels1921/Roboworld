@@ -8,64 +8,16 @@ namespace Models
 {
     public class Lorry : _3DModel , IUpdatable
     {
-        private double _x = 0;
-        private double _y = 0;
-        private double _z = 0;
-        private double _rX = 0;
-        private double _rY = 0;
-        private double _rZ = 0;
-
-        public string type { get; set; }
-        public Guid guid { get; set; }
-        public double x { get { return _x; } }
-        public double y { get { return _y; } }
-        public double z { get { return _z; } }
-        public double rotationX { get { return _rX; } }
-        public double rotationY { get { return _rY; } }
-        public double rotationZ { get { return _rZ; } }
         public List<Node> Route { get; set; }
 
-        public Lorry(double x, double y, double z, double rotationX, double rotationY, double rotationZ)
+        public Lorry(double x, double y, double z, double rotationX, double rotationY, double rotationZ) : base("lorry", x, y, z, rotationX, rotationY, rotationZ)
         {
-            this.type = "lorry";
-            this.guid = Guid.NewGuid();
-
-            this._x = x;
-            this._y = y;
-            this._z = z;
-
-            this._rX = rotationX;
-            this._rY = rotationY;
-            this._rZ = rotationZ;
-        }
-
-        public override void Move(double x, double y, double z)
-        {
-            this._x = x;
-            this._y = y;
-            this._z = z;
-
-            needsUpdate = true;
-        }
-
-        public override void Rotate(double rotationX, double rotationY, double rotationZ)
-        {
-            this._rX = rotationX;
-            this._rY = rotationY;
-            this._rZ = rotationZ;
-
-            needsUpdate = true;
+            this.Move(x, y, z);
         }
 
         public override bool Update(int tick)
         {
-            if (needsUpdate)
-            {
-               // this.Move(this.x += 1, this.y, this.z);
-                needsUpdate = false;
-                return true;
-            }
-            return false;
+            return base.Update(tick);
         }
 
         public override string getType()
