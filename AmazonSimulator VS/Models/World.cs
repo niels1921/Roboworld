@@ -9,18 +9,8 @@ namespace Models {
     {
         private List<_3DModel> worldObjects = new List<_3DModel>();
         private List<IObserver<Command>> observers = new List<IObserver<Command>>();
-        private Dijkstra Nodes = new Dijkstra();
-        public static List<Node> Punten = new List<Node>()
-        {
-            new Node() { Id = 'A', X = 2, Y = 0, Z = 4 },
-            new Node() { Id = 'B', X = 28, Y = 0, Z = 4 },
-            new Node() { Id = 'C', X = 28, Y = 0, Z = 28 },
-            new Node() { Id = 'D', X = 2, Y = 0, Z = 28 },
-            new Node() { Id = 'E', X = 2, Y = 0, Z = 8 },
-            new Node() { Id = 'F', X = 2, Y = 0, Z = 20 },
-            new Node() { Id = 'G', X = 14, Y = 0, Z = 8 },
-            new Node() { Id = 'H', X = 14, Y = 0, Z = 20 },
-    };
+        private List<Node> Punten = Node.Punten;
+
         private List<Node> route = new List<Node>();
 
 
@@ -40,15 +30,7 @@ namespace Models {
             s.Move(28, 0, 28);
             p.Move(2, 0, 28);
 
-            Nodes.Add_Nodes('A', new Dictionary<char, Node>() { { 'A', Punten[0] }, { 'B', Punten[1] }, { 'E', Punten[4] } });
-            Nodes.Add_Nodes('B', new Dictionary<char, Node>() { { 'B', Punten[1] }, { 'A', Punten[0] }, { 'C', Punten[2] }, { 'G', Punten[6] }, { 'H', Punten[7] } });
-            Nodes.Add_Nodes('C', new Dictionary<char, Node>() { { 'C', Punten[2] }, { 'B', Punten[1] }, { 'D', Punten[3] } });
-            Nodes.Add_Nodes('D', new Dictionary<char, Node>() { { 'D', Punten[3] }, { 'A', Punten[0] }, { 'C', Punten[2] } });
-            Nodes.Add_Nodes('E', new Dictionary<char, Node>() { { 'E', Punten[4] }, { 'A', Punten[0] }, { 'F', Punten[5] } });
-            Nodes.Add_Nodes('F', new Dictionary<char, Node>() { { 'F', Punten[5] }, { 'D', Punten[3] }, { 'E', Punten[4] }, { 'H', Punten[7] } });
-            Nodes.Add_Nodes('G', new Dictionary<char, Node>() { { 'G', Punten[6] }, { 'B', Punten[1] }, { 'E', Punten[4] } });
-            Nodes.Add_Nodes('H', new Dictionary<char, Node>() { { 'H', Punten[7] }, { 'B', Punten[1] }, { 'F', Punten[5] } });
-            Nodes.CalculateDistance();
+
 
             //randomize deze node zet deze in de list voor de robot die je aanspreekt en laat hem zo deze nodes afwerken
             //match deze waardes met de id van de nodes(id zij nu char misschien toch int houden voor random numbergenerator)
