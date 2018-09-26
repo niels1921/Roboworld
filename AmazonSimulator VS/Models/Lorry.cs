@@ -17,13 +17,13 @@ namespace Models
 
         public override bool Update(int tick)
         {
+           // this.Move(this.x + 0.1, this.y, this.z);
             return base.Update(tick);
         }
 
         public override string getType()
         {
             type = this.type;
-
             return type;
         }
     }
