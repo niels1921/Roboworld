@@ -12,14 +12,19 @@ namespace Models
 
         private List<Node> Path;
 
+        public RobotMove(List<Node> path)
+        {
+            this.Path = path;
+        }
+
         public void StartTask(Robot r)
         {
-            throw new NotImplementedException();
+            r.MoveOverPath(this.Path);
         }
 
         public bool Taskcomplete(Robot r)
         {
-            throw new NotImplementedException();
+            return r.x == Path.Last().X && r.z == Path.Last().Y;
         }
     }
 }

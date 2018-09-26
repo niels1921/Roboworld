@@ -10,6 +10,7 @@ namespace Models {
         private List<_3DModel> worldObjects = new List<_3DModel>();
         private List<IObserver<Command>> observers = new List<IObserver<Command>>();
         private Dijkstra Nodes = new Dijkstra();
+        private Lorry vrachtwagen;
         public static List<Node> Punten = new List<Node>()
         {
             new Node() { Id = "A", X = 2, Y = 0, Z = 4 },
@@ -20,9 +21,10 @@ namespace Models {
             new Node() { Id = "F", X = 2, Y = 0, Z = 20 },
             new Node() { Id = "G", X = 14, Y = 0, Z = 8 },
             new Node() { Id = "H", X = 14, Y = 0, Z = 20 },
-    };
-        private List<Node> route = new List<Node>();
-
+            new Node() { Id = "VA", X = -30, Y = 0, Z = -6},
+            new Node() { Id = "VB", X = -8, Y = 0, Z = -6},
+            new Node() { Id = "VC", X = 8, Y = 0, Z = -6}
+        };
 
         public World() {
             //Robot r0 = CreateRobot(0, 0, 0);
@@ -32,6 +34,7 @@ namespace Models {
             //Robot r3 = CreateRobot(0, 0, 0);
 
             Lorry l = CreateLorry(0, 0, 0);
+            vrachtwagen = l;
             Shelf s = CreateShelf(0, 0, 0);
             Product p = CreateProduct(0, 0, 0);
 
@@ -48,6 +51,8 @@ namespace Models {
             Nodes.Add_Nodes("F", new Dictionary<string, Node>() { { "F", Punten[5] }, { "D", Punten[3] }, { "E", Punten[4] }, { "H", Punten[7] } });
             Nodes.Add_Nodes("G", new Dictionary<string, Node>() { { "G", Punten[6] }, { "B", Punten[1] }, { "E", Punten[4] } });
             Nodes.Add_Nodes("H", new Dictionary<string, Node>() { { "H", Punten[7] }, { "B", Punten[1] }, { "F", Punten[5] } });
+            Nodes.Add_Nodes("VA", new Dictionary<string, Node>() { { "VA", Punten[8] }, { "VB", Punten[9] } });
+            Nodes.Add_Nodes("VB", new Dictionary<string, Node>() { { "VB", Punten[9] }, { "VC", Punten[10] } });
             Nodes.CalculateDistance();
 
             //randomize deze node zet deze in de list voor de robot die je aanspreekt en laat hem zo deze nodes afwerken
@@ -61,6 +66,7 @@ namespace Models {
                            select point;
                 r1.Route.Add(punt.Single());
             }
+            
 
             //if(Robot.ended == true)
             //{
@@ -165,7 +171,18 @@ namespace Models {
         {
             for(int i = 0; i < worldObjects.Count; i++) {
                 _3DModel u = worldObjects[i];
-                
+
+                if (vrachtwagen.GetRoute().Count() == 0)
+                {
+                    foreach (string l in Nodes.shortest_path("VA", "VC"))
+                    {
+                        var punt = from point in Punten
+                                   where point.Id == l
+                                   select point;
+                        vrachtwagen.AddRoute(punt.Single());
+                    }
+                }
+
                 if(u is IUpdatable) {
                     bool needsCommand = ((IUpdatable)u).Update(tick);
 
