@@ -45,11 +45,11 @@ namespace Models
                         }
                         else if (DeltaZ != 0)
                         {
-                            if (this.rotationY > 3.5 && DeltaZ > this.z)
+                            if (this.rotationY > 1.5 && DeltaZ > this.z)
                             {
                                 this.Rotate(this.rotationX, this.rotationY + (-0.5 * Math.PI), this.rotationZ);
                             }
-                            else if(this.rotationY < 3.1 && DeltaZ < this.z)
+                            else if(this.rotationY < 1.5 && DeltaZ < this.z)
                             {
                                 this.Rotate(this.rotationX, this.rotationY + (0.5 * Math.PI), this.rotationZ);
                             }
