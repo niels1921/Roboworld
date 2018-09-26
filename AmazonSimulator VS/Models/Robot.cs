@@ -9,6 +9,7 @@ namespace Models
     {
         public List<Node> Route { get; set; }
         public Shelf shelf { get; set; }
+        private List<IRobotTask> tasks = new List<IRobotTask>();
 
 
         private double DeltaX, DeltaZ;
@@ -18,11 +19,24 @@ namespace Models
         public Robot (double x, double y, double z, double rotationX, double rotationY, double rotationZ) : base("robot", x, y, z, rotationX, rotationY, rotationZ)
         {
             this.Move(this.x, this.y, this.z);
+            this.tasks.Add(new RobotMove(null));
         }
 
 
         public override bool Update(int tick)
         {
+            if(tasks != null)
+            {
+                if (tasks.First().Taskcomplete(this))
+                {
+                    tasks.RemoveAt(0);
+                    if(tasks.Count == 0)
+                    {
+                        tasks = null;
+                    }
+                    tasks.First().StartTask(this);
+                }
+            }
 
             if (this.Route.Count() >= 0)
             {
@@ -49,7 +63,7 @@ namespace Models
                             {
                                 this.Rotate(this.rotationX, this.rotationY + (-0.5 * Math.PI), this.rotationZ);
                             }
-                            else if(this.rotationY < 1.5 && DeltaZ < this.z)
+                            else if (this.rotationY < 1.5 && DeltaZ < this.z)
                             {
                                 this.Rotate(this.rotationX, this.rotationY + (0.5 * Math.PI), this.rotationZ);
                             }
@@ -83,6 +97,7 @@ namespace Models
                     DeltaX += 0.1;
                 }
             }
+
             return base.Update(tick);
         }
 
@@ -100,9 +115,18 @@ namespace Models
         public override string getType()
         {
             type = this.type;
-
+      
             return type;
         }
 
+        public void MoveOverPath(List<Node> route)
+        {
+            this.Route = route;
+        }
+
+        public void AddTask(RobotTask taak)
+        {
+            tasks.Add(taak);
+        }
     }
 }
