@@ -9,6 +9,7 @@ namespace Models
     public class Lorry : _3DModel , IUpdatable
     {
         private List<Node> Route = new List<Node>();
+        private double DeltaX = 0;
 
         public Lorry(double x, double y, double z, double rotationX, double rotationY, double rotationZ) : base("lorry", x, y, z, rotationX, rotationY, rotationZ)
         {
@@ -17,7 +18,26 @@ namespace Models
 
         public override bool Update(int tick)
         {
-            this.Move(this.x + 0.1, this.y, this.z);
+
+            if (this.Route.Count() >= 0)
+            {
+                if (this.Route.Count() != 0)
+                {
+                    if (Math.Round(DeltaX) == 0)
+                    {
+                        DeltaX = Math.Abs(this.Route[0].X) - Math.Abs(this.x);
+                        DeltaX = Math.Abs(DeltaX);
+                        this.Route.RemoveAt(0);
+                    }
+                    
+                }
+                if (Math.Round(DeltaX) > 0)
+                {
+                    this.Move(this.x + 0.1, this.y, this.z);
+                    DeltaX -= 0.1;
+                }
+            }
+            //this.Move(this.x + 0.1, this.y, this.z);
             return base.Update(tick);
         }
 

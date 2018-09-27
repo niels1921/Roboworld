@@ -33,13 +33,12 @@ namespace Models {
             //Robot r2 = CreateRobot(0, 0, 0);
             //Robot r3 = CreateRobot(0, 0, 0);
 
-            Lorry l = CreateLorry(0, 0, 0);
-            vrachtwagen = l;
+            vrachtwagen = CreateLorry(0, 0, 0);
             Shelf s = CreateShelf(0, 0, 0);
             Product p = CreateProduct(0, 0, 0);
 
             r1.Move(2.0, 0, 4);
-            l.Move(28.0, 0, 4);
+            vrachtwagen.Move(-30, 0, -6);
             s.Move(28, 0, 28);
             p.Move(2, 0, 28);
 
@@ -173,7 +172,7 @@ namespace Models {
             for(int i = 0; i < worldObjects.Count; i++) {
                 _3DModel u = worldObjects[i];
 
-                if (vrachtwagen.GetRoute() == null)
+                if (vrachtwagen.GetRoute().Count == 0)
                 {
                     foreach (string l in Nodes.shortest_path("VA", "VB"))
                     {
