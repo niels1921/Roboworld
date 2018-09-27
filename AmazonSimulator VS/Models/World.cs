@@ -21,8 +21,8 @@ namespace Models {
             new Node() { Id = "F", X = 2, Y = 0, Z = 20 },
             new Node() { Id = "G", X = 14, Y = 0, Z = 8 },
             new Node() { Id = "H", X = 14, Y = 0, Z = 20 },
-            new Node() { Id = "VA", X = -30, Y = 0, Z = -6},
-            new Node() { Id = "VB", X = -8, Y = 0, Z = -6},
+            new Node() { Id = "VA", X = 0, Y = 0, Z = -6},
+            new Node() { Id = "VB", X = 20.5, Y = 0, Z = -6},
             new Node() { Id = "VC", X = 8, Y = 0, Z = -6}
         };
 
@@ -38,7 +38,7 @@ namespace Models {
             Product p = CreateProduct(0, 0, 0);
 
             r1.Move(2.0, 0, 4);
-            vrachtwagen.Move(-30, 0, -6);
+            vrachtwagen.Move(0, 0, -2);
             s.Move(28, 0, 28);
             p.Move(2, 0, 28);
 
