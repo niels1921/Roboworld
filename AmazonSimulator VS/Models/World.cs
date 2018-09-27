@@ -21,9 +21,9 @@ namespace Models {
             new Node() { Id = "F", X = 2, Y = 0, Z = 20 },
             new Node() { Id = "G", X = 14, Y = 0, Z = 8 },
             new Node() { Id = "H", X = 14, Y = 0, Z = 20 },
-            new Node() { Id = "VA", X = -30, Y = 0, Z = -6},
-            new Node() { Id = "VB", X = -8, Y = 0, Z = -6},
-            new Node() { Id = "VC", X = 8, Y = 0, Z = -6}
+            new Node() { Id = "VA", X = 0, Y = 0, Z = 0},
+            new Node() { Id = "VB", X = 20, Y = 0, Z = 0},
+            new Node() { Id = "VC", X = 30, Y = 0, Z = 0}
         };
 
         public World() {
@@ -39,7 +39,7 @@ namespace Models {
             Product p = CreateProduct(0, 0, 0);
 
             r1.Move(2.0, 0, 4);
-            l.Move(28.0, 0, 4);
+            l.Move(0, 0, -2);
             s.Move(28, 0, 28);
             p.Move(2, 0, 28);
 
@@ -173,13 +173,16 @@ namespace Models {
             for(int i = 0; i < worldObjects.Count; i++) {
                 _3DModel u = worldObjects[i];
 
-                if (vrachtwagen.GetRoute() == null)
+                if (vrachtwagen.GetRoute().Count() == 0)
                 {
                     foreach (string l in Nodes.shortest_path("VA", "VB"))
                     {
                         var punt = from point in Punten
                                    where point.Id == l
                                    select point;
+
+                        Console.WriteLine(punt.Single().X);
+
                         vrachtwagen.AddRoute(punt.Single());
                     }
                 }

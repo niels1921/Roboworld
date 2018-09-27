@@ -17,7 +17,21 @@ namespace Models
 
         public override bool Update(int tick)
         {
-            this.Move(this.x + 0.1, this.y, this.z);
+            if (this.Route != null)
+            {
+
+                if (Math.Round(this.x) != this.Route[0].X)
+                {
+                    this.Move(this.x + 0.1, this.y, this.z);
+
+                }
+                else
+                {
+                    this.Route.RemoveAt(0);
+                }
+            }
+
+
             return base.Update(tick);
         }
 
