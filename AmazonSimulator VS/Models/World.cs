@@ -23,7 +23,7 @@ namespace Models {
             new Node() { Id = "H", X = 14, Y = 0, Z = 20 },
             new Node() { Id = "VA", X = 0, Y = 0, Z = -6},
             new Node() { Id = "VB", X = 20.5, Y = 0, Z = -6},
-            new Node() { Id = "VC", X = 8, Y = 0, Z = -6}
+            new Node() { Id = "VC", X = 32, Y = 0, Z = -6}
         };
 
         public World() {
