@@ -53,6 +53,7 @@ namespace Models {
             Nodes.Add_Nodes("H", new Dictionary<string, Node>() { { "H", Punten[7] }, { "B", Punten[1] }, { "F", Punten[5] } });
             Nodes.Add_Nodes("VA", new Dictionary<string, Node>() { { "VA", Punten[8] }, { "VB", Punten[9] } });
             Nodes.Add_Nodes("VB", new Dictionary<string, Node>() { { "VB", Punten[9] }, { "VC", Punten[10] } });
+            Nodes.Add_Nodes("VC", new Dictionary<string, Node>() { { "VC", Punten[10] }, { "VB", Punten[9] } });
             Nodes.CalculateDistance();
 
             //randomize deze node zet deze in de list voor de robot die je aanspreekt en laat hem zo deze nodes afwerken
@@ -172,9 +173,9 @@ namespace Models {
             for(int i = 0; i < worldObjects.Count; i++) {
                 _3DModel u = worldObjects[i];
 
-                if (vrachtwagen.GetRoute().Count() == 0)
+                if (vrachtwagen.GetRoute() == null)
                 {
-                    foreach (string l in Nodes.shortest_path("VA", "VC"))
+                    foreach (string l in Nodes.shortest_path("VA", "VB"))
                     {
                         var punt = from point in Punten
                                    where point.Id == l
