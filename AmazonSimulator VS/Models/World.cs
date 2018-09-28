@@ -41,9 +41,9 @@ namespace Models {
             }
             //randomize deze node zet deze in de list voor de robot die je aanspreekt en laat hem zo deze nodes afwerken
             //match deze waardes met de id van de nodes(id zij nu char misschien toch int houden voor random numbergenerator)
+            WorldManager.laatzien();
 
-            
-            
+
 
             //if(Robot.ended == true)
             //{
@@ -153,7 +153,7 @@ namespace Models {
 
                 if (vrachtwagen.GetRoute().Count == 0 && vrachtwagen.x < 16)
                 {
-                    foreach (string l in WorldManager.returnNodes().shortest_path("VA", "VB"))
+                    foreach (string l in WorldManager.ReturnNodes().shortest_path("VA", "VB"))
                     {
                         var punt = from point in Punten
                                    where point.Id == l

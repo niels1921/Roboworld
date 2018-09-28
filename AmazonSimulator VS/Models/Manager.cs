@@ -23,12 +23,12 @@ namespace Models
             new Node() { Id = "PC", X = 28, Y = 0, Z = 8 }, //6
             new Node() { Id = "PD", X = 28, Y = 0, Z = 20 }, //7
 
-            new Node() { Id = "PAA", X = 5, Y = 0, Z = 20 }, //8
-            new Node() { Id = "PAB", X = 7.5, Y = 0, Z = 20 }, //9
-            new Node() { Id = "PAC", X = 10, Y = 0, Z = 20 }, //10
-            new Node() { Id = "PAD", X = 13.5, Y = 0, Z = 20 }, //11
-            new Node() { Id = "PAE", X = 16, Y = 0, Z = 20 }, //12
-            new Node() { Id = "PAF", X = 18.5, Y = 0, Z = 20 }, //13
+            new Node() { Id = "PAA", X = 5, Y = 0, Z = 8 }, //8
+            new Node() { Id = "PAB", X = 7.5, Y = 0, Z = 8 }, //9
+            new Node() { Id = "PAC", X = 10, Y = 0, Z = 8 }, //10
+            new Node() { Id = "PAD", X = 13.5, Y = 0, Z = 8 }, //11
+            new Node() { Id = "PAE", X = 16, Y = 0, Z = 8 }, //12
+            new Node() { Id = "PAF", X = 18.5, Y = 0, Z = 8 }, //13
             new Node() { Id = "PBG", X = 5, Y = 0, Z = 20 }, //14
             new Node() { Id = "PBH", X = 7.5, Y = 0, Z = 20 }, //15
             new Node() { Id = "PBI", X = 10, Y = 0, Z = 20 }, //16
@@ -78,7 +78,7 @@ namespace Models
             Nodes.Add_Nodes("PBG", new Dictionary<string, Node>() { { "PBG", Punten[14] }, { "PB", Punten[5] }, { "G", Punten[26] }, { "PBH", Punten[15] } });
             Nodes.Add_Nodes("PBH", new Dictionary<string, Node>() { { "PBH", Punten[15] }, { "PBG", Punten[14] }, { "H", Punten[27] }, { "PBI", Punten[16] } });
             Nodes.Add_Nodes("PBI", new Dictionary<string, Node>() { { "PBI", Punten[16] }, { "PBH", Punten[15] }, { "I", Punten[28] }, { "PBJ", Punten[17] } });
-            Nodes.Add_Nodes("PBJ", new Dictionary<string, Node>() { { "PBJ", Punten[17] }, { "PBI", Punten[16] }, { "J", Punten[29] }, { "PBK", Punten[18] } });
+            Nodes.Add_Nodes("PBJ", new Dictionary<string, Node>() { { "PBJ", Punten[17] }, { "PBK", Punten[18] }, { "J", Punten[29] }, { "PBI", Punten[16] } });
             Nodes.Add_Nodes("PBK", new Dictionary<string, Node>() { { "PBK", Punten[18] }, { "PBJ", Punten[17] }, { "K", Punten[30] }, { "PBL", Punten[19] } });
             Nodes.Add_Nodes("PBL", new Dictionary<string, Node>() { { "PBL", Punten[19] }, { "PBK", Punten[18] }, { "L", Punten[31] }, { "PC", Punten[6] } });
             //Shelf nodes A path
@@ -102,7 +102,7 @@ namespace Models
             Nodes.CalculateDistance();
         }
 
-        public Dijkstra returnNodes()
+        public Dijkstra ReturnNodes()
         {
             return Nodes;
         }
@@ -133,7 +133,14 @@ namespace Models
 
             }
         }
+        public void laatzien()
+        {
+            foreach (string x in Nodes.shortest_path("J", "HB"))
+            {
+                Console.WriteLine(x);
 
+            }
+        }
         public void Addrobot(Robot robot)
         {
             RobotList.Add(robot);
