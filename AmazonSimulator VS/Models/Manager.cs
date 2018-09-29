@@ -115,7 +115,8 @@ namespace Models
             {
                 if (r.TaskCount() == 0)
                 {
-                    List<Node> RobotRoute = new List<Node>();
+                    List<Node> RobotRouteHeenweg = new List<Node>();
+                    List<Node> RobotRouteTerugweg = new List<Node>();
                     Random rnd = new Random();
                     int random = rnd.Next(20, 31);
                     string punt1 = Punten[random].Id;
@@ -125,18 +126,29 @@ namespace Models
                         var punt = from point in Punten
                                    where point.Id == x
                                    select point;
-                        RobotRoute.Add(punt.Single());
+                        RobotRouteHeenweg.Add(punt.Single());
                     }
-                    RobotMove move = new RobotMove(RobotRoute);
+                    RobotMove move = new RobotMove(RobotRouteHeenweg);
                     r.AddTask(move);
-                    move.StartTask(r);
-                    if(move.Taskcomplete(r) == true)
+                    //move.StartTask(r);///////////////////////////
+                    //geen if statements gewoon alle taken achter elkaar toevoegen niet wachten totdat die klaar is
+                    // in robotmove of pickup checken of taak klaar is en dan in robot.update() taken verwijderen als ze klaar zijn.
+                    RobotPickUp pickup = new RobotPickUp();
+                    r.AddTask(pickup);
+                    foreach (string x in Nodes.shortest_path(punt1, "HB"))
                     {
-                        RobotPickUp pickup = new RobotPickUp();
-                        r.AddTask(pickup);
+                        Console.WriteLine(x);
+                        var punt = from point in Punten
+                                   where point.Id == x
+                                   select point;
+                        RobotRouteTerugweg.Add(punt.Single());
                     }
+                    RobotMove terugweg = new RobotMove(RobotRouteTerugweg);
+                    r.AddTask(terugweg);
+                    //terugweg.StartTask(r);/////////////////////////////////
+                    RobotPickUp dropdown = new RobotPickUp();
+                    r.AddTask(dropdown);
                 }
-
             }
         }
         public void laatzien()

@@ -13,8 +13,6 @@ namespace Models
 
 
         private double DeltaX, DeltaZ;
-        public static bool ended = false;
-        public bool shelfStatus = false;
 
         public Robot (double x, double y, double z, double rotationX, double rotationY, double rotationZ) : base("robot", x, y, z, rotationX, rotationY, rotationZ)
         {
@@ -25,10 +23,11 @@ namespace Models
 
         public override bool Update(int tick)
         {
-            if(tasks != null)
+            if(tasks.Count() != 0)
             {
                 if (tasks.First().Taskcomplete(this))
                 {
+                    this.Route.RemoveAt(0);
                     tasks.RemoveAt(0);
                     if(tasks.Count == 0)
                     {
@@ -36,7 +35,11 @@ namespace Models
                     }
                     tasks.First().StartTask(this);
                 }
+
+                if (this.Route.Count() == 1)
+                    Console.WriteLine("laatste node kutjes");
             }
+
 
             if (this.Route.Count() >= 0)
             {
@@ -68,14 +71,11 @@ namespace Models
                                 this.Rotate(this.rotationX, this.rotationY + (0.5 * Math.PI), this.rotationZ);
                             }
                         }
-                        this.Route.RemoveAt(0);
+                        if(this.Route.Count() != 1)
+                            this.Route.RemoveAt(0);
                     }
                 }
-                else
-                {
-                    //ended = true;
-                    //this.Route.Add(World.Punten[1]);
-                }
+
                 if (Math.Round(DeltaZ, 2) > 0)
                 {
                     this.Move(this.x, this.y, this.z + 0.1);
@@ -101,17 +101,6 @@ namespace Models
             }
 
             return base.Update(tick);
-        }
-
-        public bool returnShelf()
-        {
-            if(shelf != null)
-            {
-                shelfStatus = true;
-                return true;
-            }
-            shelfStatus = false;
-            return false;
         }
 
         public override string getType()

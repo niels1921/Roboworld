@@ -42,20 +42,7 @@ namespace Models {
             //randomize deze node zet deze in de list voor de robot die je aanspreekt en laat hem zo deze nodes afwerken
             //match deze waardes met de id van de nodes(id zij nu char misschien toch int houden voor random numbergenerator)
             WorldManager.laatzien();
-            WorldManager.AssignRobot();
-
-
-            //if(Robot.ended == true)
-            //{
-            //    foreach (char x in Nodes.shortest_path('H', 'B'))
-            //    {
-            //        Console.WriteLine(x);
-            //        var punt = from point in Punten
-            //                   where point.Id == x
-            //                   select point;
-            //        r1.Route.Add(punt.Single());
-            //    }
-            //}
+            //WorldManager.AssignRobot();
         }
 
         //private void AssignRoute()
@@ -95,8 +82,8 @@ namespace Models {
 
         private Robot CreateRobot(double x, double y, double z) {
             Robot r = new Robot(x,y,z,0,0,0);
-            List<Node> route = new List<Node>();
-            r.Route = route;
+            List<Node> Route = new List<Node>();
+            r.Route = Route;
             worldObjects.Add(r);
             WorldManager.Addrobot(r);
             return r;
@@ -162,9 +149,10 @@ namespace Models {
                     }
                     
                 }
-                if(Math.Round(vrachtwagen.x, 1) == 20.5)
+                if(Math.Round(vrachtwagen.x, 1) == 20)
                 {
                     WorldManager.AssignRobot();
+                    
                 }
                 //if (Math.Round(vrachtwagen.x) == 20 && robot1.Route.Count() == 0)
                 //{
