@@ -56,9 +56,6 @@ namespace Models
             new Node() { Id = "VB", X = 20.5, Y = 0, Z = -2}, //33
             new Node() { Id = "VC", X = 36, Y = 0, Z = -2} //34
         };
-        private RobotMove Heenweg, Terugweg;
-        private RobotPickUp Oppakken, Neerzetten;
-        private Robot robot;
 
         public void AddNodes()
         {
@@ -116,7 +113,6 @@ namespace Models
         {
             foreach (Robot r in RobotList)
             {
-                robot = r;
                 if (r.TaskCount() == 0)
                 {
                     List<Node> RobotRouteHeenweg = new List<Node>();
@@ -134,8 +130,6 @@ namespace Models
                     }
                     RobotMove move = new RobotMove(RobotRouteHeenweg);
                     r.AddTask(move);
-                    Heenweg = move;
-                    //move.StartTask(r);///////////////////////////
                     //geen if statements gewoon alle taken achter elkaar toevoegen niet wachten totdat die klaar is
                     // in robotmove of pickup checken of taak klaar is en dan in robot.update() taken verwijderen als ze klaar zijn.
                     RobotPickUp pickup = new RobotPickUp();
@@ -150,21 +144,13 @@ namespace Models
                     }
                     RobotMove terugweg = new RobotMove(RobotRouteTerugweg);
                     r.AddTask(terugweg);
-                    Terugweg = terugweg;
-                    //terugweg.StartTask(r);/////////////////////////////////
                     RobotPickUp dropdown = new RobotPickUp();
                     r.AddTask(dropdown);
-                }
-                if (robot.TaskCount() == 4)
-                {
-                    Heenweg.StartTask(robot);
-                }
-                else if (robot.TaskCount() == 2)
-                {
-                    Terugweg.StartTask(robot);                   
+                    move.StartTask(r);
                 }
             }
         }
+
         public void laatzien()
         {
             foreach (var x in ShelfList)
@@ -172,6 +158,7 @@ namespace Models
                 Console.WriteLine(" positie van de shelfs" + x.x);
             }
         }
+
         public void Addrobot(Robot robot)
         {
             RobotList.Add(robot);
