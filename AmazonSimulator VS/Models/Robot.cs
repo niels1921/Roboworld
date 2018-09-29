@@ -14,7 +14,7 @@ namespace Models
 
         private double DeltaX, DeltaZ;
         public static bool ended = false;
-        public static bool shelfStatus = false;
+        public bool shelfStatus = false;
 
         public Robot (double x, double y, double z, double rotationX, double rotationY, double rotationZ) : base("robot", x, y, z, rotationX, rotationY, rotationZ)
         {
@@ -42,11 +42,11 @@ namespace Models
             {
                 if (this.Route.Count() != 0)
                 {
-                    if (Math.Round(DeltaX) == 0 && Math.Round(DeltaZ) == 0)
+                    if (Math.Round(DeltaX , 1) == 0 && Math.Round(DeltaZ, 1) == 0)
                     {
                         DeltaX = this.Route[0].X - this.x;
                         DeltaZ = this.Route[0].Z - this.z;
-                        if (Math.Round(DeltaX) != 0)
+                        if (Math.Round(DeltaX, 1) != 0)
                         {
                             if (DeltaX > this.x)
                             {
@@ -76,22 +76,22 @@ namespace Models
                     ended = true;
                     //this.Route.Add(World.Punten[1]);
                 }
-                if (Math.Round(DeltaZ) > 0)
+                if (Math.Round(DeltaZ, 1) > 0)
                 {
                     this.Move(this.x, this.y, this.z + 0.1);
                     DeltaZ -= 0.1;
                 }
-                else if (Math.Round(DeltaZ) < 0)
+                else if (Math.Round(DeltaZ, 1) < 0)
                 {
                     this.Move(this.x, this.y, this.z - 0.1);
                     DeltaZ += 0.1;
                 }
-                else if (Math.Round(DeltaX) > 0)
+                else if (Math.Round(DeltaX, 1) > 0)
                 {
                     this.Move(this.x + 0.1, this.y, this.z);
                     DeltaX -= 0.1;
                 }
-                else if (Math.Round(DeltaX) < 0)
+                else if (Math.Round(DeltaX, 1) < 0)
                 {
                     this.Move(this.x - 0.1, this.y, this.z);
                     DeltaX += 0.1;
@@ -124,9 +124,15 @@ namespace Models
             this.Route = route;
         }
 
-        public void AddTask(RobotTask taak)
+        public void AddTask(IRobotTask taak)
         {
             tasks.Add(taak);
+        }
+
+        public int TaskCount()
+        {
+            int aantal = tasks.Count();
+            return aantal;
         }
     }
 }

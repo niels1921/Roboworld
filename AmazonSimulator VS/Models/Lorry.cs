@@ -28,6 +28,7 @@ namespace Models
                         DeltaX = Math.Abs(this.Route[0].X) - Math.Abs(this.x);
                         DeltaX = Math.Abs(DeltaX);
                         this.Route.RemoveAt(0);
+
                     }
                     
                 }
