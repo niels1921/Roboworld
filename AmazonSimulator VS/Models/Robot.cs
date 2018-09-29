@@ -10,7 +10,7 @@ namespace Models
         public List<Node> Route { get; set; }
         public Shelf shelf { get; set; }
         private List<IRobotTask> tasks = new List<IRobotTask>();
-
+        Manager RobotManager = new Manager();
 
         private double DeltaX, DeltaZ;
 
@@ -31,13 +31,10 @@ namespace Models
                     tasks.RemoveAt(0);
                     if(tasks.Count == 0)
                     {
-                        tasks = null;
+                        RobotManager.AssignRobot();
                     }
                     tasks.First().StartTask(this);
                 }
-
-                if (this.Route.Count() == 1)
-                    Console.WriteLine("laatste node kutjes");
             }
 
 

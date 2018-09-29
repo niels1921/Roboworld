@@ -19,7 +19,7 @@ namespace Models
 
         public bool Taskcomplete(Robot r)
         {
-            throw new NotImplementedException();
+            return true;
         }
     }
 }

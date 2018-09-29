@@ -155,6 +155,14 @@ namespace Models
                     RobotPickUp dropdown = new RobotPickUp();
                     r.AddTask(dropdown);
                 }
+                if (robot.TaskCount() == 4)
+                {
+                    Heenweg.StartTask(robot);
+                }
+                else if (robot.TaskCount() == 2)
+                {
+                    Terugweg.StartTask(robot);                   
+                }
             }
         }
         public void laatzien()

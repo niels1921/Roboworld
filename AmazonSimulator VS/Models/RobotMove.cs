@@ -27,7 +27,7 @@ namespace Models
             //return false;
             double xwaarde = Math.Round(r.x, 2);
             double zwaarde = Math.Round(r.z, 2);
-           return xwaarde == Path.Last().X && zwaarde == Path.Last().Y;
+           return xwaarde == Path.Last().X && zwaarde == Path.Last().Z;
         }
     }
 }
