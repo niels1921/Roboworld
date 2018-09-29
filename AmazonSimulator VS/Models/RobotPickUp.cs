@@ -7,6 +7,11 @@ namespace Models
 {
     public class RobotPickUp : IRobotTask
     {
+        public RobotPickUp()
+        {
+
+        }
+
         public void StartTask(Robot r)
         {
             throw new NotImplementedException();

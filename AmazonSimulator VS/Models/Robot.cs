@@ -19,7 +19,7 @@ namespace Models
         public Robot (double x, double y, double z, double rotationX, double rotationY, double rotationZ) : base("robot", x, y, z, rotationX, rotationY, rotationZ)
         {
             this.Move(this.x, this.y, this.z);
-            this.tasks.Add(new RobotMove(null));
+            //this.tasks.Add(new RobotMove(null));
         }
 
 
@@ -73,25 +73,27 @@ namespace Models
                 }
                 else
                 {
-                    ended = true;
+                    //ended = true;
                     //this.Route.Add(World.Punten[1]);
                 }
-                if (Math.Round(DeltaZ, 1) > 0)
+                if (Math.Round(DeltaZ, 2) > 0)
                 {
                     this.Move(this.x, this.y, this.z + 0.1);
                     DeltaZ -= 0.1;
+                    Console.WriteLine(Math.Round(this.z));
                 }
-                else if (Math.Round(DeltaZ, 1) < 0)
+                else if (Math.Round(DeltaZ, 2) < 0)
                 {
                     this.Move(this.x, this.y, this.z - 0.1);
                     DeltaZ += 0.1;
                 }
-                else if (Math.Round(DeltaX, 1) > 0)
+                else if (Math.Round(DeltaX, 2) > 0)
                 {
                     this.Move(this.x + 0.1, this.y, this.z);
                     DeltaX -= 0.1;
+                    Console.WriteLine(Math.Round(this.x));
                 }
-                else if (Math.Round(DeltaX, 1) < 0)
+                else if (Math.Round(DeltaX, 2) < 0)
                 {
                     this.Move(this.x - 0.1, this.y, this.z);
                     DeltaX += 0.1;

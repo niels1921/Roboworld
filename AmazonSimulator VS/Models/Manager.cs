@@ -13,47 +13,49 @@ namespace Models
         private Dijkstra Nodes = new Dijkstra();
         public static List<Node> Punten = new List<Node>()
         {
+            //Hoek nodes
             new Node() { Id = "HA", X = 2, Y = 0, Z = 4 }, //0
             new Node() { Id = "HB", X = 28, Y = 0, Z = 4 }, //1
             new Node() { Id = "HC", X = 28, Y = 0, Z = 28 }, //2
             new Node() { Id = "HD", X = 2, Y = 0, Z = 28 }, //3
-
+            //Main path nodes
             new Node() { Id = "PA", X = 2, Y = 0, Z = 8 }, //4
             new Node() { Id = "PB", X = 2, Y = 0, Z = 20 }, //5
             new Node() { Id = "PC", X = 28, Y = 0, Z = 20 }, //6
             new Node() { Id = "PD", X = 28, Y = 0, Z = 8 }, //7
-
-            new Node() { Id = "PAA", X = 8, Y = 0, Z = 8 }, //8
-            new Node() { Id = "PAB", X = 10.5, Y = 0, Z = 8 }, //9
-            new Node() { Id = "PAC", X = 13, Y = 0, Z = 8 }, //10
-            new Node() { Id = "PAD", X = 16.5, Y = 0, Z = 8 }, //11
-            new Node() { Id = "PAE", X = 19, Y = 0, Z = 8 }, //12
-            new Node() { Id = "PAF", X = 21.5, Y = 0, Z = 8 }, //13
-            new Node() { Id = "PBG", X = 8, Y = 0, Z = 20 }, //14
-            new Node() { Id = "PBH", X = 10.5, Y = 0, Z = 20 }, //15
-            new Node() { Id = "PBI", X = 13, Y = 0, Z = 20 }, //16
-            new Node() { Id = "PBJ", X = 16.5, Y = 0, Z = 20 }, //17
-            new Node() { Id = "PBK", X = 19, Y = 0, Z = 20 }, //18
-            new Node() { Id = "PBL", X = 21.5, Y = 0, Z = 20 }, //19
-
-            new Node() { Id = "A", X = 8, Y = 0, Z = 9 }, //20
-            new Node() { Id = "B", X = 10.5, Y = 0, Z = 9 }, //21
-            new Node() { Id = "C", X = 13, Y = 0, Z = 9 }, //22
-            new Node() { Id = "D", X = 16.5, Y = 0, Z = 9 }, //23
-            new Node() { Id = "E", X = 19, Y = 0, Z = 9 }, //24
-            new Node() { Id = "F", X = 21.5, Y = 0, Z = 9 }, //25
-            new Node() { Id = "G", X = 8, Y = 0, Z = 21 }, //26
-            new Node() { Id = "H", X = 10.5, Y = 0, Z = 21 }, //27
-            new Node() { Id = "I", X = 13, Y = 0, Z = 21 }, //28
-            new Node() { Id = "J", X = 16.5, Y = 0, Z = 21 }, //29
-            new Node() { Id = "K", X = 19, Y = 0, Z = 21 }, //30
-            new Node() { Id = "L", X = 21.5, Y = 0, Z = 21 }, //31
-
+            //path nodes connected aan shelfs van path A
+            new Node() { Id = "PAA", X = 5, Y = 0, Z = 8 }, //8
+            new Node() { Id = "PAB", X = 7.5, Y = 0, Z = 8 }, //9
+            new Node() { Id = "PAC", X = 10, Y = 0, Z = 8 }, //10
+            new Node() { Id = "PAD", X = 13.5, Y = 0, Z = 8 }, //11
+            new Node() { Id = "PAE", X = 16, Y = 0, Z = 8 }, //12
+            new Node() { Id = "PAF", X = 18.5, Y = 0, Z = 8 }, //13
+            //path nodes connected aan shelfs van path B
+            new Node() { Id = "PBG", X = 5, Y = 0, Z = 20 }, //14
+            new Node() { Id = "PBH", X = 7.5, Y = 0, Z = 20 }, //15
+            new Node() { Id = "PBI", X = 10, Y = 0, Z = 20 }, //16
+            new Node() { Id = "PBJ", X = 13.5, Y = 0, Z = 20 }, //17
+            new Node() { Id = "PBK", X = 16, Y = 0, Z = 20 }, //18
+            new Node() { Id = "PBL", X = 18.5, Y = 0, Z = 20 }, //19
+            //Shelf nodes path A
+            new Node() { Id = "A", X = 5, Y = 0, Z = 9 }, //20
+            new Node() { Id = "B", X = 7.5, Y = 0, Z = 9 }, //21
+            new Node() { Id = "C", X = 10, Y = 0, Z = 9 }, //22
+            new Node() { Id = "D", X = 13.5, Y = 0, Z = 9 }, //23
+            new Node() { Id = "E", X = 16, Y = 0, Z = 9 }, //24
+            new Node() { Id = "F", X = 18.5, Y = 0, Z = 9 }, //25
+            //Shelf nodes path B
+            new Node() { Id = "G", X = 5, Y = 0, Z = 21 }, //26
+            new Node() { Id = "H", X = 7.5, Y = 0, Z = 21 }, //27
+            new Node() { Id = "I", X = 10, Y = 0, Z = 21 }, //28
+            new Node() { Id = "J", X = 13.5, Y = 0, Z = 21 }, //29
+            new Node() { Id = "K", X = 16, Y = 0, Z = 21 }, //30
+            new Node() { Id = "L", X = 18.5, Y = 0, Z = 21 }, //31
+            //Vrachtwagen nodes
             new Node() { Id = "VA", X = 0, Y = 0, Z = -2}, //32
             new Node() { Id = "VB", X = 20.5, Y = 0, Z = -2}, //33
             new Node() { Id = "VC", X = 36, Y = 0, Z = -2} //34
         };
-        private List<Node> RobotRoute = new List<Node>();
 
         public void AddNodes()
         {
@@ -106,14 +108,16 @@ namespace Models
         {
             return Nodes;
         }
+
         public void AssignRobot()
         {
             foreach (Robot r in RobotList)
             {
                 if (r.TaskCount() == 0)
-                {                    
+                {
+                    List<Node> RobotRoute = new List<Node>();
                     Random rnd = new Random();
-                    int random = rnd.Next(0, Punten.Count() + 1);
+                    int random = rnd.Next(20, 31);
                     string punt1 = Punten[random].Id;
                     foreach (string x in Nodes.shortest_path("HA", punt1))
                     {
@@ -124,6 +128,8 @@ namespace Models
                         RobotRoute.Add(punt.Single());
                     }
                     RobotMove move = new RobotMove(RobotRoute);
+                    r.AddTask(move);
+                    move.StartTask(r);
                     if(move.Taskcomplete(r) == true)
                     {
                         RobotPickUp pickup = new RobotPickUp();
@@ -135,10 +141,9 @@ namespace Models
         }
         public void laatzien()
         {
-            foreach (string x in Nodes.shortest_path("G", "HB"))
+            foreach (var x in ShelfList)
             {
-                Console.WriteLine(x);
-
+                Console.WriteLine(" positie van de shelfs" + x.x);
             }
         }
         public void Addrobot(Robot robot)

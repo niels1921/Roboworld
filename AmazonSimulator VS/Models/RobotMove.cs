@@ -24,8 +24,8 @@ namespace Models
 
         public bool Taskcomplete(Robot r)
         {
-            return false;
-           // return r.x == Path.Last().X && r.z == Path.Last().Y;
+           return false;
+           //return r.x == Path.Last().X && r.z == Path.Last().Y;
         }
     }
 }

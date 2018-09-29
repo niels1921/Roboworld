@@ -25,7 +25,6 @@ namespace Models
                 {
                     if (node.Key == iets.Key)
                     {
-                        Console.WriteLine(node.Key);
                         OriginX = iets.Value.X;
                         OriginZ = iets.Value.Z;
                     }
@@ -38,7 +37,6 @@ namespace Models
                         if (h < 0)
                             h = h * -1;
                         int TotaalAfstand = g + h;
-                        Console.WriteLine("de node tot origin: " + iets.Key + "de afstand ertussen: " + TotaalAfstand);
                         vert.Add(iets.Key, TotaalAfstand);                   
                     }
                 }
