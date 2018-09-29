@@ -17,7 +17,7 @@ namespace Models {
         public World() {
             WorldManager.AddNodes();
             //Robot r0 = CreateRobot(0, 0, 0);
-
+            
             robot1 = CreateRobot(0, 0, 0);
             //Robot r2 = CreateRobot(0, 0, 0);
             //Robot r3 = CreateRobot(0, 0, 0);
@@ -154,18 +154,6 @@ namespace Models {
                     WorldManager.AssignRobot();
                     
                 }
-                //if (Math.Round(vrachtwagen.x) == 20 && robot1.Route.Count() == 0)
-                //{
-                //    foreach (string x in Nodes.shortest_path("A", "H"))
-                //    {
-                //        Console.WriteLine(x);
-                //        var punt = from point in Punten
-                //                   where point.Id == x
-                //                   select point;
-                //        robot1.Route.Add(punt.Single());
-                //    }
-                //}
-
                 if (u is IUpdatable) {
                     bool needsCommand = ((IUpdatable)u).Update(tick);
 
