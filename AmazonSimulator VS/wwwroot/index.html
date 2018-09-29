@@ -215,12 +215,10 @@
                                         .setMaterials(materials)
                                         .setPath('/textures/')
                                         .load('shelf4.obj', function (object) {
-                                            
-                                            //object.scale.set(0.02, 0.02, 0.02);
+                                        //    object.scale.set(0.02, 0.02, 0.02);
                                             groupShelf.add(object);
                                         });
                                 });
-                            groupShelf.scale.set(0.02, 0.02, 0.02);                            
                             scene.add(groupShelf);
                             worldObjects[command.parameters.guid] = groupShelf;
                         }
@@ -258,6 +256,8 @@
                                         .setMaterials(materials)
                                         .setPath('/textures/')
                                         .load('truck3.obj', function (mesh) {
+                                            //mesh.position.set(-30, 0, -6);
+                                            //mesh.scale.set(0.01, 0.01, 0.01);
                                             mesh.rotation.y = Math.PI / 2;
                                             groupLorry.add(mesh);
                                         });
