@@ -23,7 +23,7 @@ namespace Models {
             new Node() { Id = "H", X = 14, Y = 0, Z = 20 },
             new Node() { Id = "VA", X = 0, Y = 0, Z = -6},
             new Node() { Id = "VB", X = 20.5, Y = 0, Z = -6},
-            new Node() { Id = "VC", X = 32, Y = 0, Z = -6}
+            new Node() { Id = "VC", X = 36, Y = 0, Z = -6}
         };
 
         public World() {
@@ -172,9 +172,9 @@ namespace Models {
             for(int i = 0; i < worldObjects.Count; i++) {
                 _3DModel u = worldObjects[i];
 
-                if (vrachtwagen.GetRoute().Count == 0)
+                if ((vrachtwagen.GetRoute().Count == 0) && (vrachtwagen.x < 16))
                 {
-                    foreach (string l in Nodes.shortest_path("VA", "VB"))
+                    foreach (string l in Nodes.shortest_path("VA", "VC"))
                     {
                         var punt = from point in Punten
                                    where point.Id == l

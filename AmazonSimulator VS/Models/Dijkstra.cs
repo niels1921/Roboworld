@@ -30,10 +30,10 @@ namespace Models
                     }
                     else
                     {
-                        int g = (int)Math.Abs(iets.Value.X) - (int)OriginX;
+                        int g = (int)iets.Value.X - (int)OriginX;
                         if (g < 0)
                             g = g * -1;
-                        int h = (int)Math.Abs(iets.Value.Z) - (int)OriginZ;
+                        int h = (int)iets.Value.Z - (int)OriginZ;
                         if (h < 0)
                             h = h * -1;
                         int TotaalAfstand = g + h;     
