@@ -7,78 +7,42 @@ using Models;
 namespace Models {
     public class World : IObservable<Command>, IUpdatable
     {
+        private Manager WorldManager = new Manager();
         private List<_3DModel> worldObjects = new List<_3DModel>();
         private List<IObserver<Command>> observers = new List<IObserver<Command>>();
-        private Dijkstra Nodes = new Dijkstra();
         private Lorry vrachtwagen;
-        public static List<Node> Punten = new List<Node>()
-        {
-            new Node() { Id = "A", X = 2, Y = 0, Z = 4 },
-            new Node() { Id = "B", X = 28, Y = 0, Z = 4 },
-            new Node() { Id = "C", X = 28, Y = 0, Z = 28 },
-            new Node() { Id = "D", X = 2, Y = 0, Z = 28 },
-            new Node() { Id = "E", X = 2, Y = 0, Z = 8 },
-            new Node() { Id = "F", X = 2, Y = 0, Z = 20 },
-            new Node() { Id = "G", X = 14, Y = 0, Z = 8 },
-            new Node() { Id = "H", X = 14, Y = 0, Z = 20 },
-            new Node() { Id = "VA", X = 0, Y = 0, Z = -6},
-            new Node() { Id = "VB", X = 20.5, Y = 0, Z = -6},
-            new Node() { Id = "VC", X = 36, Y = 0, Z = -6}
-        };
+        private Robot robot1;
+        private List<Node> Punten = Manager.Punten;
 
         public World() {
+            WorldManager.AddNodes();
             //Robot r0 = CreateRobot(0, 0, 0);
-            Robot r1 = CreateRobot(0, 0, 0);
             
+            robot1 = CreateRobot(0, 0, 0);
             //Robot r2 = CreateRobot(0, 0, 0);
             //Robot r3 = CreateRobot(0, 0, 0);
 
             vrachtwagen = CreateLorry(0, 0, 0);
-            Shelf s = CreateShelf(0, 0, 0);
-            Product p = CreateProduct(0, 0, 0);
+            
+            //Product p = CreateProduct(0, 0, 0);
 
-            r1.Move(2.0, 0, 4);
+            robot1.Move(2.0, 0, 4);
             vrachtwagen.Move(0, 0, -2);
-            s.Move(28, 0, 28);
-            p.Move(2, 0, 28);
 
-            Nodes.Add_Nodes("A", new Dictionary<string, Node>() { { "A", Punten[0] }, { "B", Punten[1] }, { "E", Punten[4] } });
-            Nodes.Add_Nodes("B", new Dictionary<string, Node>() { { "B", Punten[1] }, { "A", Punten[0] }, { "C", Punten[2] }, { "G", Punten[6] }, { "H", Punten[7] } });
-            Nodes.Add_Nodes("C", new Dictionary<string, Node>() { { "C", Punten[2] }, { "B", Punten[1] }, { "D", Punten[3] } });
-            Nodes.Add_Nodes("D", new Dictionary<string, Node>() { { "D", Punten[3] }, { "A", Punten[0] }, { "C", Punten[2] } });
-            Nodes.Add_Nodes("E", new Dictionary<string, Node>() { { "E", Punten[4] }, { "A", Punten[0] }, { "F", Punten[5] } });
-            Nodes.Add_Nodes("F", new Dictionary<string, Node>() { { "F", Punten[5] }, { "D", Punten[3] }, { "E", Punten[4] }, { "H", Punten[7] } });
-            Nodes.Add_Nodes("G", new Dictionary<string, Node>() { { "G", Punten[6] }, { "B", Punten[1] }, { "E", Punten[4] } });
-            Nodes.Add_Nodes("H", new Dictionary<string, Node>() { { "H", Punten[7] }, { "B", Punten[1] }, { "F", Punten[5] } });
-            Nodes.Add_Nodes("VA", new Dictionary<string, Node>() { { "VA", Punten[8] }, { "VB", Punten[9] } });
-            Nodes.Add_Nodes("VB", new Dictionary<string, Node>() { { "VB", Punten[9] }, { "VC", Punten[10] } });
-            Nodes.Add_Nodes("VC", new Dictionary<string, Node>() { { "VC", Punten[10] }, { "VB", Punten[9] } });
-            Nodes.CalculateDistance();
+            //p.Move(2, 0, 28);
 
+            foreach(var punt in Punten)
+            {
+                if(punt.Id.Length == 1)
+                {
+                    Shelf s = CreateShelf(0, 0, 0);
+                    s.Move(punt.X, 2.2, punt.Z);
+                }
+            }
             //randomize deze node zet deze in de list voor de robot die je aanspreekt en laat hem zo deze nodes afwerken
             //match deze waardes met de id van de nodes(id zij nu char misschien toch int houden voor random numbergenerator)
-
-            foreach(string x in Nodes.shortest_path("A", "H"))
-            {
-                Console.WriteLine(x);
-                var punt = from point in Punten
-                           where point.Id == x
-                           select point;
-                r1.Route.Add(punt.Single());
-            }
-            
-
-            //if(Robot.ended == true)
-            //{
-            //    foreach (char x in Nodes.shortest_path('H', 'B'))
-            //    {
-            //        Console.WriteLine(x);
-            //        var punt = from point in Punten
-            //                   where point.Id == x
-            //                   select point;
-            //        r1.Route.Add(punt.Single());
-            //    }
-            //}
+            WorldManager.laatzien();
+            //WorldManager.AssignRobot();
         }
 
         //private void AssignRoute()
@@ -118,9 +82,10 @@ namespace Models {
 
         private Robot CreateRobot(double x, double y, double z) {
             Robot r = new Robot(x,y,z,0,0,0);
-            List<Node> route = new List<Node>();
-            r.Route = route;
+            List<Node> Route = new List<Node>();
+            r.Route = Route;
             worldObjects.Add(r);
+            WorldManager.Addrobot(r);
             return r;
         }
 
@@ -142,6 +107,7 @@ namespace Models {
         {
             Shelf s = new Shelf(x, y, z, 0, 0, 0);
             worldObjects.Add(s);
+            WorldManager.AddShelf(s);
             return s;
         }
 
@@ -172,18 +138,23 @@ namespace Models {
             for(int i = 0; i < worldObjects.Count; i++) {
                 _3DModel u = worldObjects[i];
 
-                if ((vrachtwagen.GetRoute().Count == 0) && (vrachtwagen.x < 16))
+                if (vrachtwagen.GetRoute().Count == 0 && vrachtwagen.x < 16)
                 {
-                    foreach (string l in Nodes.shortest_path("VA", "VC"))
+                    foreach (string l in WorldManager.ReturnNodes().shortest_path("VA", "VB"))
                     {
                         var punt = from point in Punten
                                    where point.Id == l
                                    select point;
                         vrachtwagen.AddRoute(punt.Single());
                     }
+                    
                 }
-
-                if(u is IUpdatable) {
+                if(Math.Round(vrachtwagen.x, 1) == 20)
+                {
+                    WorldManager.AssignRobot();
+                    
+                }
+                if (u is IUpdatable) {
                     bool needsCommand = ((IUpdatable)u).Update(tick);
 
                     if(needsCommand) {

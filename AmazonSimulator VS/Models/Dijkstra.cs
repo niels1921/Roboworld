@@ -36,8 +36,7 @@ namespace Models
                         int h = (int)iets.Value.Z - (int)OriginZ;
                         if (h < 0)
                             h = h * -1;
-                        int TotaalAfstand = g + h;     
-                        
+                        int TotaalAfstand = g + h;
                         vert.Add(iets.Key, TotaalAfstand);                   
                     }
                 }

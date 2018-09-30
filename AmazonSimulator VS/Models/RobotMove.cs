@@ -24,8 +24,9 @@ namespace Models
 
         public bool Taskcomplete(Robot r)
         {
-            return false;
-           // return r.x == Path.Last().X && r.z == Path.Last().Y;
+            double xwaarde = Math.Round(r.x, 2);
+            double zwaarde = Math.Round(r.z, 2);
+           return xwaarde == Path.Last().X && zwaarde == Path.Last().Z;
         }
     }
 }
