@@ -7,20 +7,23 @@ namespace Models
 {
     public class RobotPickUp : IRobotTask
     {
-        private Shelf Shelf;
+        private Shelf shelf;
+
         public RobotPickUp(Shelf s)
         {
-            this.Shelf = s;
+            this.shelf = s;
         }
 
         public void StartTask(Robot r)
         {
-            r.AddShelf(Shelf);
+            r.AddShelf(this.shelf);
         }
 
         public bool Taskcomplete(Robot r)
         {
-            return true;
+            double xwaarde = Math.Round(r.x, 2);
+            double zwaarde = Math.Round(r.z, 2);
+            return xwaarde == Math.Round(shelf.x, 2) && zwaarde == Math.Round(shelf.z, 2);
         }
     }
 }

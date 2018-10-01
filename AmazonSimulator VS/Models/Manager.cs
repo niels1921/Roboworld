@@ -9,6 +9,7 @@ namespace Models
     {
         private List<Robot> RobotList = new List<Robot>();
         private List<Shelf> ShelfList = new List<Shelf>();
+        private List<Node> availableshelfs = new List<Node>();
         private Lorry truck;
         private Dijkstra Nodes = new Dijkstra();
         public static List<Node> Punten = new List<Node>()
@@ -109,18 +110,34 @@ namespace Models
             return Nodes;
         }
 
+        public void CheckForAvailableNodes()
+        {
+            var AvailableNodes = from node in Punten
+                            where node.Shelf == null
+                            select node;
+
+
+            availableshelfs = AvailableNodes.ToList();
+
+        }
+
+
         public void AssignRobot()
         {
             foreach (Robot r in RobotList)
             {
                 if (r.TaskCount() == 0)
                 {
+
+                    CheckForAvailableNodes();
+
                     List<Node> RobotRouteHeenweg = new List<Node>();
                     List<Node> RobotRouteTerugweg = new List<Node>();
                     Random rnd = new Random();
-                    int random = rnd.Next(20, 31);
-                    string punt1 = Punten[random].Id;
-                    foreach (string x in Nodes.shortest_path("HA", punt1))
+                    int random = rnd.Next(0, availableshelfs.Count()-1);
+
+                    Node punt1 = availableshelfs[random];
+                    foreach (string x in Nodes.shortest_path("HA", punt1.Id))
                     {
                         //Console.WriteLine(x);
                         var punt = from point in Punten
@@ -130,11 +147,13 @@ namespace Models
                     }
                     RobotMove move = new RobotMove(RobotRouteHeenweg);
                     r.AddTask(move);
+                    
+
                     //geen if statements gewoon alle taken achter elkaar toevoegen niet wachten totdat die klaar is
                     // in robotmove of pickup checken of taak klaar is en dan in robot.update() taken verwijderen als ze klaar zijn.
-                    RobotPickUp pickup = new RobotPickUp();
+                    RobotPickUp pickup = new RobotPickUp(punt1.Shelf);
                     r.AddTask(pickup);
-                    foreach (string x in Nodes.shortest_path(punt1, "HB"))
+                    foreach (string x in Nodes.shortest_path(punt1.Id, "HB"))
                     {
                         //Console.WriteLine(x);
                         var punt = from point in Punten
@@ -144,7 +163,7 @@ namespace Models
                     }
                     RobotMove terugweg = new RobotMove(RobotRouteTerugweg);
                     r.AddTask(terugweg);
-                    RobotPickUp dropdown = new RobotPickUp();
+                    RobotPickUp dropdown = new RobotPickUp(punt1.Shelf);
                     r.AddTask(dropdown);
                     move.StartTask(r);
                 }
