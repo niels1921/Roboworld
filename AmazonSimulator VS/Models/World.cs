@@ -40,7 +40,7 @@ namespace Models {
                 }
             }
             //randomize deze node zet deze in de list voor de robot die je aanspreekt en laat hem zo deze nodes afwerken
-            //match deze waardes met de id van de nodes(id zij nu char misschien toch int houden voor random numbergenerator)
+            //match deze waardes met de id van de nodes(id zijn nu char misschien toch int houden voor random numbergenerator)
             WorldManager.laatzien();
             //WorldManager.AssignRobot();
         }

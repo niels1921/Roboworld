@@ -122,7 +122,7 @@ namespace Models
                     string punt1 = Punten[random].Id;
                     foreach (string x in Nodes.shortest_path("HA", punt1))
                     {
-                        Console.WriteLine(x);
+                        //Console.WriteLine(x);
                         var punt = from point in Punten
                                    where point.Id == x
                                    select point;
@@ -136,7 +136,7 @@ namespace Models
                     r.AddTask(pickup);
                     foreach (string x in Nodes.shortest_path(punt1, "HB"))
                     {
-                        Console.WriteLine(x);
+                        //Console.WriteLine(x);
                         var punt = from point in Punten
                                    where point.Id == x
                                    select point;
