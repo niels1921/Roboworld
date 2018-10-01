@@ -31,7 +31,7 @@ namespace Models
                     else
                     {
                         int g = (int)iets.Value.X - (int)OriginX;
-                        if (g < 0)  
+                        if (g < 0)
                             g = g * -1;
                         int h = (int)iets.Value.Z - (int)OriginZ;
                         if (h < 0)
