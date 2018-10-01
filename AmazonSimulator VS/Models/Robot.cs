@@ -8,7 +8,7 @@ namespace Models
     public class Robot : _3DModel, IUpdatable
     {
         public List<Node> Route { get; set; }
-        public Shelf shelf { get; set; }
+        private Shelf Shelf;
         private List<IRobotTask> tasks = new List<IRobotTask>();
         Manager RobotManager = new Manager();
 
@@ -17,7 +17,6 @@ namespace Models
         public Robot (double x, double y, double z, double rotationX, double rotationY, double rotationZ) : base("robot", x, y, z, rotationX, rotationY, rotationZ)
         {
             this.Move(this.x, this.y, this.z);
-            //this.tasks.Add(new RobotMove(null));
         }
 
 
@@ -77,7 +76,6 @@ namespace Models
                 {
                     this.Move(this.x, this.y, this.z + 0.1);
                     DeltaZ -= 0.1;
-                    Console.WriteLine(Math.Round(this.z));
                 }
                 else if (Math.Round(DeltaZ, 2) < 0)
                 {
@@ -88,7 +86,6 @@ namespace Models
                 {
                     this.Move(this.x + 0.1, this.y, this.z);
                     DeltaX -= 0.1;
-                    Console.WriteLine(Math.Round(this.x));
                 }
                 else if (Math.Round(DeltaX, 2) < 0)
                 {
@@ -121,6 +118,16 @@ namespace Models
         {
             int aantal = tasks.Count();
             return aantal;
+        }
+
+        public void AddShelf(Shelf shelf)
+        {
+            this.Shelf = shelf;
+        }
+
+        public void RemoveShelf()
+        {
+            this.Shelf = null;
         }
     }
 }
