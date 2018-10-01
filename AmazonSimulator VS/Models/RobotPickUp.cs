@@ -7,14 +7,15 @@ namespace Models
 {
     public class RobotPickUp : IRobotTask
     {
-        public RobotPickUp()
+        private Shelf Shelf;
+        public RobotPickUp(Shelf s)
         {
-            
+            this.Shelf = s;
         }
 
         public void StartTask(Robot r)
         {
-            throw new NotImplementedException();
+            r.AddShelf(Shelf);
         }
 
         public bool Taskcomplete(Robot r)
