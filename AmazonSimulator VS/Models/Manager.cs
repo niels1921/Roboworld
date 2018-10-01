@@ -49,7 +49,7 @@ namespace Models
             new Node() { Id = "G", X = 5, Y = 0, Z = 21 }, //26
             new Node() { Id = "H", X = 7.5, Y = 0, Z = 21 }, //27
             new Node() { Id = "I", X = 10, Y = 0, Z = 21 }, //28
-            new Node() { Id = "J", X = 13.5, Y = 0, Z = 21 }, //29
+            new Node() { Id = "J", X = 13.5, Y = 0, Z = 21}, //29
             new Node() { Id = "K", X = 16, Y = 0, Z = 21 }, //30
             new Node() { Id = "L", X = 18.5, Y = 0, Z = 21 }, //31
             //Vrachtwagen nodes
@@ -113,12 +113,20 @@ namespace Models
         public void CheckForAvailableNodes()
         {
             var AvailableNodes = from node in Punten
-                            where node.Shelf == null
+                            where node.Shelf != null && node.Id.Length == 1
                             select node;
-
-
+            
             availableshelfs = AvailableNodes.ToList();
+            
 
+            //foreach(Node n in availableshelfs)
+            //{
+            //    for(int i = 0; i < availableshelfs.Count(); i++)
+            //    {
+            //        n.Shelf = ShelfList[i];
+                    
+            //    }
+            //}
         }
 
 

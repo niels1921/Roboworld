@@ -26,7 +26,8 @@ namespace Models
             {
                 if (tasks.First().Taskcomplete(this))
                 {
-                    this.Route.RemoveAt(0);
+                    if(this.Route.Count() != 0)
+                        this.Route.RemoveAt(0);
                     tasks.RemoveAt(0);
                     if(tasks.Count == 0)
                     {
@@ -75,21 +76,29 @@ namespace Models
                 if (Math.Round(DeltaZ, 2) > 0)
                 {
                     this.Move(this.x, this.y, this.z + 0.1);
+                    if(Shelf != null)
+                        this.Shelf.Move(this.x, this.y, this.z);
                     DeltaZ -= 0.1;
                 }
                 else if (Math.Round(DeltaZ, 2) < 0)
                 {
                     this.Move(this.x, this.y, this.z - 0.1);
+                    if (Shelf != null)
+                        this.Shelf.Move(this.x, this.y, this.z);
                     DeltaZ += 0.1;
                 }
                 else if (Math.Round(DeltaX, 2) > 0)
                 {
                     this.Move(this.x + 0.1, this.y, this.z);
+                    if (Shelf != null)
+                        this.Shelf.Move(this.x, this.y, this.z);
                     DeltaX -= 0.1;
                 }
                 else if (Math.Round(DeltaX, 2) < 0)
                 {
                     this.Move(this.x - 0.1, this.y, this.z);
+                    if (Shelf != null)
+                        this.Shelf.Move(this.x, this.y, this.z);
                     DeltaX += 0.1;
                 }
             }

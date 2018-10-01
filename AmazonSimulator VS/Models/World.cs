@@ -35,7 +35,8 @@ namespace Models {
                 if(punt.Id.Length == 1)
                 {
                     Shelf s = CreateShelf(0, 0, 0);
-                    s.Move(punt.X, 2.2, punt.Z);
+                    punt.Shelf = s;
+                    s.Move(punt.X, 0, punt.Z);
                 }
             }
             //randomize deze node zet deze in de list voor de robot die je aanspreekt en laat hem zo deze nodes afwerken

@@ -17,6 +17,7 @@ namespace Models
         public void StartTask(Robot r)
         {
             r.AddShelf(this.shelf);
+
         }
 
         public bool Taskcomplete(Robot r)
