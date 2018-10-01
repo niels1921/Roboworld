@@ -47,29 +47,44 @@ namespace Models
                     {
                         DeltaX = this.Route[0].X - this.x;
                         DeltaZ = this.Route[0].Z - this.z;
-                        if (Math.Round(DeltaX, 1) != 0)
+                        DeltaX = Math.Round(DeltaX, 2);
+                        DeltaZ = Math.Round(DeltaZ, 2);
+                        if (DeltaX != 0 && this.rotationY < 1.5)
                         {
-                            if (DeltaX > this.x)
+                            if (DeltaX > 0)
                             {
                                 this.Rotate(this.rotationX, this.rotationY + (0.5 * Math.PI), this.rotationZ);
                             }
-                            else if (DeltaX < this.x)
+                            else if (DeltaX < 0)
                             {
                                 this.Rotate(this.rotationX, this.rotationY + (-0.5 * Math.PI), this.rotationZ);
                             }
                         }
                         else if (DeltaZ != 0)
                         {
-                            if (this.rotationY > 1.5 && DeltaZ > this.z)
+                            if (this.rotationY > 1.5 && this.rotationY < 3 && DeltaZ < this.z)
                             {
                                 this.Rotate(this.rotationX, this.rotationY + (-0.5 * Math.PI), this.rotationZ);
                             }
-                            else if (this.rotationY < 1.5 && DeltaZ < this.z)
+                            else if (DeltaZ < 0 && this.rotationY == 0)
                             {
-                                this.Rotate(this.rotationX, this.rotationY + (0.5 * Math.PI), this.rotationZ);
+                                this.Rotate(this.rotationX, this.rotationY + Math.PI, this.rotationZ);
+                            }
+                            else if (DeltaZ < 0 && this.rotationY < 0)
+                            {
+                                this.Rotate(this.rotationX, this.rotationY + Math.PI, this.rotationZ);
                             }
                         }
-                        if(this.Route.Count() != 1)
+                        else if (DeltaX > 0 && this.rotationY == Math.PI)
+                        {
+                            this.Rotate(this.rotationX, this.rotationY - (0.5 * Math.PI), this.rotationZ);
+                        }
+                        else if (DeltaX != 0 && this.rotationY > 1.9)
+                        {
+                            this.Rotate(this.rotationX, this.rotationY + (0.5 * Math.PI), this.rotationZ);
+                        }
+
+                        if (this.Route.Count() != 1)
                             this.Route.RemoveAt(0);
                     }
                 }

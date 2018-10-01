@@ -9,6 +9,7 @@ namespace Models
     public class Lorry : _3DModel , IUpdatable
     {
         private List<Node> Route = new List<Node>();
+
         private double DeltaX = 0;
 
         public Lorry(double x, double y, double z, double rotationX, double rotationY, double rotationZ) : base("lorry", x, y, z, rotationX, rotationY, rotationZ)
