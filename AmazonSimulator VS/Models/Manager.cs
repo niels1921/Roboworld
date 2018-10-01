@@ -147,7 +147,7 @@ namespace Models
                     Node punt1 = availableshelfs[random];
                     foreach (string x in Nodes.shortest_path("HA", punt1.Id))
                     {
-                        //Console.WriteLine(x);
+                        Console.WriteLine(x);
                         var punt = from point in Punten
                                    where point.Id == x
                                    select point;
@@ -163,7 +163,7 @@ namespace Models
                     r.AddTask(pickup);
                     foreach (string x in Nodes.shortest_path(punt1.Id, "HB"))
                     {
-                        //Console.WriteLine(x);
+                        Console.WriteLine(x);
                         var punt = from point in Punten
                                    where point.Id == x
                                    select point;
@@ -175,14 +175,6 @@ namespace Models
                     r.AddTask(dropdown);
                     move.StartTask(r);
                 }
-            }
-        }
-
-        public void laatzien()
-        {
-            foreach (var x in ShelfList)
-            {
-                Console.WriteLine(" positie van de shelfs" + x.x);
             }
         }
 

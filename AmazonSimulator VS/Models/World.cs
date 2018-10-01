@@ -41,44 +41,8 @@ namespace Models {
             }
             //randomize deze node zet deze in de list voor de robot die je aanspreekt en laat hem zo deze nodes afwerken
             //match deze waardes met de id van de nodes(id zijn nu char misschien toch int houden voor random numbergenerator)
-            WorldManager.laatzien();
             //WorldManager.AssignRobot();
         }
-
-        //private void AssignRoute()
-        //{
-        //    foreach(var worldObject in worldObjects)
-        //    {
-        //        if(worldObject.getType() == "robot")
-        //        {
-        //            Random rnd = new Random();//whileloop omheen met voorwaarde z niet dit of dat en shelf is niet empty
-        //            int random = rnd.Next(0, Punten.Count() + 1);
-        //            char punt1 = Punten[random].Id;
-        //            if (route.Count() == 0 && Robot.shelfStatus == false)//&& robot bevat shelf als die 0 is dan heenreis als die teruggaat is shelf vol
-        //            {
-        //                foreach (char x in Nodes.shortest_path('A', punt1))
-        //                {
-        //                    Console.WriteLine(x);
-        //                    var punt = from point in Punten
-        //                               where point.Id == x
-        //                               select point;
-        //                    //r1.Route.Add(punt.Single());
-        //                }
-        //            }
-        //            else if(route.Count() == 0 && Robot.shelfStatus == true)
-        //            {//////////////////////////////////////////////////////////////////////////////////////////////////////
-        //                foreach (char x in Nodes.shortest_path(punt1, 'B'))
-        //                {
-        //                    Console.WriteLine(x);
-        //                    var punt = from point in Punten
-        //                               where point.Id == x
-        //                               select point;
-        //                    //r1.Route.Add(punt.Single());
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
 
         private Robot CreateRobot(double x, double y, double z) {
             Robot r = new Robot(x,y,z,0,0,0);

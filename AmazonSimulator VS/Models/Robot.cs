@@ -29,11 +29,12 @@ namespace Models
                     if(this.Route.Count() != 0)
                         this.Route.RemoveAt(0);
                     tasks.RemoveAt(0);
-                    if(tasks.Count == 0)
+                    if(tasks.Count != 0)
                     {
-                        RobotManager.AssignRobot();
+                        tasks.First().StartTask(this);
+                        //////////////RobotManager.AssignRobot();
                     }
-                    tasks.First().StartTask(this);
+                    
                 }
             }
 
