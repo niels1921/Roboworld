@@ -11,14 +11,13 @@ namespace Models {
         private List<_3DModel> worldObjects = new List<_3DModel>();
         private List<IObserver<Command>> observers = new List<IObserver<Command>>();
         private Lorry vrachtwagen;
-        private Robot robot1;
         private List<Node> Punten = Manager.Punten;
 
         public World() {
             WorldManager.AddNodes();
             //Robot r0 = CreateRobot(0, 0, 0);
             
-            robot1 = CreateRobot(0, 0, 0);
+            Robot r1 = CreateRobot(0, 0, 0);
             //Robot r2 = CreateRobot(0, 0, 0);
             //Robot r3 = CreateRobot(0, 0, 0);
 
@@ -26,7 +25,7 @@ namespace Models {
             
             //Product p = CreateProduct(0, 0, 0);
 
-            robot1.Move(2.0, 0, 4);
+            r1.Move(2.0, 0, 4);
             vrachtwagen.Move(0, 0, -2);
 
             //p.Move(2, 0, 28);
