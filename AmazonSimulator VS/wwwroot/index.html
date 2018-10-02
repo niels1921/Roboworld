@@ -23,16 +23,9 @@
             var cameraControls;
             var worldObjects = {};
 
-            function init() {
-                camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1500);
-                cameraControls = new THREE.OrbitControls(camera);
-                camera.position.z = 15;
-                camera.position.y = 5;
-                camera.position.x = 15;
-                cameraControls.update();
+            function InitSkybox() {
+
                 scene = new THREE.Scene();
-
-
                 var cubicalSkyboxGeometry = new THREE.BoxGeometry(1000, 1000, 1000);
                 var cubeMaterials = [
                     //front side
@@ -70,43 +63,20 @@
                 var cubeMaterial = new THREE.MeshFaceMaterial(cubeMaterials);
                 var mesh = new THREE.Mesh(cubicalSkyboxGeometry, cubeMaterial);
                 scene.add(mesh);
-                /*
-                new THREE.MTLLoader()
-                    .setPath('/textures/')
-                    .load('truck3.mtl', function (materials) {
+            }
 
-                        materials.preload();
 
-                        new THREE.OBJLoader()
-                            .setMaterials(materials)
-                            .setPath('/textures/')
-                            .load('truck3.obj', function (object) {
+            function init() {
+                camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1500);
+                cameraControls = new THREE.OrbitControls(camera);
+                camera.position.z = 15;
+                camera.position.y = 5;
+                camera.position.x = 15;
+                cameraControls.update();
 
-                                //  object.scale.set(0.01, 0.01, 0.01);
 
-                                object.position.set(2, 0, 0);
-                                object.translateX(10);
-                                scene.add(object);
-                            });
-                    });
-                    
-                new THREE.MTLLoader()
-                    .setPath('/textures/')
-                    .load('shelf4.mtl', function (materials) {
-
-                        materials.preload();
-
-                        new THREE.OBJLoader()
-                            .setMaterials(materials)
-                            .setPath('/textures/')
-                            .load('shelf4.obj', function (object) {
-
-                                object.position.set(4.6, 2.3, 13);
-                                object.scale.set(0.02, 0.02, 0.02);
-                                scene.add(object);
-                            });
-                    });
-                    */
+                InitSkybox();
+       
                 new THREE.MTLLoader()
                     .setPath('/textures/')
                     .load('smallgarage.mtl', function (materials) {
