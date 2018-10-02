@@ -66,6 +66,33 @@
             }
 
 
+            function ObjectLoader(material, path, obj, x, y, z, group, material) {
+                new THREE.MTLLoader()
+                    .setPath(path)
+                    .load(material, function (materials) {
+                        materials.preload();
+                        new THREE.OBJLoader()
+                            .setMaterials(materials)
+                            .setPath(path)
+                            .load(obj, function (object) {
+                                group.position.set(x, y, z);
+                                console.log(object.position);
+                                object.translateX(10);
+                                //object.scale.set(scalex, scaley, scalez);
+                                //scene.add(object);
+                                group.add(object);
+                            });
+                    });
+
+
+            }
+
+
+            function MtlLoader(path, mtlfile) {
+
+            }
+
+
             function init() {
                 camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1500);
                 cameraControls = new THREE.OrbitControls(camera);
@@ -76,26 +103,14 @@
 
 
                 InitSkybox();
-       
-                new THREE.MTLLoader()
-                    .setPath('/textures/')
-                    .load('smallgarage.mtl', function (materials) {
 
-                        materials.preload();
+                var Garage = new THREE.Group();
+                ObjectLoader(null, "/textures/", "smallgarage.obj", 20, 0, -2.8, Garage, "smallgarage.mtl");
+                Garage.scale.set(0.008, 0.01, 0.008);
+                //Garage.position.set(10, 0, -2.8);
+                scene.add(Garage);
 
-                        new THREE.OBJLoader()
-                            .setMaterials(materials)
-                            .setPath('/textures/')
-                            .load('smallgarage.obj', function (object) {
 
-                                //  object.scale.set(0.01, 0.01, 0.01);
-
-                                object.position.set(10, 0, -2.8);
-                                object.translateX(10);
-                                object.scale.set(0.008, 0.01, 0.008);
-                                scene.add(object);
-                            });
-                    });
 
                 var loader = new THREE.GLTFLoader();
                 loader.load('Flamingo.glb', function (gltf) {
@@ -186,7 +201,6 @@
                                         .setMaterials(materials)
                                         .setPath('/textures/')
                                         .load('shelf4.obj', function (object) {
-                                        //    object.scale.set(0.02, 0.02, 0.02);
                                             groupShelf.add(object);
                                         });
                                 });
@@ -227,21 +241,11 @@
                                         .setMaterials(materials)
                                         .setPath('/textures/')
                                         .load('truck3.obj', function (mesh) {
-                                            //mesh.position.set(-30, 0, -6);
-                                            //mesh.scale.set(0.01, 0.01, 0.01);
                                             mesh.rotation.y = Math.PI / 2;
                                             groupLorry.add(mesh);
                                         });
                                 });
-
-                            //var box = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.1, 0.1), new THREE.MeshBasicMaterial({ color: 0xffffff }));
-                            //box.position.set(0.5, 1.5, 3);
-                            //groupLorry.add(box);
-
-                            //var TruckLight = new THREE.PointLight(0xffff00, 0.7, 5);
-                            //TruckLight.position.set(0.30, 1.55, 3);
-                            //groupLorry.add(TruckLight);
-                          
+                         
                             scene.add(groupLorry);
                             worldObjects[command.parameters.guid] = groupLorry;
                         }
