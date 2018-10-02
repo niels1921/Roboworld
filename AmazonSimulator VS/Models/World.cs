@@ -15,17 +15,18 @@ namespace Models {
 
         public World() {
             WorldManager.AddNodes();
-            //Robot r0 = CreateRobot(0, 0, 0);
-            
-            Robot r1 = CreateRobot(0, 0, 0);
+            //Robot r0 = CreateRobot(0, 0, 0);          
+            //Robot r1 = CreateRobot(0, 0, 0);
             //Robot r2 = CreateRobot(0, 0, 0);
-            //Robot r3 = CreateRobot(0, 0, 0);
-
+            Robot r3 = CreateRobot(0, 0, 0);
             vrachtwagen = CreateLorry(0, 0, 0);
-            
             //Product p = CreateProduct(0, 0, 0);
 
-            r1.Move(2.0, 0, 4);
+            //r0.Move(2, 0, 1);
+            //r1.Move(2, 0, 2);
+            //r2.Move(2, 0, 3);
+            r3.Move(2, 0, 4);
+            
             vrachtwagen.Move(0, 0, -2);
 
             //p.Move(2, 0, 28);
@@ -39,9 +40,6 @@ namespace Models {
                     s.Move(punt.X, 0, punt.Z);
                 }
             }
-            //randomize deze node zet deze in de list voor de robot die je aanspreekt en laat hem zo deze nodes afwerken
-            //match deze waardes met de id van de nodes(id zijn nu char misschien toch int houden voor random numbergenerator)
-            //WorldManager.AssignRobot();
         }
 
         private Robot CreateRobot(double x, double y, double z) {
@@ -64,6 +62,7 @@ namespace Models {
         {
             Lorry l = new Lorry(x, y, z, 0, 0, 0);
             worldObjects.Add(l);
+            WorldManager.AddTruck(l);
             return l;
         }
 
@@ -110,14 +109,17 @@ namespace Models {
                                    where point.Id == l
                                    select point;
                         vrachtwagen.AddRoute(punt.Single());
-                    }
-                    
+                    }                   
                 }
                 if(Math.Round(vrachtwagen.x, 1) == 20)
                 {
                     WorldManager.AssignRobot();
                     
                 }
+                if (vrachtwagen.x > 35)               
+                    vrachtwagen.Move(0, 0, -2);
+                
+                    
                 if (u is IUpdatable) {
                     bool needsCommand = ((IUpdatable)u).Update(tick);
 

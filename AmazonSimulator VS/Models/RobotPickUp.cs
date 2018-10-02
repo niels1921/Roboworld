@@ -16,8 +16,10 @@ namespace Models
 
         public void StartTask(Robot r)
         {
-            r.AddShelf(this.shelf);
-
+            if (r.x == shelf.x && r.z == shelf.z)
+                r.RemoveShelf();
+            else
+                r.AddShelf(this.shelf);
         }
 
         public bool Taskcomplete(Robot r)
