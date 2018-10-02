@@ -26,13 +26,15 @@ namespace Models
             {
                 if (tasks.First().Taskcomplete(this))
                 {
-                    this.Route.RemoveAt(0);
+                    if(this.Route.Count() != 0)
+                        this.Route.RemoveAt(0);
                     tasks.RemoveAt(0);
-                    if(tasks.Count == 0)
+                    if(tasks.Count != 0)
                     {
-                        RobotManager.AssignRobot();
+                        tasks.First().StartTask(this);
+                        //////////////RobotManager.AssignRobot();
                     }
-                    tasks.First().StartTask(this);
+                    
                 }
             }
 
@@ -45,29 +47,44 @@ namespace Models
                     {
                         DeltaX = this.Route[0].X - this.x;
                         DeltaZ = this.Route[0].Z - this.z;
-                        if (Math.Round(DeltaX, 1) != 0)
+                        DeltaX = Math.Round(DeltaX, 2);
+                        DeltaZ = Math.Round(DeltaZ, 2);
+                        if (DeltaX != 0 && this.rotationY < 1.5)
                         {
-                            if (DeltaX > this.x)
+                            if (DeltaX > 0)
                             {
                                 this.Rotate(this.rotationX, this.rotationY + (0.5 * Math.PI), this.rotationZ);
                             }
-                            else if (DeltaX < this.x)
+                            else if (DeltaX < 0)
                             {
                                 this.Rotate(this.rotationX, this.rotationY + (-0.5 * Math.PI), this.rotationZ);
                             }
                         }
                         else if (DeltaZ != 0)
                         {
-                            if (this.rotationY > 1.5 && DeltaZ > this.z)
+                            if (this.rotationY > 1.5 && this.rotationY < 3 && DeltaZ < this.z)
                             {
                                 this.Rotate(this.rotationX, this.rotationY + (-0.5 * Math.PI), this.rotationZ);
                             }
-                            else if (this.rotationY < 1.5 && DeltaZ < this.z)
+                            else if (DeltaZ < 0 && this.rotationY == 0)
                             {
-                                this.Rotate(this.rotationX, this.rotationY + (0.5 * Math.PI), this.rotationZ);
+                                this.Rotate(this.rotationX, this.rotationY + Math.PI, this.rotationZ);
+                            }
+                            else if (DeltaZ < 0 && this.rotationY < 0)
+                            {
+                                this.Rotate(this.rotationX, this.rotationY + Math.PI, this.rotationZ);
                             }
                         }
-                        if(this.Route.Count() != 1)
+                        else if (DeltaX > 0 && this.rotationY == Math.PI)
+                        {
+                            this.Rotate(this.rotationX, this.rotationY - (0.5 * Math.PI), this.rotationZ);
+                        }
+                        else if (DeltaX != 0 && this.rotationY > 1.9)
+                        {
+                            this.Rotate(this.rotationX, this.rotationY + (0.5 * Math.PI), this.rotationZ);
+                        }
+
+                        if (this.Route.Count() != 1)
                             this.Route.RemoveAt(0);
                     }
                 }
@@ -75,21 +92,29 @@ namespace Models
                 if (Math.Round(DeltaZ, 2) > 0)
                 {
                     this.Move(this.x, this.y, this.z + 0.1);
+                    if(Shelf != null)
+                        this.Shelf.Move(this.x, this.y, this.z);
                     DeltaZ -= 0.1;
                 }
                 else if (Math.Round(DeltaZ, 2) < 0)
                 {
                     this.Move(this.x, this.y, this.z - 0.1);
+                    if (Shelf != null)
+                        this.Shelf.Move(this.x, this.y, this.z);
                     DeltaZ += 0.1;
                 }
                 else if (Math.Round(DeltaX, 2) > 0)
                 {
                     this.Move(this.x + 0.1, this.y, this.z);
+                    if (Shelf != null)
+                        this.Shelf.Move(this.x, this.y, this.z);
                     DeltaX -= 0.1;
                 }
                 else if (Math.Round(DeltaX, 2) < 0)
                 {
                     this.Move(this.x - 0.1, this.y, this.z);
+                    if (Shelf != null)
+                        this.Shelf.Move(this.x, this.y, this.z);
                     DeltaX += 0.1;
                 }
             }

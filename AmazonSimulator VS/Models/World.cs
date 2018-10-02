@@ -15,17 +15,18 @@ namespace Models {
 
         public World() {
             WorldManager.AddNodes();
-            //Robot r0 = CreateRobot(0, 0, 0);
-            
-            Robot r1 = CreateRobot(0, 0, 0);
+            //Robot r0 = CreateRobot(0, 0, 0);          
+            //Robot r1 = CreateRobot(0, 0, 0);
             //Robot r2 = CreateRobot(0, 0, 0);
-            //Robot r3 = CreateRobot(0, 0, 0);
-
+            Robot r3 = CreateRobot(0, 0, 0);
             vrachtwagen = CreateLorry(0, 0, 0);
-            
             //Product p = CreateProduct(0, 0, 0);
 
-            r1.Move(2.0, 0, 4);
+            //r0.Move(2, 0, 1);
+            //r1.Move(2, 0, 2);
+            //r2.Move(2, 0, 3);
+            r3.Move(2, 0, 4);
+            
             vrachtwagen.Move(0, 0, -2);
 
             //p.Move(2, 0, 28);
@@ -35,49 +36,11 @@ namespace Models {
                 if(punt.Id.Length == 1)
                 {
                     Shelf s = CreateShelf(0, 0, 0);
-                    s.Move(punt.X, 2.2, punt.Z);
+                    punt.Shelf = s;
+                    s.Move(punt.X, 0, punt.Z);
                 }
             }
-            //randomize deze node zet deze in de list voor de robot die je aanspreekt en laat hem zo deze nodes afwerken
-            //match deze waardes met de id van de nodes(id zijn nu char misschien toch int houden voor random numbergenerator)
-            WorldManager.laatzien();
-            //WorldManager.AssignRobot();
         }
-
-        //private void AssignRoute()
-        //{
-        //    foreach(var worldObject in worldObjects)
-        //    {
-        //        if(worldObject.getType() == "robot")
-        //        {
-        //            Random rnd = new Random();//whileloop omheen met voorwaarde z niet dit of dat en shelf is niet empty
-        //            int random = rnd.Next(0, Punten.Count() + 1);
-        //            char punt1 = Punten[random].Id;
-        //            if (route.Count() == 0 && Robot.shelfStatus == false)//&& robot bevat shelf als die 0 is dan heenreis als die teruggaat is shelf vol
-        //            {
-        //                foreach (char x in Nodes.shortest_path('A', punt1))
-        //                {
-        //                    Console.WriteLine(x);
-        //                    var punt = from point in Punten
-        //                               where point.Id == x
-        //                               select point;
-        //                    //r1.Route.Add(punt.Single());
-        //                }
-        //            }
-        //            else if(route.Count() == 0 && Robot.shelfStatus == true)
-        //            {//////////////////////////////////////////////////////////////////////////////////////////////////////
-        //                foreach (char x in Nodes.shortest_path(punt1, 'B'))
-        //                {
-        //                    Console.WriteLine(x);
-        //                    var punt = from point in Punten
-        //                               where point.Id == x
-        //                               select point;
-        //                    //r1.Route.Add(punt.Single());
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
 
         private Robot CreateRobot(double x, double y, double z) {
             Robot r = new Robot(x,y,z,0,0,0);
@@ -99,6 +62,7 @@ namespace Models {
         {
             Lorry l = new Lorry(x, y, z, 0, 0, 0);
             worldObjects.Add(l);
+            WorldManager.AddTruck(l);
             return l;
         }
 
@@ -145,14 +109,17 @@ namespace Models {
                                    where point.Id == l
                                    select point;
                         vrachtwagen.AddRoute(punt.Single());
-                    }
-                    
+                    }                   
                 }
                 if(Math.Round(vrachtwagen.x, 1) == 20)
                 {
                     WorldManager.AssignRobot();
                     
                 }
+                if (vrachtwagen.x > 35)               
+                    vrachtwagen.Move(0, 0, -2);
+                
+                    
                 if (u is IUpdatable) {
                     bool needsCommand = ((IUpdatable)u).Update(tick);
 
