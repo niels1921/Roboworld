@@ -117,18 +117,20 @@ namespace Models {
                 if(Math.Round(vrachtwagen.x, 1) == 20)
                 {
                     WorldManager.AssignRobot();
-                    if(WorldManager.GetStorageStatus() == true)
-                        foreach(Node n in Punten)
+                    if (WorldManager.GetStorageStatus() == true)
+                    {
+                        foreach (Node n in Punten)
                         {
-                            if(n.Id.Length == 4)
+                            if (n.Id.Length == 4)
                             {
                                 Shelf s = CreateShelf(0, 0, 0);
                                 n.Shelf = s;
                                 s.Move(n.X, 0, n.Z);
                             }
                         }
+                    }
                 }
-                if (vrachtwagen.x > 35)               
+                if (vrachtwagen.x > 44)               
                     vrachtwagen.Move(0, 0, -2);
                 
                     

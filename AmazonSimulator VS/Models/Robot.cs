@@ -9,8 +9,8 @@ namespace Models
     {
         public List<Node> Route { get; set; }
         private Shelf Shelf;
+        public bool RobotBusy { get; set; }
         private List<IRobotTask> tasks = new List<IRobotTask>();
-        Manager RobotManager = new Manager();
 
         private double DeltaX, DeltaZ;
 
@@ -32,7 +32,6 @@ namespace Models
                     if(tasks.Count != 0)
                     {
                         tasks.First().StartTask(this);
-                        //////////////RobotManager.AssignRobot();
                     }
                     
                 }
