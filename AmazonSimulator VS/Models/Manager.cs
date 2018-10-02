@@ -40,19 +40,19 @@ namespace Models
             new Node() { Id = "PBK", X = 16, Y = 0, Z = 20 }, //18
             new Node() { Id = "PBL", X = 18.5, Y = 0, Z = 20 }, //19
             //Shelf nodes path A
-            new Node() { Id = "A", X = 5, Y = 0, Z = 9 }, //20
-            new Node() { Id = "B", X = 7.5, Y = 0, Z = 9 }, //21
-            new Node() { Id = "C", X = 10, Y = 0, Z = 9 }, //22
-            new Node() { Id = "D", X = 13.5, Y = 0, Z = 9 }, //23
-            new Node() { Id = "E", X = 16, Y = 0, Z = 9 }, //24
-            new Node() { Id = "F", X = 18.5, Y = 0, Z = 9 }, //25
+            new Node() { Id = "A", X = 5, Y = 0, Z = 10 }, //20
+            new Node() { Id = "B", X = 7.5, Y = 0, Z = 10 }, //21
+            new Node() { Id = "C", X = 10, Y = 0, Z = 10 }, //22
+            new Node() { Id = "D", X = 13.5, Y = 0, Z = 10 }, //23
+            new Node() { Id = "E", X = 16, Y = 0, Z = 10 }, //24
+            new Node() { Id = "F", X = 18.5, Y = 0, Z = 10 }, //25
             //Shelf nodes path B
-            new Node() { Id = "G", X = 5, Y = 0, Z = 21 }, //26
-            new Node() { Id = "H", X = 7.5, Y = 0, Z = 21 }, //27
-            new Node() { Id = "I", X = 10, Y = 0, Z = 21 }, //28
-            new Node() { Id = "J", X = 13.5, Y = 0, Z = 21}, //29
-            new Node() { Id = "K", X = 16, Y = 0, Z = 21 }, //30
-            new Node() { Id = "L", X = 18.5, Y = 0, Z = 21 }, //31
+            new Node() { Id = "G", X = 5, Y = 0, Z = 22 }, //26
+            new Node() { Id = "H", X = 7.5, Y = 0, Z = 22 }, //27
+            new Node() { Id = "I", X = 10, Y = 0, Z = 22 }, //28
+            new Node() { Id = "J", X = 13.5, Y = 0, Z = 22 }, //29
+            new Node() { Id = "K", X = 16, Y = 0, Z = 22 }, //30
+            new Node() { Id = "L", X = 18.5, Y = 0, Z = 22 }, //31
             //Vrachtwagen nodes
             new Node() { Id = "VA", X = 0, Y = 0, Z = -2}, //32
             new Node() { Id = "VB", X = 20.5, Y = 0, Z = -2}, //33
@@ -62,6 +62,7 @@ namespace Models
             new Node() { Id = "LDB",  X = 18, Y = 0, Z = 3}, //36
             new Node() { Id = "LDC",  X = 12, Y = 0, Z = 3}, //37
             new Node() { Id = "LDD",  X = 7,  Y = 0, Z = 3}, //38
+
             new Node() { Id = "LDSA", X = 23, Y = 0, Z = 2}, //39
             new Node() { Id = "LDSB", X = 18, Y = 0, Z = 2}, //40
             new Node() { Id = "LDSC", X = 12, Y = 0, Z = 2}, //41
@@ -70,17 +71,17 @@ namespace Models
 
         public void AddNodes()
         {
-            //Hoeken
+            //hoeken
             Nodes.Add_Nodes("HA", new Dictionary<string, Node>() { { "HA", Punten[0] }, { "LDD", Punten[38] }, { "PA", Punten[4] } });
             Nodes.Add_Nodes("HB", new Dictionary<string, Node>() { { "HB", Punten[1] }, { "LDA", Punten[35] }, { "PD", Punten[7] } });
             Nodes.Add_Nodes("HC", new Dictionary<string, Node>() { { "HC", Punten[2] }, { "PC", Punten[6] }, { "HD", Punten[3] } });
             Nodes.Add_Nodes("HD", new Dictionary<string, Node>() { { "HD", Punten[3] }, { "PB", Punten[5] }, { "HC", Punten[2] } });
             //loading dock
-            Nodes.Add_Nodes("LDA", new Dictionary<string, Node>() { { "LDA", Punten[35] }, { "HB", Punten[1] }, { "LDB", Punten[36] }, { "LDSA", Punten[39] } });
+            Nodes.Add_Nodes("LDA", new Dictionary<string, Node>() { { "LDA", Punten[35] }, { "HB", Punten[1]   }, { "LDB", Punten[36] }, { "LDSA", Punten[39] } });
             Nodes.Add_Nodes("LDB", new Dictionary<string, Node>() { { "LDB", Punten[36] }, { "LDA", Punten[35] }, { "LDC", Punten[37] }, { "LDSB", Punten[40] }, });
             Nodes.Add_Nodes("LDC", new Dictionary<string, Node>() { { "LDC", Punten[37] }, { "LDB", Punten[36] }, { "LDD", Punten[38] }, { "LDSC", Punten[41] }, });
-            Nodes.Add_Nodes("LDD", new Dictionary<string, Node>() { { "LDD", Punten[38] }, { "LDC", Punten[37] }, { "HA", Punten[0] }, { "LDSD", Punten[42] }, });
-
+            Nodes.Add_Nodes("LDD", new Dictionary<string, Node>() { { "LDD", Punten[38] }, { "LDC", Punten[37] }, { "HA", Punten[0]   }, { "LDSD", Punten[42] }, });
+            //shelfs loading dock
             Nodes.Add_Nodes("LDSA", new Dictionary<string, Node>() { { "LDSA", Punten[39] }, { "LDA", Punten[35] } });
             Nodes.Add_Nodes("LDSB", new Dictionary<string, Node>() { { "LDSB", Punten[40] }, { "LDB", Punten[36] } });
             Nodes.Add_Nodes("LDSC", new Dictionary<string, Node>() { { "LDSC", Punten[41] }, { "LDC", Punten[37] } });
@@ -178,6 +179,7 @@ namespace Models
                         List<Node> RobotRouteHeenweg = new List<Node>();
                         List<Node> RobotRouteTerugweg = new List<Node>();
                         List<Node> RobotRouteStartPositie = new List<Node>();
+                        List<Node> RobotStoreShelf = new List<Node>();
                         Random rnd = new Random();
                         int random = rnd.Next(0, AvailableShelfs.Count() - 1);
                         Console.WriteLine();
@@ -196,7 +198,7 @@ namespace Models
                         RobotPickUp pickup = new RobotPickUp(punt1.Shelf);
                         r.AddTask(pickup);
                         Console.WriteLine();
-                        foreach (string x in Nodes.shortest_path(punt1.Id, AvailableDockNodes[0].Id))
+                        foreach (string x in Nodes.shortest_path(punt1.Id, "HB"))
                         {
                             Console.WriteLine(x);
                             var punt = from point in Punten
@@ -206,6 +208,17 @@ namespace Models
                         }
                         RobotMove terugweg = new RobotMove(RobotRouteTerugweg);
                         r.AddTask(terugweg);
+
+                        foreach (string x in Nodes.shortest_path("HB", AvailableDockNodes[0].Id))
+                        {
+                            Console.WriteLine(x);
+                            var punt = from point in Punten
+                                       where point.Id == x
+                                       select point;
+                            RobotStoreShelf.Add(punt.Single());
+                        }
+                        RobotMove storeshelf = new RobotMove(RobotStoreShelf);
+                        r.AddTask(storeshelf);
 
                         RobotPickUp dropdown = new RobotPickUp(punt1.Shelf);
                         r.AddTask(dropdown);
