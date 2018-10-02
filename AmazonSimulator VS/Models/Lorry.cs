@@ -29,9 +29,7 @@ namespace Models
                         DeltaX = Math.Abs(this.Route[0].X) - Math.Abs(this.x);
                         DeltaX = Math.Abs(DeltaX);
                         this.Route.RemoveAt(0);
-
-                    }
-                    
+                    }                   
                 }
                 if (Math.Round(DeltaX) > 0)
                 {
@@ -39,7 +37,6 @@ namespace Models
                     DeltaX -= 0.1;
                 }
             }
-            //this.Move(this.x + 0.1, this.y, this.z);
             return base.Update(tick);
         }
 
