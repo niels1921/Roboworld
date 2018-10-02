@@ -12,6 +12,7 @@ namespace Models
         private List<Shelf> ShelfList = new List<Shelf>();
         private List<Node> AvailableShelfs = new List<Node>();
         private List<Node> AvailableDockNodes = new List<Node>();
+        public static List<Node> TruckReadyList = new List<Node>();
         private Lorry Truck;
         private Dijkstra Nodes = new Dijkstra();
         private bool StorageEmpty = false;
@@ -136,7 +137,7 @@ namespace Models
         public void CheckForAvailableShelfNodes()
         {
             var AvailableNodes = from node in Punten
-                            where node.Shelf != null && node.Id.Length == 1
+                            where node.Id.Length == 1 && node.ShelfStatus == true
                             select node;
             
             AvailableShelfs = AvailableNodes.ToList();            
@@ -145,23 +146,33 @@ namespace Models
         public void CheckForAvailableDockNodes()
         {
             var AvailableDock = from node in Punten
-                                where node.Shelf == null && node.Id.Length == 4
+                                where node.Id.Length == 4 && node.ShelfStatus == false
                                 select node;
             AvailableDockNodes = AvailableDock.ToList();
+        }
+
+        public void CheckTruckReady()
+        {
+            var TruckReady = from node in Punten
+                                 where node.Shelf == null && node.Id.Length == 4
+                                 select node;
+
+            TruckReadyList = TruckReady.ToList();
         }
 
         public void AssignRobot()
         {
             CheckForAvailableShelfNodes();
             CheckForAvailableDockNodes();
-            if (AvailableShelfs.Count() == 8)
+            CheckTruckReady();
+            if (AvailableShelfs.Count() == 4 && TruckReadyList.Count() == 0)
             {
                 StorageEmpty = true;
                 FillStorage();
             }
             else
             {
-                if (AvailableDockNodes.Count() == 0)
+                if (TruckReadyList.Count() == 0)
                 {
                     foreach (string x in Nodes.shortest_path("VB", "VC"))
                     {
@@ -181,12 +192,12 @@ namespace Models
                 }
                 else
                 {
-                    int i = 0;
                     foreach (Robot r in RobotList)
                     {
-                        if (r.TaskCount() == 0 && i < 4 && AvailableDockNodes.Count() == 4)
+                        if (r.TaskCount() == 0 && AvailableDockNodes.Count() > 0)
                         {
                             CheckForAvailableShelfNodes();
+                            CheckForAvailableDockNodes();
 
                             List<Node> RobotRouteHeenweg = new List<Node>();
                             List<Node> RobotRouteTerugweg = new List<Node>();
@@ -207,8 +218,9 @@ namespace Models
                             RobotMove move = new RobotMove(RobotRouteHeenweg);
                             r.AddTask(move);
 
-                            RobotPickUp pickup = new RobotPickUp(punt1.Shelf, punt1, AvailableDockNodes);
+                            RobotPickUp pickup = new RobotPickUp(punt1.Shelf, punt1);
                             r.AddTask(pickup);
+                            punt1.ShelfStatus = false;
                             Console.WriteLine();
                             foreach (string x in Nodes.shortest_path(punt1.Id, "HB"))
                             {
@@ -221,7 +233,7 @@ namespace Models
                             RobotMove terugweg = new RobotMove(RobotRouteTerugweg);
                             r.AddTask(terugweg);
 
-                            foreach (string x in Nodes.shortest_path("HB", AvailableDockNodes[i].Id))
+                            foreach (string x in Nodes.shortest_path("HB", AvailableDockNodes[0].Id))
                             {
                                 Console.WriteLine(x);
                                 var punt = from point in Punten
@@ -232,10 +244,20 @@ namespace Models
                             RobotMove storeshelf = new RobotMove(RobotStoreShelf);
                             r.AddTask(storeshelf);
 
-                            RobotPickUp dropdown = new RobotPickUp(punt1.Shelf, punt1, AvailableDockNodes);
+                            RobotPickUp dropdown = new RobotPickUp(punt1.Shelf, punt1);
                             r.AddTask(dropdown);
+
+                            var shelfstatus = from punt in Punten
+                                              where AvailableDockNodes[0].Id == punt.Id
+                                              select punt;
+
+                            foreach(Node n in shelfstatus)
+                            {
+                                n.ShelfStatus = true;
+                            }
+
                             Console.WriteLine();
-                            foreach (string x in Nodes.shortest_path(AvailableDockNodes[i].Id, "HA"))
+                            foreach (string x in Nodes.shortest_path(AvailableDockNodes[0].Id, "HA"))
                             {
                                 Console.WriteLine(x);
                                 var punt = from point in Punten
@@ -246,8 +268,6 @@ namespace Models
                             RobotMove startpositie = new RobotMove(RobotRouteStartPositie);
                             r.AddTask(startpositie);
                             move.StartTask(r);
-                            AvailableDockNodes.Count();
-                            i++;
                         }
                     }
                 }

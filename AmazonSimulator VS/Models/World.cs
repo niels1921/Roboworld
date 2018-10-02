@@ -38,7 +38,10 @@ namespace Models {
                     Shelf s = CreateShelf(0, 0, 0);
                     punt.Shelf = s;
                     s.Move(punt.X, 0, punt.Z);
+                    punt.ShelfStatus = true;
                 }
+                if (punt.Id.Length == 4)
+                    punt.ShelfStatus = false;
             }
         }
 

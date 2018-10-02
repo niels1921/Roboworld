@@ -9,13 +9,11 @@ namespace Models
     {
         private Shelf shelf;
         private Node RandomNode;
-        private List<Node> nodes = new List<Node>();
 
-        public RobotPickUp(Shelf s, Node n, List<Node> ln)
+        public RobotPickUp(Shelf s, Node n)
         {
             this.shelf = s;
             this.RandomNode = n;
-            this.nodes = ln;
         }
 
         public void StartTask(Robot r)
@@ -28,10 +26,16 @@ namespace Models
 
         public bool Taskcomplete(Robot r)
         {
-            if (Math.Round(r.x, 2) == nodes[0].X && Math.Round(r.z, 2) == nodes[0].Z)
+            foreach (Node n in Manager.Punten)
             {
-                nodes[0].Shelf = RandomNode.Shelf;
-                RandomNode.Shelf = null;
+                if (n.Id.Length == 4)
+                {
+                    if (Math.Round(r.x, 2) == n.X && Math.Round(r.z, 2) == n.Z)
+                    {
+                        Manager.TruckReadyList[0].Shelf = RandomNode.Shelf;
+                        RandomNode.Shelf = null;
+                    }
+                }
             }
             double xwaarde = Math.Round(r.x, 2);
             double zwaarde = Math.Round(r.z, 2);
