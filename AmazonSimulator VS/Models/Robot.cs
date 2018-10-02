@@ -49,42 +49,43 @@ namespace Models
                         DeltaZ = this.Route[0].Z - this.z;
                         DeltaX = Math.Round(DeltaX, 2);
                         DeltaZ = Math.Round(DeltaZ, 2);
-                        if (DeltaX != 0 && this.rotationY < 1.5)
+                        double RotatieX = Math.Abs(DeltaX);
+                        double RotatieZ = Math.Abs(DeltaZ);
+                        if(DeltaX == 0 || DeltaZ == 0)
                         {
-                            if (DeltaX > 0)
-                            {
-                                this.Rotate(this.rotationX, this.rotationY + (0.5 * Math.PI), this.rotationZ);
-                            }
-                            else if (DeltaX < 0)
-                            {
-                                this.Rotate(this.rotationX, this.rotationY + (-0.5 * Math.PI), this.rotationZ);
-                            }
+                            RotatieX += 1;
+                            RotatieZ += 1;
                         }
-                        else if (DeltaZ != 0)
-                        {
-                            if (this.rotationY > 1.5 && this.rotationY < 3 && DeltaZ < this.z)
-                            {
-                                this.Rotate(this.rotationX, this.rotationY + (-0.5 * Math.PI), this.rotationZ);
-                            }
-                            else if (DeltaZ < 0 && this.rotationY == 0)
-                            {
-                                this.Rotate(this.rotationX, this.rotationY + Math.PI, this.rotationZ);
-                            }
-                            else if (DeltaZ < 0 && this.rotationY < 0)
-                            {
-                                this.Rotate(this.rotationX, this.rotationY + Math.PI, this.rotationZ);
-                            }
-                        }
-                        else if (DeltaX > 0 && this.rotationY == Math.PI)
-                        {
-                            this.Rotate(this.rotationX, this.rotationY - (0.5 * Math.PI), this.rotationZ);
-                        }
-                        else if (DeltaX != 0 && this.rotationY > 1.9)
-                        {
-                            this.Rotate(this.rotationX, this.rotationY + (0.5 * Math.PI), this.rotationZ);
-                        }
+                        //double degrees = Math.Atan2(RotatieZ, RotatieX);
+                        //double hoek = Math.Round((2* Math.PI) + (Math.Round(degrees) % (2 * Math.PI)), 2);
+                        //Console.WriteLine(hoek);
+                        //if (hoek == 7.28 && DeltaZ > 0)
+                        //    this.Rotate(this.rotationX, 0, this.rotationZ);
+                        //else if (hoek == 7.28 && DeltaZ < 0)
+                        //    this.Rotate(this.rotationX, 0, this.rotationZ);
+                        //else if (hoek == 6.28 && DeltaX > 0 && this.rotationY != (0.5 * Math.PI))
+                        //    this.Rotate(this.rotationX, this.rotationY + (0.5 * Math.PI), this.rotationZ);
+                        //else if(hoek == 6.28 && DeltaX < 0 && this.rotationY != (0.5 * Math.PI))
+                        //    this.Rotate(this.rotationX, this.rotationY + (0.5 * Math.PI), this.rotationZ);
 
-                        if (this.Route.Count() != 1)
+                        if (this.Route.First().X > Math.Round(this.x))
+                        {
+                            this.Rotate(this.rotationX, this.rotationY - this.rotationY - (Math.PI / 2), this.rotationZ);
+                        }
+                        else if (this.Route.First().X < Math.Round(this.x))
+                        {
+                            this.Rotate(this.rotationX, this.rotationY - this.rotationY + (Math.PI / 2), this.rotationZ);
+                        }
+                        else if (this.Route.First().Z > Math.Round(this.z))
+                        {
+                            this.Rotate(this.rotationX, 0, this.rotationZ);
+                        }
+                        else if (this.Route.First().Z < Math.Round(this.z))
+                        {
+                            this.Rotate(this.rotationX, this.rotationY - this.rotationY + Math.PI, this.rotationZ);
+                        }                         
+
+                            if (this.Route.Count() != 1)
                             this.Route.RemoveAt(0);
                     }
                 }
