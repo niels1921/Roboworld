@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Controllers;
 
 namespace Models
 {
@@ -13,6 +14,7 @@ namespace Models
         private List<Node> AvailableDockNodes = new List<Node>();
         private Lorry Truck;
         private Dijkstra Nodes = new Dijkstra();
+        private bool StorageEmpty = false;
         public static List<Node> Punten = new List<Node>()
         {
             //Hoek nodes
@@ -150,95 +152,111 @@ namespace Models
 
         public void AssignRobot()
         {
+            CheckForAvailableShelfNodes();
             CheckForAvailableDockNodes();
-            if (AvailableDockNodes.Count() < 0)
+            if (AvailableShelfs.Count() == 8)
             {
-                foreach (string x in Nodes.shortest_path("VB", "VC"))
-                {
-                    var punt = from point in Punten
-                               where point.Id == x
-                               select point;
-                    Truck.AddRoute(punt.Single());
-                }
-                foreach(Node n in Punten)
-                {
-                    if(n.Id.Length == 4)
-                    {
-                        n.Shelf = null;
-                    }
-                }
+                StorageEmpty = true;
+                FillStorage();
             }
             else
             {
-                foreach (Robot r in RobotList)
+                if (AvailableDockNodes.Count() == 0)
                 {
-                    if (r.TaskCount() == 0)
+                    foreach (string x in Nodes.shortest_path("VB", "VC"))
                     {
-                        CheckForAvailableShelfNodes();
-
-                        List<Node> RobotRouteHeenweg = new List<Node>();
-                        List<Node> RobotRouteTerugweg = new List<Node>();
-                        List<Node> RobotRouteStartPositie = new List<Node>();
-                        List<Node> RobotStoreShelf = new List<Node>();
-                        Random rnd = new Random();
-                        int random = rnd.Next(0, AvailableShelfs.Count() - 1);
-                        Console.WriteLine();
-                        Node punt1 = AvailableShelfs[random];
-                        foreach (string x in Nodes.shortest_path("HA", punt1.Id))
+                        var punt = from point in Punten
+                                   where point.Id == x
+                                   select point;
+                        Truck.AddRoute(punt.Single());
+                    }
+                    foreach (Node n in Punten)
+                    {
+                        if (n.Id.Length == 4)
                         {
-                            Console.WriteLine(x);
-                            var punt = from point in Punten
-                                       where point.Id == x
-                                       select point;
-                            RobotRouteHeenweg.Add(punt.Single());
+                            n.Shelf.Move(0, 1000, 0);
+                            n.Shelf = null;
                         }
-                        RobotMove move = new RobotMove(RobotRouteHeenweg);
-                        r.AddTask(move);
-
-                        RobotPickUp pickup = new RobotPickUp(punt1.Shelf);
-                        r.AddTask(pickup);
-                        Console.WriteLine();
-                        foreach (string x in Nodes.shortest_path(punt1.Id, "HB"))
+                    }
+                }
+                else
+                {
+                    int i = 0;
+                    foreach (Robot r in RobotList)
+                    {
+                        if (r.TaskCount() == 0 && i < 4 && AvailableDockNodes.Count() == 4)
                         {
-                            Console.WriteLine(x);
-                            var punt = from point in Punten
-                                       where point.Id == x
-                                       select point;
-                            RobotRouteTerugweg.Add(punt.Single());
-                        }
-                        RobotMove terugweg = new RobotMove(RobotRouteTerugweg);
-                        r.AddTask(terugweg);
+                            CheckForAvailableShelfNodes();
 
-                        foreach (string x in Nodes.shortest_path("HB", AvailableDockNodes[0].Id))
-                        {
-                            Console.WriteLine(x);
-                            var punt = from point in Punten
-                                       where point.Id == x
-                                       select point;
-                            RobotStoreShelf.Add(punt.Single());
-                        }
-                        RobotMove storeshelf = new RobotMove(RobotStoreShelf);
-                        r.AddTask(storeshelf);
+                            List<Node> RobotRouteHeenweg = new List<Node>();
+                            List<Node> RobotRouteTerugweg = new List<Node>();
+                            List<Node> RobotRouteStartPositie = new List<Node>();
+                            List<Node> RobotStoreShelf = new List<Node>();
+                            Random rnd = new Random();
+                            int random = rnd.Next(0, AvailableShelfs.Count() - 1);
+                            Console.WriteLine();
+                            Node punt1 = AvailableShelfs[random];
+                            foreach (string x in Nodes.shortest_path("HA", punt1.Id))
+                            {
+                                Console.WriteLine(x);
+                                var punt = from point in Punten
+                                           where point.Id == x
+                                           select point;
+                                RobotRouteHeenweg.Add(punt.Single());
+                            }
+                            RobotMove move = new RobotMove(RobotRouteHeenweg);
+                            r.AddTask(move);
 
-                        RobotPickUp dropdown = new RobotPickUp(punt1.Shelf);
-                        r.AddTask(dropdown);
-                        AvailableDockNodes[0].Shelf = punt1.Shelf;
-                        punt1.Shelf = null;
-                        Console.WriteLine();
-                        foreach (string x in Nodes.shortest_path(AvailableDockNodes[0].Id, "HA"))
-                        {
-                            Console.WriteLine(x);
-                            var punt = from point in Punten
-                                       where point.Id == x
-                                       select point;
-                            RobotRouteStartPositie.Add(punt.Single());
+                            RobotPickUp pickup = new RobotPickUp(punt1.Shelf, punt1, AvailableDockNodes);
+                            r.AddTask(pickup);
+                            Console.WriteLine();
+                            foreach (string x in Nodes.shortest_path(punt1.Id, "HB"))
+                            {
+                                Console.WriteLine(x);
+                                var punt = from point in Punten
+                                           where point.Id == x
+                                           select point;
+                                RobotRouteTerugweg.Add(punt.Single());
+                            }
+                            RobotMove terugweg = new RobotMove(RobotRouteTerugweg);
+                            r.AddTask(terugweg);
+
+                            foreach (string x in Nodes.shortest_path("HB", AvailableDockNodes[i].Id))
+                            {
+                                Console.WriteLine(x);
+                                var punt = from point in Punten
+                                           where point.Id == x
+                                           select point;
+                                RobotStoreShelf.Add(punt.Single());
+                            }
+                            RobotMove storeshelf = new RobotMove(RobotStoreShelf);
+                            r.AddTask(storeshelf);
+
+                            RobotPickUp dropdown = new RobotPickUp(punt1.Shelf, punt1, AvailableDockNodes);
+                            r.AddTask(dropdown);
+                            Console.WriteLine();
+                            foreach (string x in Nodes.shortest_path(AvailableDockNodes[i].Id, "HA"))
+                            {
+                                Console.WriteLine(x);
+                                var punt = from point in Punten
+                                           where point.Id == x
+                                           select point;
+                                RobotRouteStartPositie.Add(punt.Single());
+                            }
+                            RobotMove startpositie = new RobotMove(RobotRouteStartPositie);
+                            r.AddTask(startpositie);
+                            move.StartTask(r);
+                            AvailableDockNodes.Count();
+                            i++;
                         }
-                        RobotMove startpositie = new RobotMove(RobotRouteStartPositie);
-                        r.AddTask(startpositie);
-                        move.StartTask(r);
                     }
                 }
             }
+        }
+
+        public void FillStorage()
+        {
+            //doe iets
         }
 
         public void Addrobot(Robot robot)
@@ -264,6 +282,13 @@ namespace Models
         public void AddTruck(Lorry l)
         {
             Truck = l;
+        }
+        public bool GetStorageStatus()
+        {
+            if (StorageEmpty == false)
+                return false;
+            else
+                return true;
         }
     }
 }

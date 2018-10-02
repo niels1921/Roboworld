@@ -78,7 +78,7 @@ namespace Models
                         }
                         else if (this.Route.First().Z > Math.Round(this.z))
                         {
-                            this.Rotate(this.rotationX, 0, this.rotationZ);
+                            this.Rotate(this.rotationX, this.rotationY - this.rotationY, this.rotationZ);
                         }
                         else if (this.Route.First().Z < Math.Round(this.z))
                         {
