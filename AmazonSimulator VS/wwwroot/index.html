@@ -107,24 +107,43 @@
                             });
                     });
                     */
-                new THREE.MTLLoader()
-                    .setPath('/textures/')
-                    .load('smallgarage.mtl', function (materials) {
+                //new THREE.MTLLoader()
+                //    .setPath('/textures/')
+                //    .load('smallgarage.mtl', function (materials) {
 
-                        materials.preload();
+                //        materials.preload();
 
-                        new THREE.OBJLoader()
-                            .setMaterials(materials)
+                //        new THREE.OBJLoader()
+                //            .setMaterials(materials)
+                //            .setPath('/textures/')
+                //            .load('smallgarage.obj', function (object) {
+
+                //                //  object.scale.set(0.01, 0.01, 0.01);
+
+                //                object.position.set(10, 0, -2.8);
+                //                object.translateX(10);
+                //                object.scale.set(0.008, 0.01, 0.008);
+                //                scene.add(object);
+                //            });
+
+                            
+                        new THREE.MTLLoader()
                             .setPath('/textures/')
-                            .load('smallgarage.obj', function (object) {
+                            .load('model.mtl', function (materials) {
 
-                                //  object.scale.set(0.01, 0.01, 0.01);
+                                materials.preload();
 
-                                object.position.set(10, 0, -2.8);
-                                object.translateX(10);
-                                object.scale.set(0.008, 0.01, 0.008);
-                                scene.add(object);
-                            });
+                                new THREE.OBJLoader()
+                                    .setMaterials(materials)
+                                    .setPath('/textures/')
+                                    .load('model.obj', function (object) {
+                                        
+                                        object.position.set(20, -0.5, 1);
+                                        object.rotation.y = Math.PI;
+                                        object.translateX(10);
+                                        object.scale.set(2,2,2);
+                                        scene.add(object);
+                                    });
                     });
 
                 var loader = new THREE.GLTFLoader();
