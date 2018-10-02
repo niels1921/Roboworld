@@ -15,16 +15,16 @@ namespace Models {
 
         public World() {
             WorldManager.AddNodes();
-            //Robot r0 = CreateRobot(0, 0, 0);          
-            //Robot r1 = CreateRobot(0, 0, 0);
-            //Robot r2 = CreateRobot(0, 0, 0);
+            Robot r0 = CreateRobot(0, 0, 0);          
+            Robot r1 = CreateRobot(0, 0, 0);
+            Robot r2 = CreateRobot(0, 0, 0);
             Robot r3 = CreateRobot(0, 0, 0);
             vrachtwagen = CreateLorry(0, 0, 0);
             //Product p = CreateProduct(0, 0, 0);
 
-            //r0.Move(2, 0, 1);
-            //r1.Move(2, 0, 2);
-            //r2.Move(2, 0, 3);
+            r0.Move(2, 0, 1);
+            r1.Move(2, 0, 2);
+            r2.Move(2, 0, 3);
             r3.Move(2, 0, 4);
             
             vrachtwagen.Move(0, 0, -2);
@@ -114,7 +114,16 @@ namespace Models {
                 if(Math.Round(vrachtwagen.x, 1) == 20)
                 {
                     WorldManager.AssignRobot();
-                    
+                    if(WorldManager.GetStorageStatus() == true)
+                        foreach(Node n in Punten)
+                        {
+                            if(n.Id.Length == 4)
+                            {
+                                Shelf s = CreateShelf(0, 0, 0);
+                                n.Shelf = s;
+                                s.Move(n.X, 0, n.Z);
+                            }
+                        }
                 }
                 if (vrachtwagen.x > 35)               
                     vrachtwagen.Move(0, 0, -2);
