@@ -151,8 +151,13 @@ namespace Models
                                  where node.Id.Length == 1 && node.ShelfStatus == true
                                  select node;
 
-            AvailableShelfs = AvailableNodes.ToList();
-
+            AvailableShelfs = AvailableNodes.ToList();            
+        }
+        /// <summary>
+        /// ////////////////////////////////////
+        /// </summary>
+        public void CheckforFilledShelfNodes()
+        {
             var AvailableShelfes = from node in Punten
                                    where node.Id.Length == 1 & node.ShelfStatus == false
                                    select node;
@@ -182,8 +187,11 @@ namespace Models
                                 where node.Id.Length == 4 && node.ShelfStatus == false
                                 select node;
 
-            AvailableDockNodes = AvailableDock.ToList();
+            AvailableDockNodes = AvailableDock.ToList();     
+        }
 
+        public void CheckForFilledDockNodes()///////////////////////////////////////////////////////////////
+        {
             var AvailableDockShelfs = from node in Punten
                                       where node.Id.Length == 4 && node.ShelfStatus == true
                                       select node;
@@ -229,7 +237,6 @@ namespace Models
 
         public void AssignRobot()
         {
-            //GC.Collect();
             CheckForAvailableShelfNodes();
             CheckForAvailableDockNodes();
             CheckTruckReady();
@@ -246,24 +253,10 @@ namespace Models
             else if (TrueAvailableShelfs.Count() == 0 && TruckDelivery == true)
             {
                 Truck.VrachtwagenRoute(Nodes.shortest_path("VB", "VC"));
-                //foreach (string x in Nodes.shortest_path("VB", "VC"))
-                //{
-                //    var punt = from point in Punten
-                //               where point.Id == x
-                //               select point;
-                //    Truck.AddRoute(punt.Single());
-                //}
             }
             else if (TruckReadyList.Count() == 0 && TruckDelivery == false)
             {
                 Truck.VrachtwagenRoute(Nodes.shortest_path("VB", "VC"));
-                //foreach (string x in Nodes.shortest_path("VB", "VC"))
-                //{
-                //    var punt = from point in Punten
-                //               where point.Id == x
-                //               select point;
-                //    Truck.AddRoute(punt.Single());
-                //}
                 foreach (Node n in Punten)
                 {
                     if (n.Id.Length == 4)
@@ -337,10 +330,12 @@ namespace Models
                 if (r.TaskCount() == 0)
                 {
                     CheckForAvailableShelfNodes();
+                    CheckforFilledShelfNodes();
                     CheckForAvailableDockNodes();
                     CheckForAvailableShelf();
                     CheckForTrueAvailableDockNodes();
                     CheckTruckReady();
+                    CheckForFilledDockNodes();
 
                     List<Node> RobotRouteHeenweg = new List<Node>();
                     List<Node> RobotRouteTerugweg = new List<Node>();
@@ -383,6 +378,8 @@ namespace Models
                     r.AddTask(startpositie);
                     move.StartTask(r);
                     r.RobotBusy = true;
+                    CheckForAvailableDockNodes();
+                    CheckTruckReady();
                 }
             }
 
@@ -422,12 +419,15 @@ namespace Models
 
         public Node GetDockShelf()
         {
-            return TrueAvailableDock[0];
+            CheckForAvailableDockNodes();
+            return AvailableDockNodes[0];
         }
 
         public void RemoveDockShelf()
         {
-            TrueAvailableDock.RemoveAt(0);
+            CheckTruckReady();
+            TruckReadyList[0] = null; // 1 vn de twee of beide weet ik nog niet 
+            AvailableDockNodes.RemoveAt(0);
         }
     }
 }
