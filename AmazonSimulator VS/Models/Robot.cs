@@ -155,5 +155,13 @@ namespace Models
         {
             this.Shelf = null;
         }
+
+        public bool ShelfStatus()
+        {
+            if (this.Shelf != null)
+                return true;
+            else
+                return false;
+        }
     }
 }

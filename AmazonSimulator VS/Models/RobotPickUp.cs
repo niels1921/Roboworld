@@ -8,17 +8,18 @@ namespace Models
     public class RobotPickUp : IRobotTask
     {
         private Shelf shelf;
-        private Node RandomNode;
+        private Node ShelfNode;
+        private Manager worldmanager = new Manager();
 
         public RobotPickUp(Shelf s, Node n)
         {
             this.shelf = s;
-            this.RandomNode = n;
+            this.ShelfNode = n;
         }
 
         public void StartTask(Robot r)
         {
-            if (r.x == shelf.x && r.z == shelf.z)
+            if (r.x == shelf.x && r.z == shelf.z && r.ShelfStatus() == true)
                 r.RemoveShelf();
             else
                 r.AddShelf(this.shelf);
@@ -30,10 +31,19 @@ namespace Models
             {
                 if (n.Id.Length == 4)
                 {
-                    if (Math.Round(r.x, 2) == n.X && Math.Round(r.z, 2) == n.Z)
+                    if (Math.Round(r.x, 2) == n.X && Math.Round(r.z, 2) == n.Z && Manager.TruckDelivery == false)
                     {
-                        Manager.TruckReadyList[0].Shelf = RandomNode.Shelf;
-                        RandomNode.Shelf = null;
+                        Manager.TruckReadyList[0].Shelf = ShelfNode.Shelf;
+                        
+                        ShelfNode.Shelf = null;
+                    }                   
+                }
+                else if(n.Id.Length == 1)
+                {
+                    if (Math.Round(r.x, 2) == n.X && Math.Round(r.z, 2) == n.Z && Manager.TruckDelivery == true)
+                    {
+                        n.Shelf = worldmanager.GetDockShelf().Shelf;
+                        worldmanager.RemoveDockShelf();
                     }
                 }
             }
