@@ -12,5 +12,6 @@ namespace Models
         public double Y { get; set; }
         public double Z { get; set; }
         public Shelf Shelf { get; set; }
+        public bool ShelfStatus { get; set; }
     }
 }
