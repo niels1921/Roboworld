@@ -115,13 +115,14 @@ namespace Models
 
                 if (vrachtwagen.GetRoute().Count == 0 && vrachtwagen.x < 16)
                 {
-                    foreach (string l in WorldManager.ReturnNodes().shortest_path("VA", "VB"))
-                    {
-                        var punt = from point in Punten
-                                   where point.Id == l
-                                   select point;
-                        vrachtwagen.AddRoute(punt.Single());
-                    }
+                    vrachtwagen.VrachtwagenRoute(WorldManager.ReturnNodes().shortest_path("VA", "VB"));
+                    //foreach (string l in WorldManager.ReturnNodes().shortest_path("VA", "VB"))
+                    //{
+                    //    var punt = from point in Punten
+                    //               where point.Id == l
+                    //               select point;
+                    //    vrachtwagen.AddRoute(punt.Single());
+                    //}
                 }
                 if (Math.Round(vrachtwagen.x, 1) == 20)
                 {

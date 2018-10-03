@@ -245,23 +245,25 @@ namespace Models
             }
             else if (TrueAvailableShelfs.Count() == 0 && TruckDelivery == true)
             {
-                foreach (string x in Nodes.shortest_path("VB", "VC"))
-                {
-                    var punt = from point in Punten
-                               where point.Id == x
-                               select point;
-                    Truck.AddRoute(punt.Single());
-                }
+                Truck.VrachtwagenRoute(Nodes.shortest_path("VB", "VC"));
+                //foreach (string x in Nodes.shortest_path("VB", "VC"))
+                //{
+                //    var punt = from point in Punten
+                //               where point.Id == x
+                //               select point;
+                //    Truck.AddRoute(punt.Single());
+                //}
             }
             else if (TruckReadyList.Count() == 0 && TruckDelivery == false)
             {
-                foreach (string x in Nodes.shortest_path("VB", "VC"))
-                {
-                    var punt = from point in Punten
-                               where point.Id == x
-                               select point;
-                    Truck.AddRoute(punt.Single());
-                }
+                Truck.VrachtwagenRoute(Nodes.shortest_path("VB", "VC"));
+                //foreach (string x in Nodes.shortest_path("VB", "VC"))
+                //{
+                //    var punt = from point in Punten
+                //               where point.Id == x
+                //               select point;
+                //    Truck.AddRoute(punt.Single());
+                //}
                 foreach (Node n in Punten)
                 {
                     if (n.Id.Length == 4)
@@ -288,14 +290,7 @@ namespace Models
                         int random = rnd.Next(0, AvailableShelfs.Count() - 1);
                         Console.WriteLine();
                         Node punt1 = AvailableShelfs[random];
-                        foreach (string x in Nodes.shortest_path("HA", punt1.Id))
-                        {
-                            Console.WriteLine(x);
-                            var punt = from point in Punten
-                                       where point.Id == x
-                                       select point;
-                            RobotRouteHeenweg.Add(punt.Single());
-                        }
+                        RobotRouteHeenweg = Nodes.shortest_path("HA", punt1.Id);
                         RobotMove move = new RobotMove(RobotRouteHeenweg);
                         r.AddTask(move);
 
@@ -304,25 +299,10 @@ namespace Models
                         punt1.ShelfStatus = false;
                         Console.WriteLine();
 
-                        foreach (string x in Nodes.shortest_path(punt1.Id, "HB"))
-                        {
-                            Console.WriteLine(x);
-                            var punt = from point in Punten
-                                       where point.Id == x
-                                       select point;
-                            RobotRouteTerugweg.Add(punt.Single());
-                        }
+                        RobotRouteTerugweg = Nodes.shortest_path(punt1.Id, "HB");
                         RobotMove terugweg = new RobotMove(RobotRouteTerugweg);
                         r.AddTask(terugweg);
-
-                        foreach (string x in Nodes.shortest_path("HB", AvailableDockNodes[0].Id))
-                        {
-                            Console.WriteLine(x);
-                            var punt = from point in Punten
-                                       where point.Id == x
-                                       select point;
-                            RobotStoreShelf.Add(punt.Single());
-                        }
+                        RobotStoreShelf = Nodes.shortest_path("HB", AvailableDockNodes[0].Id);
                         RobotMove storeshelf = new RobotMove(RobotStoreShelf);
                         r.AddTask(storeshelf);
 
@@ -338,15 +318,7 @@ namespace Models
                             n.ShelfStatus = true;
                         }
                         Console.WriteLine();
-
-                        foreach (string x in Nodes.shortest_path(AvailableDockNodes[0].Id, "HA"))
-                        {
-                            Console.WriteLine(x);
-                            var punt = from point in Punten
-                                       where point.Id == x
-                                       select point;
-                            RobotRouteStartPositie.Add(punt.Single());
-                        }
+                        RobotRouteStartPositie = Nodes.shortest_path(AvailableDockNodes[0].Id, "HA");
                         RobotMove startpositie = new RobotMove(RobotRouteStartPositie);
                         r.AddTask(startpositie);
                         move.StartTask(r);
@@ -375,14 +347,7 @@ namespace Models
                     List<Node> RobotRouteStartPositie = new List<Node>();
                     List<Node> RobotStoreShelf = new List<Node>();
                     //ga naar de docknode die nog een shelf bevatten
-                    foreach (string x in Nodes.shortest_path("HA", TrueAvailableDock[0].Id))
-                    {
-                        Console.WriteLine(x);
-                        var punt = from point in Punten
-                                   where point.Id == x
-                                   select point;
-                        RobotRouteHeenweg.Add(punt.Single());
-                    }
+                    RobotRouteHeenweg = Nodes.shortest_path("HA", TrueAvailableDock[0].Id);
                     RobotMove move = new RobotMove(RobotRouteHeenweg);
                     r.AddTask(move);
                     //pak de shelf op en zeg dat de shelf weg is
@@ -391,14 +356,7 @@ namespace Models
                     TrueAvailableDock[0].ShelfStatus = false;
                     Console.WriteLine();
                     //ga van de docknode naar HB
-                    foreach (string x in Nodes.shortest_path(TrueAvailableDock[0].Id, "HB"))
-                    {
-                        Console.WriteLine(x);
-                        var punt = from point in Punten
-                                   where point.Id == x
-                                   select point;
-                        RobotRouteTerugweg.Add(punt.Single());
-                    }
+                    RobotRouteTerugweg = Nodes.shortest_path(TrueAvailableDock[0].Id, "HB");
                     RobotMove terugweg = new RobotMove(RobotRouteTerugweg);
                     r.AddTask(terugweg);
                     //////////////////////////////////////////////////////////////////////////////////////
@@ -411,14 +369,7 @@ namespace Models
                         n.ShelfStatus = true;
                     }
                     //ga van HB naar de shelfnode die nog geen shelf heeft
-                    foreach (string x in Nodes.shortest_path("HB", ShelfList[0].Id))
-                    {
-                        Console.WriteLine(x);
-                        var punt = from point in Punten
-                                   where point.Id == x
-                                   select point;
-                        RobotStoreShelf.Add(punt.Single());
-                    }
+                    RobotStoreShelf = Nodes.shortest_path("HB", ShelfList[0].Id);
                     RobotMove storeshelf = new RobotMove(RobotStoreShelf);
                     r.AddTask(storeshelf);
                     //drop de shelf op de plek waar nog geen shelf is
@@ -427,14 +378,7 @@ namespace Models
 
                     Console.WriteLine();
                     //ga van de positie waar de shelf gedropt is weer naar het start punt
-                    foreach (string x in Nodes.shortest_path(ShelfList[0].Id, "HA"))
-                    {
-                        Console.WriteLine(x);
-                        var punt = from point in Punten
-                                   where point.Id == x
-                                   select point;
-                        RobotRouteStartPositie.Add(punt.Single());
-                    }
+                    RobotRouteStartPositie = Nodes.shortest_path(ShelfList[0].Id, "HA");
                     RobotMove startpositie = new RobotMove(RobotRouteStartPositie);
                     r.AddTask(startpositie);
                     move.StartTask(r);
