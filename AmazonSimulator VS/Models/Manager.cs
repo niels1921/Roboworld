@@ -146,7 +146,6 @@ namespace Models
             var AvailableNodes = from node in Punten
                                  where node.Id.Length == 1 && node.ShelfStatus == true
                                  select node;
-
             AvailableShelfs = AvailableNodes.ToList();
         }
         /// <summary>
@@ -158,7 +157,6 @@ namespace Models
             var AvailableNodes = from node in Punten
                                  where node.Id.Length == 1 && node.Shelf != null
                                  select node;
-
             TrueAvailableShelfs = AvailableNodes.ToList();
         }
 
@@ -195,7 +193,6 @@ namespace Models
             var robotbusy = from robot in RobotList
                             where robot.RobotBusy == true
                             select robot;
-
             RobotBusy = robotbusy.ToList();
         }
 
@@ -209,7 +206,7 @@ namespace Models
 
             if (StorageEmpty == true)
                 FillStorage();
-            if (TruckReadyList.Count() == 4 && TrueAvailableShelfs.Count() == 8 && RobotBusy.Count() == 0) ;
+            //if (TruckReadyList.Count() == 4 && TrueAvailableShelfs.Count() == 8 && RobotBusy.Count() == 0) ;
             //StorageEmpty = true;
 
             else if (TruckReadyList.Count() == 0)

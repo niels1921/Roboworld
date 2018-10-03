@@ -15,7 +15,7 @@
         }
 
         var exampleSocket;
-        var textMap = 'mp_cloud9';
+        var textMap = 'skybox';
         var textName = 'cloud9';
 
         window.onload = function () {
@@ -66,31 +66,6 @@
             }
 
 
-            function ObjectLoader(material, path, obj, x, y, z, group, material) {
-                new THREE.MTLLoader()
-                    .setPath(path)
-                    .load(material, function (materials) {
-                        materials.preload();
-                        new THREE.OBJLoader()
-                            .setMaterials(materials)
-                            .setPath(path)
-                            .load(obj, function (object) {
-                                group.position.set(x, y, z);
-                                console.log(object.position);
-                                object.translateX(10);
-                                //object.scale.set(scalex, scaley, scalez);
-                                //scene.add(object);
-                                group.add(object);
-                            });
-                    });
-
-
-            }
-
-
-            function MtlLoader(path, mtlfile) {
-
-            }
 
 
             function init() {
@@ -105,15 +80,14 @@
                 InitSkybox();
 
                 var Garage = new THREE.Group();
-                ObjectLoader(null, "/textures/", "smallgarage.obj", 20, 0, -2.8, Garage, "smallgarage.mtl");
+                ObjectLoader("/textures/garage/", "smallgarage.obj", 20, 0, -2.8, Garage, "smallgarage.mtl");
                 Garage.scale.set(0.008, 0.01, 0.008);
-                //Garage.position.set(10, 0, -2.8);
                 scene.add(Garage);
 
 
 
                 var loader = new THREE.GLTFLoader();
-                loader.load('Flamingo.glb', function (gltf) {
+                loader.load('/textures/flamingo/Flamingo.glb', function (gltf) {
                     var mesh = gltf.scene.children[0];
                     var s = 0.35;
                     mesh.scale.set(s, s, s);
@@ -139,7 +113,7 @@
                 window.addEventListener('resize', onWindowResize, false);
 
                 var geometry = new THREE.PlaneGeometry(30, 30, 32);
-                var material = new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("/textures/vloer.jpg"), side: THREE.DoubleSide });
+                var material = new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("/textures/world/vloer.jpg"), side: THREE.DoubleSide });
                 var plane = new THREE.Mesh(geometry, material);
                 plane.rotation.x = Math.PI / 2.0;
                 plane.position.x = 15;
@@ -147,7 +121,7 @@
                 scene.add(plane);
 
                 var Roadgeometry = new THREE.PlaneGeometry(50, 8, 0);
-                var Roadmaterial = new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("/textures/road.jpg"), side: THREE.DoubleSide });
+                var Roadmaterial = new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("/textures/world/road.jpg"), side: THREE.DoubleSide });
                 var Roadplane = new THREE.Mesh(Roadgeometry, Roadmaterial);
                 Roadplane.rotation.x = Math.PI / 2;
                 Roadplane.position.x = 15;
@@ -190,62 +164,16 @@
                     if (Object.keys(worldObjects).indexOf(command.parameters.guid) < 0) {
                         if (command.parameters.type === "shelf") {
                             var groupShelf = new THREE.Group();
-                            new THREE.MTLLoader()
-                                .setPath('/textures/')
-                                .load('shelf4.mtl', function (materials) {
-
-
-                                    materials.preload();
-
-                                    new THREE.OBJLoader()
-                                        .setMaterials(materials)
-                                        .setPath('/textures/')
-                                        .load('shelf4.obj', function (object) {
-                                            groupShelf.add(object);
-                                        });
-                                });
+                            ObjectLoader("/textures/shelf/", "shelf4.obj", null, null, null, groupShelf, "shelf4.mtl")
                             scene.add(groupShelf);
                             worldObjects[command.parameters.guid] = groupShelf;
                         }
 
-                        if (command.parameters.type === "robot") {
-                            var geometryRobot = new THREE.BoxGeometry(0.9, 0.3, 0.9);
-                            var MaterialsRobot = [
-                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_side.png"), side: THREE.DoubleSide }), //LEFT
-                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_side.png"), side: THREE.DoubleSide }), //RIGHT
-                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_top.png"), side: THREE.DoubleSide }), //TOP
-                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_bottom.png"), side: THREE.DoubleSide }), //BOTTOM
-                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_front.png"), side: THREE.DoubleSide }), //FRONT
-                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_front.png"), side: THREE.DoubleSide }), //BACK
-                            ];
-                            var materialRobot = new THREE.MeshFaceMaterial(MaterialsRobot);
-                            var modelRobot = new THREE.Mesh(geometryRobot, materialRobot);
-                            modelRobot.position.y = 0.15;
 
-                            var groupRobot = new THREE.Group();
-                            groupRobot.add(modelRobot);
-
-                            scene.add(groupRobot);
-                            worldObjects[command.parameters.guid] = groupRobot;
-                        }
 
                         if (command.parameters.type === "lorry") {
                             var groupLorry = new THREE.Group();
-                            new THREE.MTLLoader()
-                                .setPath('/textures/')
-                                .load('truck3.mtl', function (materials) {
-
-                                    materials.preload();
-
-                                    new THREE.OBJLoader()
-                                        .setMaterials(materials)
-                                        .setPath('/textures/')
-                                        .load('truck3.obj', function (mesh) {
-                                            mesh.rotation.y = Math.PI / 2;
-                                            groupLorry.add(mesh);
-                                        });
-                                });
-                         
+                            ObjectLoader("/textures/truck/", "truck3.obj", null, null, null, groupLorry, "truck3.mtl")
                             scene.add(groupLorry);
                             worldObjects[command.parameters.guid] = groupLorry;
                         }
@@ -289,18 +217,18 @@
 
             init();
             animate();
-        
+
         };
 
     </script>
-
-    <script src="three.min.js"></script>
-    <script src="TGALoader.js"></script>
-    <script src="MTLLoader.js"></script>
-    <script src="OBJLoader.js"></script>
-    <script src="OrbitControls.js"></script>
-    <script src="GLTFLoader.js"></script>
-
+    <script src="js/threejs/three.min.js"></script>
+    <script src="js/threejs/OrbitControls.js"></script>
+    <script src="js/loaders/GLTFLoader.js"></script>
+    <script src="js/loaders/MTLLoader.js"></script>
+    <script src="js/loaders/OBJLoader.js"></script>
+    <script src="js/loaders/TGALoader.js"></script>
+    <script src="js/classes/robot.js"></script>
+    <script src="js/classes/LoadObjModel.js"></script>
 </body>
 
 </html>

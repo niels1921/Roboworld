@@ -66,7 +66,7 @@ namespace Models
 
         private Lorry CreateLorry(double x, double y, double z)
         {
-            Lorry l = new Lorry(x, y, z, 0, 0, 0);
+            Lorry l = new Lorry(x, y, z, 0, Math.PI / 2, 0);
             worldObjects.Add(l);
             WorldManager.AddTruck(l);
             return l;
