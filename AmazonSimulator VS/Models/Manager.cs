@@ -9,12 +9,6 @@ namespace Models
 {
     public class Manager
     {
-
-        List<Node> RobotRouteHeenweg = new List<Node>();
-        List<Node> RobotRouteTerugweg = new List<Node>();
-        List<Node> RobotRouteStartPositie = new List<Node>();
-        List<Node> RobotStoreShelf = new List<Node>();
-
         private List<Robot> RobotList = new List<Robot>();
         private List<Shelf> ShelfList = new List<Shelf>();
         private List<Node> AvailableShelfs = new List<Node>();
@@ -239,6 +233,7 @@ namespace Models
             }
             else
             {
+
                 foreach (Robot r in RobotList)
                 {
                     if (r.TaskCount() == 0 && AvailableDockNodes.Count() > 0 && RobotBusy.Count() == 0 && StorageEmpty == false)
@@ -246,6 +241,10 @@ namespace Models
 
                         CheckForAvailableShelfNodes();
                         CheckForAvailableDockNodes();
+                        List<Node> RobotRouteHeenweg = new List<Node>();
+                        List<Node> RobotRouteTerugweg = new List<Node>();
+                        List<Node> RobotRouteStartPositie = new List<Node>();
+                        List<Node> RobotStoreShelf = new List<Node>();
                         Random rnd = new Random();
                         int random = rnd.Next(0, AvailableShelfs.Count() - 1);
                         Console.WriteLine();
@@ -321,10 +320,13 @@ namespace Models
 
         public void FillStorage()
         {
-
+            
             foreach(Robot r in RobotList)
             {
-
+                if(r.TaskCount() == 0)
+                {
+                    //
+                }
             }
         }
 
