@@ -139,7 +139,7 @@ namespace Models
                         }
                     }
                 }
-                if (vrachtwagen.x > 44)
+                if (vrachtwagen.x > 39)
                     vrachtwagen.Move(0, 0, -2);
 
 

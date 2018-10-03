@@ -9,10 +9,18 @@ namespace Models
 {
     public class Manager
     {
+
+        List<Node> RobotRouteHeenweg = new List<Node>();
+        List<Node> RobotRouteTerugweg = new List<Node>();
+        List<Node> RobotRouteStartPositie = new List<Node>();
+        List<Node> RobotStoreShelf = new List<Node>();
+
         private List<Robot> RobotList = new List<Robot>();
         private List<Shelf> ShelfList = new List<Shelf>();
         private List<Node> AvailableShelfs = new List<Node>();
         private List<Node> AvailableDockNodes = new List<Node>();
+        private List<Node> TrueAvailableShelfs = new List<Node>();
+
         public static List<Node> TruckReadyList = new List<Node>();
         private List<Robot> RobotBusy = new List<Robot>();
         private Lorry Truck;
@@ -61,7 +69,7 @@ namespace Models
             //Vrachtwagen nodes
             new Node() { Id = "VA", X = 0, Y = 0, Z = -2}, //32
             new Node() { Id = "VB", X = 20.5, Y = 0, Z = -2}, //33
-            new Node() { Id = "VC", X = 45, Y = 0, Z = -2}, //34
+            new Node() { Id = "VC", X = 40, Y = 0, Z = -2}, //34
             //loading dock nodes
             new Node() { Id = "LDA",  X = 23, Y = 0, Z = 3}, //35
             new Node() { Id = "LDB",  X = 18, Y = 0, Z = 3}, //36
@@ -135,7 +143,10 @@ namespace Models
         {
             return Nodes;
         }
-
+        /// <summary>
+        /// Kijkt in de lijst Punten welke nodes met ID lengte 1 allemaal een shelf bevatten
+        /// Deze wordt meteen minder bij het uitdelen van de taken
+        /// </summary>
         public void CheckForAvailableShelfNodes()
         {
             var AvailableNodes = from node in Punten
@@ -144,7 +155,23 @@ namespace Models
 
             AvailableShelfs = AvailableNodes.ToList();
         }
+        /// <summary>
+        /// Kijkt in de lijst Punten welke nodes met ID lengte 1 allemaal een fysieke shelf bevatten
+        /// Deze wordt pas verandert wanneer de shelfs fysiek van positie zijn verandert
+        /// </summary>
+        public void CheckForAvailableShelf()
+        {
+            var AvailableNodes = from node in Punten
+                                 where node.Id.Length == 1 && node.Shelf != null
+                                 select node;
 
+            TrueAvailableShelfs = AvailableNodes.ToList();
+        }
+
+        /// <summary>
+        /// Kijkt in de lijst Punten welke loadingdock nodes een false shelfstatus hebben.
+        /// Deze wordt bij het taken uitdelen al geleegd
+        /// </summary>
         public void CheckForAvailableDockNodes()
         {
             var AvailableDock = from node in Punten
@@ -153,19 +180,23 @@ namespace Models
 
             AvailableDockNodes = AvailableDock.ToList();
         }
-
+        /// <summary>
+        /// Kijkt in de lijst Punten wlke loadingdock nodes shelfs bevatten
+        /// Deze wordt pas minder wanneer een shelf op de fysieke locatie is aangekomen
+        /// </summary>
         public void CheckTruckReady()
         {
             var TruckReady = from node in Punten
                              where node.Shelf == null && node.Id.Length == 4
                              select node;
-            TruckReadyList = null;
+
             TruckReadyList = TruckReady.ToList();
-
-
         }
-
-        public void CurrentRobotPosition()
+        /// <summary>
+        /// Kijkt of een robot bezig is en voegt deze dan toe aan een lijst
+        /// Een robot is pas niet meer busy wanneer die weer op zijn begin positie is
+        /// </summary>
+        public void CurrentRobotBusy()
         {
             var robotbusy = from robot in RobotList
                             where robot.RobotBusy == true
@@ -179,13 +210,14 @@ namespace Models
             CheckForAvailableShelfNodes();
             CheckForAvailableDockNodes();
             CheckTruckReady();
-            CurrentRobotPosition();
+            CurrentRobotBusy();
+            CheckForAvailableShelf();
 
-            if (TruckReadyList.Count() == 4 && AvailableShelfs.Count() == 8)
-            {
+            if (StorageEmpty == true)
                 FillStorage();
-                //StorageEmpty = true;
-            }
+            if (TruckReadyList.Count() == 4 && TrueAvailableShelfs.Count() == 8 && RobotBusy.Count() == 0) ;
+            //StorageEmpty = true;
+
             else if (TruckReadyList.Count() == 0)
             {
                 foreach (string x in Nodes.shortest_path("VB", "VC"))
@@ -209,16 +241,11 @@ namespace Models
             {
                 foreach (Robot r in RobotList)
                 {
-                    if (r.TaskCount() == 0 && AvailableDockNodes.Count() > 0)
+                    if (r.TaskCount() == 0 && AvailableDockNodes.Count() > 0 && RobotBusy.Count() == 0 && StorageEmpty == false)
                     {
 
                         CheckForAvailableShelfNodes();
                         CheckForAvailableDockNodes();
-
-                        List<Node> RobotRouteHeenweg = new List<Node>();
-                        List<Node> RobotRouteTerugweg = new List<Node>();
-                        List<Node> RobotRouteStartPositie = new List<Node>();
-                        List<Node> RobotStoreShelf = new List<Node>();
                         Random rnd = new Random();
                         int random = rnd.Next(0, AvailableShelfs.Count() - 1);
                         Console.WriteLine();
@@ -238,6 +265,7 @@ namespace Models
                         r.AddTask(pickup);
                         punt1.ShelfStatus = false;
                         Console.WriteLine();
+
                         foreach (string x in Nodes.shortest_path(punt1.Id, "HB"))
                         {
                             Console.WriteLine(x);
@@ -271,8 +299,8 @@ namespace Models
                         {
                             n.ShelfStatus = true;
                         }
-
                         Console.WriteLine();
+
                         foreach (string x in Nodes.shortest_path(AvailableDockNodes[0].Id, "HA"))
                         {
                             Console.WriteLine(x);
@@ -286,8 +314,7 @@ namespace Models
                         move.StartTask(r);
                         r.RobotBusy = true;
                     }
-                    //if (Math.Round(r.x) == Punten[0].X && Math.Round(r.z) == Punten[0].Z)
-                    //    r.RobotBusy = false;
+
                 }
             }
         }
@@ -295,6 +322,10 @@ namespace Models
         public void FillStorage()
         {
 
+            foreach(Robot r in RobotList)
+            {
+
+            }
         }
 
         public void Addrobot(Robot robot)

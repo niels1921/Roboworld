@@ -118,7 +118,8 @@ namespace Models
                     DeltaX += 0.1;
                 }
             }
-
+            if (Math.Round(this.x) == 2 && Math.Round(this.z) == 4 && TaskCount() == 0)
+               this.RobotBusy = false;
             return base.Update(tick);
         }
 
