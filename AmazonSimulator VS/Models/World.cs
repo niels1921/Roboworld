@@ -76,7 +76,7 @@ namespace Models
         {
             Shelf s = new Shelf(x, y, z, 0, 0, 0);
             worldObjects.Add(s);
-            WorldManager.AddShelf(s);
+            //WorldManager.AddShelf(s);
             return s;
         }
 
@@ -115,13 +115,14 @@ namespace Models
 
                 if (vrachtwagen.GetRoute().Count == 0 && vrachtwagen.x < 16)
                 {
-                    foreach (string l in WorldManager.ReturnNodes().shortest_path("VA", "VB"))
-                    {
-                        var punt = from point in Punten
-                                   where point.Id == l
-                                   select point;
-                        vrachtwagen.AddRoute(punt.Single());
-                    }
+                    vrachtwagen.VrachtwagenRoute(WorldManager.ReturnNodes().shortest_path("VA", "VB"));
+                    //foreach (string l in WorldManager.ReturnNodes().shortest_path("VA", "VB"))
+                    //{
+                    //    var punt = from point in Punten
+                    //               where point.Id == l
+                    //               select point;
+                    //    vrachtwagen.AddRoute(punt.Single());
+                    //}
                 }
                 if (Math.Round(vrachtwagen.x, 1) == 20)
                 {
@@ -135,13 +136,18 @@ namespace Models
                                 Shelf s = CreateShelf(0, 0, 0);
                                 n.Shelf = s;
                                 s.Move(n.X, 0, n.Z);
+                                n.ShelfStatus = true;
                             }
                         }
                     }
                 }
                 if (vrachtwagen.x > 39)
-                    vrachtwagen.Move(0, 0, -2);
+                {
+                    if (Manager.TruckDelivery == true)
+                        Manager.TruckDelivery = false;
 
+                    vrachtwagen.Move(0, 0, -2);
+                }
 
                 if (u is IUpdatable)
                 {

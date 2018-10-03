@@ -46,9 +46,9 @@ namespace Models
             return type;
         }
 
-        public void AddRoute(Node route)
+        public void VrachtwagenRoute(List<Node> route)
         {
-            this.Route.Add(route);
+            Route = route;
         }
 
         public List<Node> GetRoute()
