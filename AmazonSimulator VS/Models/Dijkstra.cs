@@ -7,16 +7,30 @@ namespace Models
 {
     public class Dijkstra
     {
-
+        /// <summary>
+        /// Dictionary met alle gelinkte nodes
+        /// </summary>
         Dictionary<string, Dictionary<string, Node>> tijdelijk = new Dictionary<string, Dictionary<string, Node>>();
+        /// <summary>
+        /// Dictionary met alle gelinkte nodes en afstanden
+        /// </summary>
         Dictionary<string, Dictionary<string, int>> vertices = new Dictionary<string, Dictionary<string, int>>();
+        /// <summary>
+        /// De x en z waarde van de start node. Vanaf hier worden alle afstanden tot de start node berekend.
+        /// </summary>
         double OriginX, OriginZ;
-
+        /// <summary>
+        /// Voegt de node met alle connecties toe
+        /// </summary>
+        /// <param name="name">node id</param>
+        /// <param name="randen">nodes die aan de start node verbonden zijn</param>
         public void Add_Nodes(string name, Dictionary<string, Node> randen)
         {
             tijdelijk[name] = randen;
         }
-
+        /// <summary>
+        /// Berekent de afstanden tot de startnode
+        /// </summary>
         public void CalculateDistance()
         {
             foreach (KeyValuePair<string, Dictionary<string, Node>> node in tijdelijk)
@@ -44,7 +58,12 @@ namespace Models
                 vertices.Add(node.Key, vert);
             }
         }
-
+        /// <summary>
+        /// Berekent het kortste pad van start tot finish node
+        /// </summary>
+        /// <param name="start">start node</param>
+        /// <param name="finish">finish node</param>
+        /// <returns>list<node></returns>
         public List<Node> shortest_path(string start, string finish)
         {
 

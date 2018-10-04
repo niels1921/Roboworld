@@ -8,17 +8,31 @@ namespace Models
 {
     public class World : IObservable<Command>, IUpdatable
     {
+        /// <summary>
+        /// link met de worldmanager wordt aangemaakt
+        /// </summary>
         private Manager WorldManager = new Manager();
+        /// <summary>
+        /// lijst van alle 3d modellen in de wereld
+        /// </summary>
         private List<_3DModel> worldObjects = new List<_3DModel>();
+        /// <summary>
+        /// lijst van alle observers 
+        /// </summary>
         private List<IObserver<Command>> observers = new List<IObserver<Command>>();
+        /// <summary>
+        /// de vrachtwagen in de wereld
+        /// </summary>
         private Lorry vrachtwagen;
-       // private List<Node> Punten;
+        /// <summary>
+        /// bool die aangeeft of er moet worden bijgevuld
+        /// </summary>
         private bool StorageEmpty = false;
-
+        /// <summary>
+        /// methode die de wereld opzet
+        /// </summary>
         public World()
         {
-            //Punten = WorldManager.points();
-
             WorldManager.AddNodes();
             Robot r0 = CreateRobot(0, 0, 0);
             Robot r1 = CreateRobot(0, 0, 0);
@@ -47,7 +61,13 @@ namespace Models
                     punt.ShelfStatus = false;
             }
         }
-
+        /// <summary>
+        /// maakt de robot aan
+        /// </summary>
+        /// <param name="x">de x waarde waar de robot gezet moet worden</param>
+        /// <param name="y">de y waarde waar de robot gezet moet worden</param>
+        /// <param name="z">de z waarde waar de robot gezet moet worden</param>
+        /// <returns>robot</returns>
         private Robot CreateRobot(double x, double y, double z)
         {
             Robot r = new Robot(x, y, z, 0, 0, 0);
@@ -57,14 +77,26 @@ namespace Models
             WorldManager.Addrobot(r);
             return r;
         }
-
+        /// <summary>
+        /// maakt de producten aan.........................................
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="z"></param>
+        /// <returns></returns>
         private Product CreateProduct(double x, double y, double z)
         {
             Product p = new Product(x, y, z, 0, 0, 0);
             worldObjects.Add(p);
             return p;
         }
-
+        /// <summary>
+        /// maakt de vrachtwagen aan
+        /// </summary>
+        /// <param name="x">de x waarde waar de vrachtwagen gezet moet worden</param>
+        /// <param name="y">de y waarde waar de vrachtwagen gezet moet worden</param>
+        /// <param name="z">de z waarde waar de vrachtwagen gezet moet worden</param>
+        /// <returns></returns>
         private Lorry CreateLorry(double x, double y, double z)
         {
             Lorry l = new Lorry(x, y, z, 0, 0, 0);
@@ -72,7 +104,13 @@ namespace Models
             WorldManager.AddTruck(l);
             return l;
         }
-
+        /// <summary>
+        /// maakt de shelf aan
+        /// </summary>
+        /// <param name="x">de x waarde waar de shelf gezet moet worden</param>
+        /// <param name="y">de y waarde waar de shelf gezet moet worden</param>
+        /// <param name="z">de z waarde waar de shelf gezet moet worden</param>
+        /// <returns></returns>
         private Shelf CreateShelf(double x, double y, double z)
         {
             Shelf s = new Shelf(x, y, z, 0, 0, 0);
@@ -106,7 +144,13 @@ namespace Models
                 obs.OnNext(new UpdateModel3DCommand(m3d));
             }
         }
-
+        /// <summary>
+        /// update alle 3d modellen in de wereld
+        /// ook hier wordt de route voor vrachtwagen bepaald
+        /// als laatste wordt gekeken of het magazijn moet worden bijgevuld 
+        /// </summary>
+        /// <param name="tick">aantal beeld updates per minuut</param>
+        /// <returns>bool</returns>
         public bool Update(int tick)
         {
             for (int i = 0; i < worldObjects.Count; i++)
@@ -146,10 +190,7 @@ namespace Models
 
                 }
                 if (vrachtwagen.x > 39)
-                {
-                    if (WorldManager.truckdel() == true)
-                        WorldManager.SetTruckDel(false);
-
+                {  
                     StorageEmpty = false;
                     vrachtwagen.Move(0, 0, -2);
                 }
