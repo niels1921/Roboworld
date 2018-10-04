@@ -290,7 +290,6 @@ namespace Models
                         RobotPickUp pickup = new RobotPickUp(punt1.Shelf, punt1);
                         r.AddTask(pickup);
                         punt1.ShelfStatus = false;
-                        Console.WriteLine();
 
                         RobotRouteTerugweg = Nodes.shortest_path(punt1.Id, "HB");
                         RobotMove terugweg = new RobotMove(RobotRouteTerugweg);

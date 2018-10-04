@@ -66,7 +66,22 @@
             }
 
 
-
+            function ObjectLoader(path, obj, x, y, z, group, material) {
+                new THREE.MTLLoader()
+                    .setPath(path)
+                    .load(material, function (materials) {
+                        materials.preload();
+                        new THREE.OBJLoader()
+                            .setMaterials(materials)
+                            .setPath(path)
+                            .load(obj, function (object) {
+                                if (x !== null && y !== null && z !== null) {
+                                    group.position.set(x, y, z);
+                                }
+                                group.add(object);
+                            });
+                    });
+            }
 
             function init() {
                 camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1500);
@@ -169,7 +184,29 @@
                             worldObjects[command.parameters.guid] = groupShelf;
                         }
 
+                        if (command.parameters.type === "robot") {
+                            var geometryRobot = new THREE.BoxGeometry(0.9, 0.3, 0.9);
+                            var MaterialsRobot = [
+                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot/robot_side.png"), side: THREE.DoubleSide }), //LEFT
+                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot/robot_side.png"), side: THREE.DoubleSide }), //RIGHT
+                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot/robot_top.png"), side: THREE.DoubleSide }), //TOP
+                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot/robot_bottom.png"), side: THREE.DoubleSide }), //BOTTOM
+                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot/robot_front.png"), side: THREE.DoubleSide }), //FRONT
+                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot/robot_front.png"), side: THREE.DoubleSide }), //BACK
+                            ];
+                            var materialRobot = new THREE.MeshFaceMaterial(MaterialsRobot);
+                            var modelRobot = new THREE.Mesh(geometryRobot, materialRobot);
+                            modelRobot.position.y = 0.15;
 
+                            var groupRobot = new THREE.Group();
+                            groupRobot.add(modelRobot);
+
+                            scene.add(groupRobot);
+                            worldObjects[command.parameters.guid] = groupRobot;
+                        }
+
+                        //Shelf a = new Shelf();
+                        //console.log(a);
 
                         if (command.parameters.type === "lorry") {
                             var groupLorry = new THREE.Group();
@@ -228,7 +265,6 @@
     <script src="js/loaders/OBJLoader.js"></script>
     <script src="js/loaders/TGALoader.js"></script>
     <script src="js/classes/robot.js"></script>
-    <script src="js/classes/LoadObjModel.js"></script>
 </body>
 
 </html>

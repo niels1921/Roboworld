@@ -12,9 +12,21 @@ namespace Models
 
         private double DeltaX = 0;
 
+        private int shelfnr;
+
         public Lorry(double x, double y, double z, double rotationX, double rotationY, double rotationZ) : base("lorry", x, y, z, rotationX, rotationY, rotationZ)
         {
             this.Move(x, y, z);
+        }
+
+        public int Shelfnr()
+        {
+            return shelfnr;
+        }
+
+        public void SetShelfnr(int nr)
+        {
+            this.shelfnr = nr;
         }
 
         public override bool Update(int tick)
