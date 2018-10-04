@@ -17,8 +17,8 @@ namespace Models
         private List<Shelf> NotAssignedShelfs = new List<Shelf>();
         private bool VullenStorage = false;
 
-        public static bool TruckDelivery = false;
-        public static List<Node> Punten = new List<Node>()
+        private bool TruckDelivery = false;
+        private List<Node> Punten = new List<Node>()
         {
             //Hoek nodes
             new Node() { Id = "HA", X = 2, Y = 0, Z = 4 }, //0
@@ -135,6 +135,22 @@ namespace Models
         {
             return Nodes;
         }
+
+        public List<Node> points()
+        {
+            return Punten;
+        }
+
+        public bool truckdel()
+        {
+            return TruckDelivery;
+        }
+        
+        public void SetTruckDel(bool truck)
+        {
+            TruckDelivery = truck;
+        }
+
 
         public void AssignRobot()
         {

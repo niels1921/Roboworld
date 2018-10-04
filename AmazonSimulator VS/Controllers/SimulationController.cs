@@ -7,7 +7,7 @@ using Views;
 
 namespace Controllers {
     struct ObservingClient {
-        public ClientView cv;
+        public View cv;
         public IDisposable unsubscribe;
     }
     public class SimulationController {
@@ -20,7 +20,7 @@ namespace Controllers {
             this.w = w;
         }
 
-        public void AddView(ClientView v) {
+        public void AddView(View v) {
             ObservingClient oc = new ObservingClient();
 
             oc.unsubscribe = this.w.Subscribe(v);
@@ -29,7 +29,7 @@ namespace Controllers {
             views.Add(oc);
         }
 
-        public void RemoveView(ClientView v) {
+        public void RemoveView(View v) {
             for(int i = 0; i < views.Count; i++) {
                 ObservingClient currentOC = views[i];
 

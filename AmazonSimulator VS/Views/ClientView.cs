@@ -8,7 +8,7 @@ using System.Text;
 using Controllers;
 
 namespace Views {
-    public class ClientView : IObserver<Command> {
+    public class ClientView : View {
         private WebSocket socket;
 
         public ClientView(WebSocket socket)
@@ -48,17 +48,17 @@ namespace Views {
             SendMessage(c.ToJson());
         }
 
-        public void OnCompleted()
+        public override void OnCompleted()
         {
             throw new NotImplementedException();
         }
 
-        public void OnError(Exception error)
+        public override void OnError(Exception error)
         {
             throw new NotImplementedException();
         }
 
-        public void OnNext(Command value)
+        public override void OnNext(Command value)
         {
             SendCommand(value);
         }

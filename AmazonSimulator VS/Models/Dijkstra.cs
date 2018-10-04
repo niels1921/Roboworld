@@ -11,7 +11,6 @@ namespace Models
         Dictionary<string, Dictionary<string, Node>> tijdelijk = new Dictionary<string, Dictionary<string, Node>>();
         Dictionary<string, Dictionary<string, int>> vertices = new Dictionary<string, Dictionary<string, int>>();
         double OriginX, OriginZ;
-        private List<Node> Punten = Manager.Punten;
 
         public void Add_Nodes(string name, Dictionary<string, Node> randen)
         {
@@ -110,7 +109,8 @@ namespace Models
                     while (previous.ContainsKey(smallest))
 
                     {
-                        foreach(Node n in Punten)
+                        Manager manager = new Manager();
+                        foreach(Node n in manager.points())
                         {
                             if (smallest == n.Id)
                                 node.Add(n);

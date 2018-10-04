@@ -15,7 +15,7 @@
         }
 
         var exampleSocket;
-        var textMap = 'mp_cloud9';
+        var textMap = 'skybox';
         var textName = 'cloud9';
 
         window.onload = function () {
@@ -100,12 +100,12 @@
                 InitSkybox();
 
                 var Garage = new THREE.Group();
-                ObjectLoader(null, "/textures/", "GasStation1.obj", 25, -0.63, 1, Garage, "GasStation1.mtl");
+                ObjectLoader(null, "/textures/gasstation/", "GasStation1.obj", 25, -0.63, 1, Garage, "GasStation1.mtl");
                 // Garage.scale.set(0.008, 0.01, 0.008);
                 //Garage.position.set(10, 0, -3.8);
                 Garage.rotation.y = Math.PI;
                 scene.add(Garage);
-                               
+
 
                 renderer = new THREE.WebGLRenderer({ antialias: true });
                 renderer.setPixelRatio(window.devicePixelRatio);
@@ -115,7 +115,7 @@
                 window.addEventListener('resize', onWindowResize, false);
 
                 var geometry = new THREE.PlaneGeometry(30, 30, 32);
-                var material = new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("/textures/vloer.jpg"), side: THREE.DoubleSide });
+                var material = new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("/textures/world/vloer.jpg"), side: THREE.DoubleSide });
                 var plane = new THREE.Mesh(geometry, material);
                 plane.rotation.x = Math.PI / 2.0;
                 plane.position.x = 15;
@@ -167,7 +167,7 @@
                         if (command.parameters.type === "shelf") {
                             var groupShelf = new THREE.Group();
                             new THREE.MTLLoader()
-                                .setPath('/textures/')
+                                .setPath('/textures/shelf/')
                                 .load('shelf4.mtl', function (materials) {
 
 
@@ -175,7 +175,7 @@
 
                                     new THREE.OBJLoader()
                                         .setMaterials(materials)
-                                        .setPath('/textures/')
+                                        .setPath('/textures/shelf/')
                                         .load('shelf4.obj', function (object) {
                                             groupShelf.add(object);
                                         });
@@ -200,26 +200,26 @@
                             var groupRobot = new THREE.Group();
 
                             var loader = new THREE.GLTFLoader();
-                            loader.load('Flamingo.glb', function (gltf) {
+                            loader.load('/textures/flamingo/Flamingo.glb', function (gltf) {
                                 var mesh = gltf.scene.children[0];
-                               // var s = 0.35;
-                             //   mesh.scale.set(s, s, s);
+                                // var s = 0.35;
+                                //   mesh.scale.set(s, s, s);
                                 mesh.position.y = 15;
                                 mesh.rotation.y = -1;
                                 mesh.castShadow = true;
                                 mesh.receiveShadow = true;
                                 groupRobot.scale.set(0.01, 0.01, 0.01);
-                              //  mesh.position.set(1, 1, 0);
-                              //  scene.add(mesh);
+                                //  mesh.position.set(1, 1, 0);
+                                //  scene.add(mesh);
 
                                 var mixer = new THREE.AnimationMixer(mesh);
                                 mixer.clipAction(gltf.animations[0]).setDuration(1).play();
                                 mixers.push(mixer);
-                                
-                            groupRobot.add(mesh);
 
-                            scene.add(groupRobot);
-                            worldObjects[command.parameters.guid] = groupRobot;
+                                groupRobot.add(mesh);
+
+                                scene.add(groupRobot);
+                                worldObjects[command.parameters.guid] = groupRobot;
 
                             });
 
@@ -228,20 +228,20 @@
                         if (command.parameters.type === "lorry") {
                             var groupLorry = new THREE.Group();
                             new THREE.MTLLoader()
-                                .setPath('/textures/')
+                                .setPath('/textures/truck/')
                                 .load('truck3.mtl', function (materials) {
 
                                     materials.preload();
 
                                     new THREE.OBJLoader()
                                         .setMaterials(materials)
-                                        .setPath('/textures/')
+                                        .setPath('/textures/truck/')
                                         .load('truck3.obj', function (mesh) {
                                             mesh.rotation.y = Math.PI / 2;
                                             groupLorry.add(mesh);
                                         });
                                 });
-                         
+
                             scene.add(groupLorry);
                             worldObjects[command.parameters.guid] = groupLorry;
                         }
@@ -285,18 +285,18 @@
 
             init();
             animate();
-        
+
         };
 
     </script>
-
-    <script src="three.min.js"></script>
-    <script src="TGALoader.js"></script>
-    <script src="MTLLoader.js"></script>
-    <script src="OBJLoader.js"></script>
-    <script src="OrbitControls.js"></script>
-    <script src="GLTFLoader.js"></script>
-
+    <script src="js/threejs/three.min.js"></script>
+    <script src="js/threejs/OrbitControls.js"></script>
+    <script src="js/loaders/GLTFLoader.js"></script>
+    <script src="js/loaders/MTLLoader.js"></script>
+    <script src="js/loaders/OBJLoader.js"></script>
+    <script src="js/loaders/TGALoader.js"></script>
+    <script src="js/classes/robot.js"></script>
+    <script src="js/classes/LoadObjModel.js"></script>
 </body>
 
 </html>

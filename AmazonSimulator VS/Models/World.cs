@@ -12,11 +12,13 @@ namespace Models
         private List<_3DModel> worldObjects = new List<_3DModel>();
         private List<IObserver<Command>> observers = new List<IObserver<Command>>();
         private Lorry vrachtwagen;
-        private List<Node> Punten = Manager.Punten;
+       // private List<Node> Punten;
         private bool StorageEmpty = false;
 
         public World()
         {
+            //Punten = WorldManager.points();
+
             WorldManager.AddNodes();
             Robot r0 = CreateRobot(0, 0, 0);
             Robot r1 = CreateRobot(0, 0, 0);
@@ -31,7 +33,7 @@ namespace Models
 
             vrachtwagen.Move(0, 0, -2);
 
-            foreach (var punt in Punten)
+            foreach (var punt in WorldManager.points())
             {
                 if (punt.Id.Length == 1)
                 {
@@ -131,7 +133,7 @@ namespace Models
                     else if (WorldManager.DockNodes().Count() == 4 && WorldManager.GetFillStorage() == false)
                     {
                         vrachtwagen.VrachtwagenRoute(WorldManager.ReturnNodes().shortest_path("VB", "VC"));
-                        foreach (Node n in Punten)
+                        foreach (Node n in WorldManager.points())
                         {
                             if (n.Id.Length == 4)
                             {
@@ -145,8 +147,8 @@ namespace Models
                 }
                 if (vrachtwagen.x > 39)
                 {
-                    if (Manager.TruckDelivery == true)
-                        Manager.TruckDelivery = false;
+                    if (WorldManager.truckdel() == true)
+                        WorldManager.SetTruckDel(false);
 
                     StorageEmpty = false;
                     vrachtwagen.Move(0, 0, -2);
