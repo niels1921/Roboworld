@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,17 +12,10 @@ namespace Models
     {
         private List<Robot> RobotList = new List<Robot>();
         private List<Node> ShelfList = new List<Node>();
-        private List<Node> AvailableShelfs = new List<Node>();
-        private List<Node> AvailableDockNodes = new List<Node>();
-        private List<Node> TrueAvailableShelfs = new List<Node>();
-        private List<Node> TrueAvailableDock = new List<Node>();
-        private List<Node> AvailableDockShelfs = new List<Node>();
-
-        public static List<Node> TruckReadyList = new List<Node>();
-        private List<Robot> RobotBusy = new List<Robot>();
         private Lorry Truck;
         private Dijkstra Nodes = new Dijkstra();
-        private bool StorageEmpty = false;
+        private List<Shelf> NotAssignedShelfs = new List<Shelf>();
+        private bool VullenStorage = false;
 
         public static bool TruckDelivery = false;
         public static List<Node> Punten = new List<Node>()
@@ -141,248 +135,108 @@ namespace Models
         {
             return Nodes;
         }
-        /// <summary>
-        /// Kijkt in de lijst Punten welke nodes met ID lengte 1 allemaal een shelf bevatten
-        /// Deze wordt meteen minder bij het uitdelen van de taken
-        /// </summary>
-        public void CheckForAvailableShelfNodes()
-        {
-            var AvailableNodes = from node in Punten
-                                 where node.Id.Length == 1 && node.ShelfStatus == true
-                                 select node;
-
-            AvailableShelfs = AvailableNodes.ToList();            
-        }
-        /// <summary>
-        /// ////////////////////////////////////
-        /// </summary>
-        public void CheckforFilledShelfNodes()
-        {
-            var AvailableShelfes = from node in Punten
-                                   where node.Id.Length == 1 & node.ShelfStatus == false
-                                   select node;
-
-            ShelfList = AvailableShelfes.ToList();
-        }
-        /// <summary>
-        /// Kijkt in de lijst Punten welke nodes met ID lengte 1 allemaal een fysieke shelf bevatten
-        /// Deze wordt pas verandert wanneer de shelfs fysiek van positie zijn verandert
-        /// </summary>
-        public void CheckForAvailableShelf()
-        {
-            var AvailableNodes = from node in Punten
-                                 where node.Id.Length == 1 && node.Shelf == null
-                                 select node;
-
-            TrueAvailableShelfs = AvailableNodes.ToList();
-        }
-
-        /// <summary>
-        /// Kijkt in de lijst Punten welke loadingdock nodes een false shelfstatus hebben.
-        /// Deze wordt bij het taken uitdelen al geleegd
-        /// </summary>
-        public void CheckForAvailableDockNodes()
-        {
-            var AvailableDock = from node in Punten
-                                where node.Id.Length == 4 && node.ShelfStatus == false
-                                select node;
-
-            AvailableDockNodes = AvailableDock.ToList();     
-        }
-
-        public void CheckForFilledDockNodes()///////////////////////////////////////////////////////////////
-        {
-            var AvailableDockShelfs = from node in Punten
-                                      where node.Id.Length == 4 && node.ShelfStatus == true
-                                      select node;
-
-            AvailableDockShelfs = AvailableDockShelfs.ToList();
-        }
-        /// <summary>
-        /// Kijkt in de lijst Punten welke loadingdock nodes fysieke shelfs bevatten
-        /// Deze wordt pas groter wanneer er echt een shelf is
-        /// </summary>
-        public void CheckForTrueAvailableDockNodes()
-        {
-            var AvailableDock = from node in Punten
-                                where node.Id.Length == 4 && node.ShelfStatus == true
-                                select node;
-
-            TrueAvailableDock = AvailableDock.ToList();
-        }
-        /// <summary>
-        /// Kijkt in de lijst Punten wlke loadingdock nodes shelfs bevatten
-        /// Deze wordt pas minder wanneer een shelf op de fysieke locatie is aangekomen
-        /// </summary>
-        public void CheckTruckReady()
-        {
-            var TruckReady = from node in Punten
-                             where node.Shelf == null && node.Id.Length == 4
-                             select node;
-
-            TruckReadyList = TruckReady.ToList();
-        }
-        /// <summary>
-        /// Kijkt of een robot bezig is en voegt deze dan toe aan een lijst
-        /// Een robot is pas niet meer busy wanneer die weer op zijn begin positie is
-        /// </summary>
-        public void CurrentRobotBusy()
-        {
-            var robotbusy = from robot in RobotList
-                            where robot.RobotBusy == true
-                            select robot;
-
-            RobotBusy = robotbusy.ToList();
-        }
 
         public void AssignRobot()
         {
-            CheckForAvailableShelfNodes();
-            CheckForAvailableDockNodes();
-            CheckTruckReady();
-            CurrentRobotBusy();
-            CheckForAvailableShelf();
-
-            if (StorageEmpty == true)
-                FillStorage();
-            else if (TruckReadyList.Count() == 4 && TrueAvailableShelfs.Count() == 4 && RobotBusy.Count() == 0)
+            foreach (Robot r in RobotList)
             {
-                StorageEmpty = true;
-                TruckDelivery = true;
-            }
-            else if (TrueAvailableShelfs.Count() == 0 && TruckDelivery == true)
-            {
-                Truck.VrachtwagenRoute(Nodes.shortest_path("VB", "VC"));
-            }
-            else if (TruckReadyList.Count() == 0 && TruckDelivery == false)
-            {
-                Truck.VrachtwagenRoute(Nodes.shortest_path("VB", "VC"));
-                foreach (Node n in Punten)
+                if (r.TaskCount() == 0)
                 {
-                    if (n.Id.Length == 4)
-                    {
-                        n.Shelf.Move(0, 1000, 0);
-                        n.Shelf = null;
-                        n.ShelfStatus = false;
-                    }
-                }
-            }
-            else
-            {
-                foreach (Robot r in RobotList)
-                {
-                    if (r.TaskCount() == 0 && AvailableDockNodes.Count() > 0 && RobotBusy.Count() == 0 && StorageEmpty == false)
-                    {
-                        CheckForAvailableShelfNodes();
-                        CheckForAvailableDockNodes();
-                        List<Node> RobotRouteHeenweg = new List<Node>();
-                        List<Node> RobotRouteTerugweg = new List<Node>();
-                        List<Node> RobotRouteStartPositie = new List<Node>();
-                        List<Node> RobotStoreShelf = new List<Node>();
-                        Random rnd = new Random();
-                        int random = rnd.Next(0, AvailableShelfs.Count() - 1);
-                        Console.WriteLine();
-                        Node punt1 = AvailableShelfs[random];
-                        RobotRouteHeenweg = Nodes.shortest_path("HA", punt1.Id);
-                        RobotMove move = new RobotMove(RobotRouteHeenweg);
-                        r.AddTask(move);
+                    Random rnd = new Random();
+                    int ShelfListStatus = 0;
+                    ShelfListStatus = ShelfList.Count(i => i.ShelfStatus == true);
+                    int random = rnd.Next(0, ShelfListStatus - 1);
+                    Node punt1 = ShelfList[random];
+                    punt1.ShelfStatus = false;
+                    NotAssignedShelfs.Add(punt1.Shelf);
+                    ShelfList.RemoveAt(random);
 
-                        RobotPickUp pickup = new RobotPickUp(punt1.Shelf, punt1);
-                        r.AddTask(pickup);
-                        punt1.ShelfStatus = false;
-                        Console.WriteLine();
+                    List<Node> RobotRouteHeenweg = Nodes.shortest_path("HA", punt1.Id);
+                    RobotMove move = new RobotMove(RobotRouteHeenweg);
+                    r.AddTask(move);
 
-                        RobotRouteTerugweg = Nodes.shortest_path(punt1.Id, "HB");
-                        RobotMove terugweg = new RobotMove(RobotRouteTerugweg);
-                        r.AddTask(terugweg);
-                        RobotStoreShelf = Nodes.shortest_path("HB", AvailableDockNodes[0].Id);
-                        RobotMove storeshelf = new RobotMove(RobotStoreShelf);
-                        r.AddTask(storeshelf);
+                    RobotPickUp pickup = new RobotPickUp(punt1);
+                    r.AddTask(pickup);
+                    //Robot is naar de shelf positie gestuurd en pakt deze shelf op.
+                    punt1.ShelfStatus = false;
+                    //Zorgt ervoor dat bij de volgende itteratie de robot niet naar dezelfde shelf gestuurd kan worden.
 
-                        RobotPickUp dropdown = new RobotPickUp(punt1.Shelf, punt1);
-                        r.AddTask(dropdown);
+                    List<Node> RobotRouteTerugweg = Nodes.shortest_path(punt1.Id, "HB");
+                    RobotMove terugweg = new RobotMove(RobotRouteTerugweg);
+                    r.AddTask(terugweg);
 
-                        var shelfstatus = from punt in Punten
-                                          where AvailableDockNodes[0].Id == punt.Id
-                                          select punt;
+                    Node AvailableDockNode = null;
+                    AvailableDockNode = Punten.FirstOrDefault(i => i.Id.Length == 4 && i.ShelfStatus == false);
+                    AvailableDockNode.ShelfStatus = true;
+                    List<Node> RobotStoreShelf = Nodes.shortest_path("HB", AvailableDockNode.Id);
+                    RobotMove storeshelf = new RobotMove(RobotStoreShelf);
+                    r.AddTask(storeshelf);
 
-                        foreach (Node n in shelfstatus)
-                        {
-                            n.ShelfStatus = true;
-                        }
-                        Console.WriteLine();
-                        RobotRouteStartPositie = Nodes.shortest_path(AvailableDockNodes[0].Id, "HA");
-                        RobotMove startpositie = new RobotMove(RobotRouteStartPositie);
-                        r.AddTask(startpositie);
-                        move.StartTask(r);
-                        r.RobotBusy = true;
-                    }
+                    RobotDropDown dropdown = new RobotDropDown(AvailableDockNode);
+                    r.AddTask(dropdown);
 
+                    List<Node> RobotRouteStartPositie = Nodes.shortest_path(AvailableDockNode.Id, "HA");
+                    RobotMove startpositie = new RobotMove(RobotRouteStartPositie);
+                    r.AddTask(startpositie);
+                    move.StartTask(r);
+                    r.RobotBusy = true;
+                    VullenStorage = false;
                 }
             }
         }
 
         public void FillStorage()
         {
-            StorageEmpty = false;
+            foreach(Node n in Punten)
+            {
+                if(n.Id.Length == 4)
+                {
+                    n.Shelf = NotAssignedShelfs[0];
+                    NotAssignedShelfs[0].Move(n.X, 0, n.Z);
+                    NotAssignedShelfs.RemoveAt(0);
+                    n.ShelfStatus = true;
+                    
+                }
+            }
+
             foreach (Robot r in RobotList)
             {
                 if (r.TaskCount() == 0)
                 {
-                    CheckForAvailableShelfNodes();
-                    CheckforFilledShelfNodes();
-                    CheckForAvailableDockNodes();
-                    CheckForAvailableShelf();
-                    CheckForTrueAvailableDockNodes();
-                    CheckTruckReady();
-                    CheckForFilledDockNodes();
+                    Node AvailableDockNode = null;
+                    AvailableDockNode = Punten.FirstOrDefault(i => i.Id.Length == 4 && i.ShelfStatus == true);
+                    AvailableDockNode.ShelfStatus = false;
 
-                    List<Node> RobotRouteHeenweg = new List<Node>();
-                    List<Node> RobotRouteTerugweg = new List<Node>();
-                    List<Node> RobotRouteStartPositie = new List<Node>();
-                    List<Node> RobotStoreShelf = new List<Node>();
-                    //ga naar de docknode die nog een shelf bevatten
-                    RobotRouteHeenweg = Nodes.shortest_path("HA", TrueAvailableDock[0].Id);
+                    List<Node> RobotRouteHeenweg = Nodes.shortest_path("HA", AvailableDockNode.Id);
                     RobotMove move = new RobotMove(RobotRouteHeenweg);
                     r.AddTask(move);
-                    //pak de shelf op en zeg dat de shelf weg is
-                    RobotPickUp pickup = new RobotPickUp(TrueAvailableDock[0].Shelf, TrueAvailableDock[0]);
-                    r.AddTask(pickup);
-                    TrueAvailableDock[0].ShelfStatus = false;
-                    Console.WriteLine();
-                    //ga van de docknode naar HB
-                    RobotRouteTerugweg = Nodes.shortest_path(TrueAvailableDock[0].Id, "HB");
-                    RobotMove terugweg = new RobotMove(RobotRouteTerugweg);
-                    r.AddTask(terugweg);
-                    //////////////////////////////////////////////////////////////////////////////////////
-                    var shelfstatus = from punt in Punten
-                                      where ShelfList[0].Id == punt.Id
-                                      select punt;
 
-                    foreach (Node n in shelfstatus)
-                    {
-                        n.ShelfStatus = true;
-                    }
-                    //ga van HB naar de shelfnode die nog geen shelf heeft
-                    RobotStoreShelf = Nodes.shortest_path("HB", ShelfList[0].Id);
+                    RobotPickUp pickup = new RobotPickUp(AvailableDockNode);
+                    r.AddTask(pickup);
+
+                    List<Node> RobotStoreShelf = Nodes.shortest_path(AvailableDockNode.Id, "HB");
                     RobotMove storeshelf = new RobotMove(RobotStoreShelf);
                     r.AddTask(storeshelf);
-                    //drop de shelf op de plek waar nog geen shelf is
-                    RobotPickUp dropdown = new RobotPickUp(TrueAvailableDock[0].Shelf, TrueAvailableDock[0]);
-                    r.AddTask(dropdown);
 
-                    Console.WriteLine();
-                    //ga van de positie waar de shelf gedropt is weer naar het start punt
-                    RobotRouteStartPositie = Nodes.shortest_path(ShelfList[0].Id, "HA");
+                    Node EmptyShelfNode = null;
+                    EmptyShelfNode = Punten.FirstOrDefault(i => i.Id.Length == 1 && i.ShelfStatus == false);
+                    EmptyShelfNode.ShelfStatus = true;
+
+                    List<Node> RobotRouteTerugweg = Nodes.shortest_path("HB", EmptyShelfNode.Id);
+                    RobotMove terugweg = new RobotMove(RobotRouteTerugweg);
+                    r.AddTask(terugweg);
+
+                    RobotDropDown dropdown = new RobotDropDown(EmptyShelfNode);
+                    r.AddTask(dropdown);
+                    ShelfList.Add(EmptyShelfNode);
+
+                    List<Node> RobotRouteStartPositie = Nodes.shortest_path(EmptyShelfNode.Id, "HA");
                     RobotMove startpositie = new RobotMove(RobotRouteStartPositie);
                     r.AddTask(startpositie);
                     move.StartTask(r);
                     r.RobotBusy = true;
-                    CheckForAvailableDockNodes();
-                    CheckTruckReady();
                 }
             }
-
         }
 
         public void Addrobot(Robot robot)
@@ -390,44 +244,56 @@ namespace Models
             RobotList.Add(robot);
         }
 
-        //public void AddShelf(Shelf shelf)
-        //{
-        //    ShelfList.Add(shelf);
-        //}
-
-        public List<Robot> Robots()
+        public void AddShelf(Node shelf)
         {
-            return RobotList;
+            ShelfList.Add(shelf);
         }
 
-        //public List<Shelf> Shelfs()
-        //{
-        //    return ShelfList;
-        //}
+        public int RobotTaskCount()
+        {
+            int count = 0;
+
+            foreach (Robot r in RobotList)
+            {
+                count += r.TaskCount();
+            }
+            return count;
+        }
+
+        public int AvailableRobots()
+        {
+            int freerobotcount = RobotList.Count(i => i.RobotBusy == false);
+
+            return freerobotcount;
+        }
+
+        public List<Node> Shelfs()
+        {
+            return ShelfList;
+        }
+
+        public List<Node> DockNodes()
+        {
+            List<Node> NodeList = new List<Node>();
+            var List = Punten.Where(i => i.Id.Length == 4 && i.Shelf != null);
+            NodeList = List.ToList();
+
+            return NodeList;
+        }
 
         public void AddTruck(Lorry l)
         {
             Truck = l;
         }
-        public bool GetStorageStatus()
+
+        public void SetFillStorage(bool b)
         {
-            if (StorageEmpty == false)
-                return false;
-            else
-                return true;
+            VullenStorage = b;
         }
 
-        public Node GetDockShelf()
+        public bool GetFillStorage()
         {
-            CheckForAvailableDockNodes();
-            return AvailableDockNodes[0];
-        }
-
-        public void RemoveDockShelf()
-        {
-            CheckTruckReady();
-            TruckReadyList[0] = null; // 1 vn de twee of beide weet ik nog niet 
-            AvailableDockNodes.RemoveAt(0);
+            return VullenStorage;
         }
     }
 }
