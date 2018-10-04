@@ -22,20 +22,22 @@ namespace Models
 
         public override bool Update(int tick)
         {
-            if(tasks.Count() != 0)
+            if (tasks.Count() != 0)
             {
                 if (tasks.First().Taskcomplete(this))
                 {
-                    if(this.Route.Count() != 0)
+                    if (this.Route.Count() != 0)
                         this.Route.RemoveAt(0);
                     tasks.RemoveAt(0);
-                    if(tasks.Count != 0)
+                    if (tasks.Count != 0)
                     {
                         tasks.First().StartTask(this);
                     }
-                    
+
                 }
             }
+            else
+                this.RobotBusy = false;
 
 
             if (this.Route.Count() >= 0)
@@ -154,6 +156,11 @@ namespace Models
         public void RemoveShelf()
         {
             this.Shelf = null;
+        }
+
+        public Shelf ReturnShelf()
+        {
+            return this.Shelf;
         }
 
         public bool ShelfStatus()
