@@ -24,10 +24,10 @@ namespace Models
             vrachtwagen = CreateLorry(0, 0, 0);
             //Product p = CreateProduct(0, 0, 0);
 
-            r0.Move(2, 0, 1);
-            r1.Move(2, 0, 2);
-            r2.Move(2, 0, 3);
-            r3.Move(2, 0, 4);
+            r0.Move(2, 2, 1);
+            r1.Move(2, 2, 2);
+            r2.Move(2, 2, 3);
+            r3.Move(2, 2, 4);
 
             vrachtwagen.Move(0, 0, -2);
 

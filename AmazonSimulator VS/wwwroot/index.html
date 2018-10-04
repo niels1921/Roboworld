@@ -106,24 +106,6 @@
                 Garage.rotation.y = Math.PI;
                 scene.add(Garage);
                                
-                var loader = new THREE.GLTFLoader();
-                loader.load('Flamingo.glb', function (gltf) {
-                    var mesh = gltf.scene.children[0];
-                    var s = 0.35;
-                    mesh.scale.set(s, s, s);
-                    mesh.position.y = 15;
-                    mesh.rotation.y = -1;
-                    mesh.castShadow = true;
-                    mesh.receiveShadow = true;
-                    mesh.scale.set(0.02, 0.02, 0.02);
-                    mesh.position.set(1, 1, 0);
-                    scene.add(mesh);
-
-                    var mixer = new THREE.AnimationMixer(mesh);
-                    mixer.clipAction(gltf.animations[0]).setDuration(1).play();
-                    mixers.push(mixer);
-
-                });
 
                 renderer = new THREE.WebGLRenderer({ antialias: true });
                 renderer.setPixelRatio(window.devicePixelRatio);
@@ -203,24 +185,44 @@
                         }
 
                         if (command.parameters.type === "robot") {
-                            var geometryRobot = new THREE.BoxGeometry(0.9, 0.3, 0.9);
-                            var MaterialsRobot = [
-                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_side.png"), side: THREE.DoubleSide }), //LEFT
-                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_side.png"), side: THREE.DoubleSide }), //RIGHT
-                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_top.png"), side: THREE.DoubleSide }), //TOP
-                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_bottom.png"), side: THREE.DoubleSide }), //BOTTOM
-                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_front.png"), side: THREE.DoubleSide }), //FRONT
-                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_front.png"), side: THREE.DoubleSide }), //BACK
-                            ];
-                            var materialRobot = new THREE.MeshFaceMaterial(MaterialsRobot);
-                            var modelRobot = new THREE.Mesh(geometryRobot, materialRobot);
-                            modelRobot.position.y = 0.15;
-
+                            //var geometryRobot = new THREE.BoxGeometry(0.9, 0.3, 0.9);
+                            //var MaterialsRobot = [
+                            //    new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_side.png"), side: THREE.DoubleSide }), //LEFT
+                            //    new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_side.png"), side: THREE.DoubleSide }), //RIGHT
+                            //    new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_top.png"), side: THREE.DoubleSide }), //TOP
+                            //    new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_bottom.png"), side: THREE.DoubleSide }), //BOTTOM
+                            //    new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_front.png"), side: THREE.DoubleSide }), //FRONT
+                            //    new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_front.png"), side: THREE.DoubleSide }), //BACK
+                            //];
+                            //var materialRobot = new THREE.MeshFaceMaterial(MaterialsRobot);
+                            //var modelRobot = new THREE.Mesh(geometryRobot, materialRobot);
+                            //modelRobot.position.y = 0.15;
                             var groupRobot = new THREE.Group();
-                            groupRobot.add(modelRobot);
+
+                            var loader = new THREE.GLTFLoader();
+                            loader.load('Flamingo.glb', function (gltf) {
+                                var mesh = gltf.scene.children[0];
+                               // var s = 0.35;
+                             //   mesh.scale.set(s, s, s);
+                                mesh.position.y = 15;
+                                mesh.rotation.y = -1;
+                                mesh.castShadow = true;
+                                mesh.receiveShadow = true;
+                                groupRobot.scale.set(0.01, 0.01, 0.01);
+                              //  mesh.position.set(1, 1, 0);
+                              //  scene.add(mesh);
+
+                                var mixer = new THREE.AnimationMixer(mesh);
+                                mixer.clipAction(gltf.animations[0]).setDuration(1).play();
+                                mixers.push(mixer);
+                                
+                            groupRobot.add(mesh);
 
                             scene.add(groupRobot);
                             worldObjects[command.parameters.guid] = groupRobot;
+
+                            });
+
                         }
 
                         if (command.parameters.type === "lorry") {
