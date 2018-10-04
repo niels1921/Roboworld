@@ -8,9 +8,6 @@ namespace Models
 {
     public class Shelf : _3DModel, IUpdatable
 {
-        public List<Node> Route { get; set; }
-
-        public Node Node { get; set; }
 
         public Shelf(double x, double y, double z, double rotationX, double rotationY, double rotationZ) : base("shelf", x, y, z, rotationX, rotationY, rotationZ)
         {

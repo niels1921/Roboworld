@@ -7,9 +7,11 @@ namespace Models
 {
     public class Dijkstra
     {
+
         Dictionary<string, Dictionary<string, Node>> tijdelijk = new Dictionary<string, Dictionary<string, Node>>();
         Dictionary<string, Dictionary<string, int>> vertices = new Dictionary<string, Dictionary<string, int>>();
         double OriginX, OriginZ;
+        private List<Node> Punten = Manager.Punten;
 
         public void Add_Nodes(string name, Dictionary<string, Node> randen)
         {
@@ -44,7 +46,7 @@ namespace Models
             }
         }
 
-        public List<string> shortest_path(string start, string finish)
+        public List<Node> shortest_path(string start, string finish)
         {
 
             var previous = new Dictionary<string, string>();
@@ -55,8 +57,7 @@ namespace Models
 
 
 
-            List<string> path = null;
-
+            List<Node> node = null;
 
 
             foreach (var vertex in vertices)
@@ -105,13 +106,15 @@ namespace Models
 
                 {
 
-                    path = new List<string>();
-
+                    node = new List<Node>();
                     while (previous.ContainsKey(smallest))
 
                     {
-
-                        path.Add(smallest);
+                        foreach(Node n in Punten)
+                        {
+                            if (smallest == n.Id)
+                                node.Add(n);
+                        }
 
                         smallest = previous[smallest];
 
@@ -151,11 +154,9 @@ namespace Models
 
                 }
 
-            }
-
-            path.Reverse();
-
-            return path;
+            }        
+            node.Reverse();
+            return node;
         }
     }
 }

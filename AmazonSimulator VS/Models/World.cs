@@ -4,7 +4,8 @@ using System.Linq;
 using Controllers;
 using Models;
 
-namespace Models {
+namespace Models
+{
     public class World : IObservable<Command>, IUpdatable
     {
         private Manager WorldManager = new Manager();
@@ -13,9 +14,10 @@ namespace Models {
         private Lorry vrachtwagen;
         private List<Node> Punten = Manager.Punten;
 
-        public World() {
+        public World()
+        {
             WorldManager.AddNodes();
-            Robot r0 = CreateRobot(0, 0, 0);          
+            Robot r0 = CreateRobot(0, 0, 0);
             Robot r1 = CreateRobot(0, 0, 0);
             Robot r2 = CreateRobot(0, 0, 0);
             Robot r3 = CreateRobot(0, 0, 0);
@@ -26,24 +28,28 @@ namespace Models {
             r1.Move(2, 0, 2);
             r2.Move(2, 0, 3);
             r3.Move(2, 0, 4);
-            
+
             vrachtwagen.Move(0, 0, -2);
 
             //p.Move(2, 0, 28);
 
-            foreach(var punt in Punten)
+            foreach (var punt in Punten)
             {
-                if(punt.Id.Length == 1)
+                if (punt.Id.Length == 1)
                 {
                     Shelf s = CreateShelf(0, 0, 0);
                     punt.Shelf = s;
                     s.Move(punt.X, 0, punt.Z);
+                    punt.ShelfStatus = true;
                 }
+                if (punt.Id.Length == 4)
+                    punt.ShelfStatus = false;
             }
         }
 
-        private Robot CreateRobot(double x, double y, double z) {
-            Robot r = new Robot(x,y,z,0,0,0);
+        private Robot CreateRobot(double x, double y, double z)
+        {
+            Robot r = new Robot(x, y, z, 0, 0, 0);
             List<Node> Route = new List<Node>();
             r.Route = Route;
             worldObjects.Add(r);
@@ -70,13 +76,14 @@ namespace Models {
         {
             Shelf s = new Shelf(x, y, z, 0, 0, 0);
             worldObjects.Add(s);
-            WorldManager.AddShelf(s);
+            //WorldManager.AddShelf(s);
             return s;
         }
 
         public IDisposable Subscribe(IObserver<Command> observer)
         {
-            if (!observers.Contains(observer)) {
+            if (!observers.Contains(observer))
+            {
                 observers.Add(observer);
 
                 SendCreationCommandsToObserver(observer);
@@ -84,55 +91,70 @@ namespace Models {
             return new Unsubscriber<Command>(observers, observer);
         }
 
-        private void SendCommandToObservers(Command c) {
-            for(int i = 0; i < this.observers.Count; i++) {
+        private void SendCommandToObservers(Command c)
+        {
+            for (int i = 0; i < this.observers.Count; i++)
+            {
                 this.observers[i].OnNext(c);
             }
         }
 
-        private void SendCreationCommandsToObserver(IObserver<Command> obs) {
-            foreach(_3DModel m3d in worldObjects) {
+        private void SendCreationCommandsToObserver(IObserver<Command> obs)
+        {
+            foreach (_3DModel m3d in worldObjects)
+            {
                 obs.OnNext(new UpdateModel3DCommand(m3d));
             }
         }
 
         public bool Update(int tick)
         {
-            for(int i = 0; i < worldObjects.Count; i++) {
+            for (int i = 0; i < worldObjects.Count; i++)
+            {
                 _3DModel u = worldObjects[i];
 
                 if (vrachtwagen.GetRoute().Count == 0 && vrachtwagen.x < 16)
                 {
-                    foreach (string l in WorldManager.ReturnNodes().shortest_path("VA", "VB"))
-                    {
-                        var punt = from point in Punten
-                                   where point.Id == l
-                                   select point;
-                        vrachtwagen.AddRoute(punt.Single());
-                    }                   
+                    vrachtwagen.VrachtwagenRoute(WorldManager.ReturnNodes().shortest_path("VA", "VB"));
+                    //foreach (string l in WorldManager.ReturnNodes().shortest_path("VA", "VB"))
+                    //{
+                    //    var punt = from point in Punten
+                    //               where point.Id == l
+                    //               select point;
+                    //    vrachtwagen.AddRoute(punt.Single());
+                    //}
                 }
-                if(Math.Round(vrachtwagen.x, 1) == 20)
+                if (Math.Round(vrachtwagen.x, 1) == 20)
                 {
                     WorldManager.AssignRobot();
-                    if(WorldManager.GetStorageStatus() == true)
-                        foreach(Node n in Punten)
+                    if (WorldManager.GetStorageStatus() == true)
+                    {
+                        foreach (Node n in Punten)
                         {
-                            if(n.Id.Length == 4)
+                            if (n.Id.Length == 4)
                             {
                                 Shelf s = CreateShelf(0, 0, 0);
                                 n.Shelf = s;
                                 s.Move(n.X, 0, n.Z);
+                                n.ShelfStatus = true;
                             }
                         }
+                    }
                 }
-                if (vrachtwagen.x > 35)               
+                if (vrachtwagen.x > 39)
+                {
+                    if (Manager.TruckDelivery == true)
+                        Manager.TruckDelivery = false;
+
                     vrachtwagen.Move(0, 0, -2);
-                
-                    
-                if (u is IUpdatable) {
+                }
+
+                if (u is IUpdatable)
+                {
                     bool needsCommand = ((IUpdatable)u).Update(tick);
 
-                    if(needsCommand) {
+                    if (needsCommand)
+                    {
                         SendCommandToObservers(new UpdateModel3DCommand(u));
                     }
                 }
@@ -153,7 +175,7 @@ namespace Models {
             this._observer = observer;
         }
 
-        public void Dispose() 
+        public void Dispose()
         {
             if (_observers.Contains(_observer))
                 _observers.Remove(_observer);

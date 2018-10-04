@@ -9,8 +9,8 @@ namespace Models
     {
         public List<Node> Route { get; set; }
         private Shelf Shelf;
+        public bool RobotBusy { get; set; }
         private List<IRobotTask> tasks = new List<IRobotTask>();
-        Manager RobotManager = new Manager();
 
         private double DeltaX, DeltaZ;
 
@@ -32,7 +32,6 @@ namespace Models
                     if(tasks.Count != 0)
                     {
                         tasks.First().StartTask(this);
-                        //////////////RobotManager.AssignRobot();
                     }
                     
                 }
@@ -119,7 +118,8 @@ namespace Models
                     DeltaX += 0.1;
                 }
             }
-
+            if (Math.Round(this.x) == 2 && Math.Round(this.z) == 4 && TaskCount() == 0)
+               this.RobotBusy = false;
             return base.Update(tick);
         }
 
@@ -154,6 +154,14 @@ namespace Models
         public void RemoveShelf()
         {
             this.Shelf = null;
+        }
+
+        public bool ShelfStatus()
+        {
+            if (this.Shelf != null)
+                return true;
+            else
+                return false;
         }
     }
 }
