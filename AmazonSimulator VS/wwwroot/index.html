@@ -65,7 +65,6 @@
                 scene.add(mesh);
             }
 
-
             function ObjectLoader(material, path, obj, x, y, z, group, material) {
                 new THREE.MTLLoader()
                     .setPath(path)
@@ -83,15 +82,11 @@
                                 group.add(object);
                             });
                     });
-
-
             }
-
 
             function MtlLoader(path, mtlfile) {
 
             }
-
 
             function init() {
                 camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1500);
@@ -105,13 +100,12 @@
                 InitSkybox();
 
                 var Garage = new THREE.Group();
-                ObjectLoader(null, "/textures/", "smallgarage.obj", 20, 0, -2.8, Garage, "smallgarage.mtl");
-                Garage.scale.set(0.008, 0.01, 0.008);
-                //Garage.position.set(10, 0, -2.8);
+                ObjectLoader(null, "/textures/", "GasStation1.obj", 25, -0.63, 1, Garage, "GasStation1.mtl");
+                // Garage.scale.set(0.008, 0.01, 0.008);
+                //Garage.position.set(10, 0, -3.8);
+                Garage.rotation.y = Math.PI;
                 scene.add(Garage);
-
-
-
+                               
                 var loader = new THREE.GLTFLoader();
                 loader.load('Flamingo.glb', function (gltf) {
                     var mesh = gltf.scene.children[0];
@@ -146,13 +140,13 @@
                 plane.position.z = 15;
                 scene.add(plane);
 
-                var Roadgeometry = new THREE.PlaneGeometry(50, 8, 0);
-                var Roadmaterial = new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("/textures/road.jpg"), side: THREE.DoubleSide });
-                var Roadplane = new THREE.Mesh(Roadgeometry, Roadmaterial);
-                Roadplane.rotation.x = Math.PI / 2;
-                Roadplane.position.x = 15;
-                Roadplane.position.z = -4;
-                scene.add(Roadplane);
+                //var Roadgeometry = new THREE.PlaneGeometry(50, 8, 0);
+                //var Roadmaterial = new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("/textures/road.jpg"), side: THREE.DoubleSide });
+                //var Roadplane = new THREE.Mesh(Roadgeometry, Roadmaterial);
+                //Roadplane.rotation.x = Math.PI / 2;
+                //Roadplane.position.x = 15;
+                //Roadplane.position.z = -4;
+                //scene.add(Roadplane);
 
                 var light = new THREE.AmbientLight(0x404040);
                 light.intensity = 4;
