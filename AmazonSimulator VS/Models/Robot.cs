@@ -19,7 +19,6 @@ namespace Models
             this.Move(this.x, this.y, this.z);
         }
 
-
         public override bool Update(int tick)
         {
             if(tasks.Count() != 0)
