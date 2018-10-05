@@ -8,7 +8,6 @@ namespace Models
 {
     public class Product : _3DModel, IUpdatable
     {
-
         public Product(double x, double y, double z, double rotationX, double rotationY, double rotationZ) : base("product", x, y, z, rotationX, rotationY, rotationZ)
         {
             this.Move(x, y, z);

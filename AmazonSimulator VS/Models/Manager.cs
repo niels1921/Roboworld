@@ -10,14 +10,33 @@ namespace Models
 {
     public class Manager
     {
+        /// <summary>
+        /// lijst van alle robots in de wereld
+        /// </summary>
         private List<Robot> RobotList = new List<Robot>();
+        /// <summary>
+        /// lijst van alle shelfs in de wereld
+        /// </summary>
         private List<Node> ShelfList = new List<Node>();
+        /// <summary>
+        /// de vrachtwagen in de wereld
+        /// </summary>
         private Lorry Truck;
+        /// <summary>
+        /// lijst van alle nodes met connecties
+        /// </summary>
         private Dijkstra Nodes = new Dijkstra();
+        /// <summary>
+        /// lijst van shelfs die tijdelijk uit de wereld worden verwijdert
+        /// </summary>
         private List<Shelf> NotAssignedShelfs = new List<Shelf>();
+        /// <summary>
+        /// als het magazijn wordt gevuld wordt deze gezet
+        /// </summary>
         private bool VullenStorage = false;
-
-        private bool TruckDelivery = false;
+        /// <summary>
+        /// lijst van alle nodes in de wereld
+        /// </summary>
         private List<Node> Punten = new List<Node>()
         {
             //Hoek nodes
@@ -73,7 +92,9 @@ namespace Models
             new Node() { Id = "LDSC", X = 12, Y = 0, Z = 2}, //41
             new Node() { Id = "LDSD", X = 7,  Y = 0, Z = 2} //42
         };
-
+        /// <summary>
+        /// methode om alle nodes aan dijkstra te geven
+        /// </summary>
         public void AddNodes()
         {
             //hoeken
@@ -130,28 +151,25 @@ namespace Models
             Nodes.Add_Nodes("VC", new Dictionary<string, Node>() { { "VC", Punten[10] }, { "VB", Punten[9] } });
             Nodes.CalculateDistance();
         }
-
+        /// <summary>
+        /// geeft de nodes door aan de wereld om de route van de vrachtwagen te bepalen
+        /// </summary>
+        /// <returns>node</returns>
         public Dijkstra ReturnNodes()
         {
             return Nodes;
         }
-
+        /// <summary>
+        /// geeft alle nodes door
+        /// </summary>
+        /// <returns>node</returns>
         public List<Node> points()
         {
             return Punten;
         }
-
-        public bool truckdel()
-        {
-            return TruckDelivery;
-        }
-        
-        public void SetTruckDel(bool truck)
-        {
-            TruckDelivery = truck;
-        }
-
-
+        /// <summary>
+        /// geeft alle taken aan alle robots in de wereld
+        /// </summary>
         public void AssignRobot()
         {
             foreach (Robot r in RobotList)
@@ -200,7 +218,10 @@ namespace Models
                 }
             }
         }
-
+        /// <summary>
+        /// wanneer het magazijn moet worden hervuld wordt deze methode aangeroepen
+        /// deze methode geeft ook alle taken aan alle robots
+        /// </summary>
         public void FillStorage()
         {
             foreach(Node n in Punten)
@@ -254,17 +275,26 @@ namespace Models
                 }
             }
         }
-
+        /// <summary>
+        /// voegt een robot aan de robotlist toe
+        /// </summary>
+        /// <param name="robot">robot</param>
         public void Addrobot(Robot robot)
         {
             RobotList.Add(robot);
         }
-
+        /// <summary>
+        /// voegt een node van een shelf aan de shelflist toe
+        /// </summary>
+        /// <param name="shelf">node</param>
         public void AddShelf(Node shelf)
         {
             ShelfList.Add(shelf);
         }
-
+        /// <summary>
+        /// geeft het totaal van alle robottaken terug
+        /// </summary>
+        /// <returns>int</returns>
         public int RobotTaskCount()
         {
             int count = 0;
@@ -275,19 +305,28 @@ namespace Models
             }
             return count;
         }
-
+        /// <summary>
+        /// geeft het aantal robots terug dat geen taken heeft terug
+        /// </summary>
+        /// <returns>int</returns>
         public int AvailableRobots()
         {
             int freerobotcount = RobotList.Count(i => i.RobotBusy == false);
 
             return freerobotcount;
         }
-
+        /// <summary>
+        /// geeft de shelflist terug
+        /// </summary>
+        /// <returns>list</returns>
         public List<Node> Shelfs()
         {
             return ShelfList;
         }
-
+        /// <summary>
+        /// geeft alle dock nodes(id.length == 4) terug in een list
+        /// </summary>
+        /// <returns>list</returns>
         public List<Node> DockNodes()
         {
             List<Node> NodeList = new List<Node>();
@@ -296,17 +335,26 @@ namespace Models
 
             return NodeList;
         }
-
+        /// <summary>
+        /// voegt een truck toe aan de manager
+        /// </summary>
+        /// <param name="l">lorry</param>
         public void AddTruck(Lorry l)
         {
             Truck = l;
         }
-
+        /// <summary>
+        /// zet de waarde voor vullenstorage
+        /// </summary>
+        /// <param name="b">bool</param>
         public void SetFillStorage(bool b)
         {
             VullenStorage = b;
         }
-
+        /// <summary>
+        /// geeft de waarde van vullenstorage door
+        /// </summary>
+        /// <returns>bool</returns>
         public bool GetFillStorage()
         {
             return VullenStorage;
