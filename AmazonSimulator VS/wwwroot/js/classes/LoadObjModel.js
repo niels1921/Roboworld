@@ -1,16 +1,15 @@
-﻿function ObjectLoader(path, obj, x, y, z, group, material) {
+﻿function loadOBJModel(modelPath, modelName, textureName, onload) {
     new THREE.MTLLoader()
-        .setPath(path)
-        .load(material, function (materials) {
+        .setPath(modelPath)
+        .load(textureName, function (materials) {
+
             materials.preload();
+
             new THREE.OBJLoader()
+                .setPath(modelPath)
                 .setMaterials(materials)
-                .setPath(path)
-                .load(obj, function (object) {
-                    if (x !== null && y !== null && z !== null) {
-                        group.position.set(x, y, z);
-                    }
-                    group.add(object);
-                });
+                .load(modelName, function (object) {
+                    onload(object);
+                }, function () { }, function (e) { console.log("Error loading model"); console.log(e); });
         });
 }
