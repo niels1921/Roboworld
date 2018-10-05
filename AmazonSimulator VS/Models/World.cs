@@ -12,13 +12,10 @@ namespace Models
         private List<_3DModel> worldObjects = new List<_3DModel>();
         private List<IObserver<Command>> observers = new List<IObserver<Command>>();
         private Lorry vrachtwagen;
-       // private List<Node> Punten;
         private bool StorageEmpty = false;
 
         public World()
         {
-            //Punten = WorldManager.points();
-
             WorldManager.AddNodes();
             Robot r0 = CreateRobot(0, 0, 0);
             Robot r1 = CreateRobot(0, 0, 0);
