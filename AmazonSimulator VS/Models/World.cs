@@ -8,12 +8,29 @@ namespace Models
 {
     public class World : IObservable<Command>, IUpdatable
     {
+        /// <summary>
+        /// link met de worldmanager wordt aangemaakt
+        /// </summary>
         private Manager WorldManager = new Manager();
+        /// <summary>
+        /// lijst van alle 3d modellen in de wereld
+        /// </summary>
         private List<_3DModel> worldObjects = new List<_3DModel>();
+        /// <summary>
+        /// lijst van alle observers 
+        /// </summary>
         private List<IObserver<Command>> observers = new List<IObserver<Command>>();
+        /// <summary>
+        /// de vrachtwagen in de wereld
+        /// </summary>
         private Lorry vrachtwagen;
-        private List<Node> Punten = Manager.Punten;
-
+        /// <summary>
+        /// bool die aangeeft of er moet worden bijgevuld
+        /// </summary>
+        private bool StorageEmpty = false;
+        /// <summary>
+        /// methode die de wereld opzet
+        /// </summary>
         public World()
         {
             WorldManager.AddNodes();
@@ -22,7 +39,6 @@ namespace Models
             Robot r2 = CreateRobot(0, 0, 0);
             Robot r3 = CreateRobot(0, 0, 0);
             vrachtwagen = CreateLorry(0, 0, 0);
-            //Product p = CreateProduct(0, 0, 0);
 
             r0.Move(2, 2, 1);
             r1.Move(2, 2, 2);
@@ -31,14 +47,13 @@ namespace Models
 
             vrachtwagen.Move(0, 0, -2);
 
-            //p.Move(2, 0, 28);
-
-            foreach (var punt in Punten)
+            foreach (var punt in WorldManager.points())
             {
                 if (punt.Id.Length == 1)
                 {
                     Shelf s = CreateShelf(0, 0, 0);
                     punt.Shelf = s;
+                    WorldManager.AddShelf(punt);
                     s.Move(punt.X, 0, punt.Z);
                     punt.ShelfStatus = true;
                 }
@@ -46,7 +61,13 @@ namespace Models
                     punt.ShelfStatus = false;
             }
         }
-
+        /// <summary>
+        /// maakt de robot aan
+        /// </summary>
+        /// <param name="x">de x waarde waar de robot gezet moet worden</param>
+        /// <param name="y">de y waarde waar de robot gezet moet worden</param>
+        /// <param name="z">de z waarde waar de robot gezet moet worden</param>
+        /// <returns>robot</returns>
         private Robot CreateRobot(double x, double y, double z)
         {
             Robot r = new Robot(x, y, z, 0, 0, 0);
@@ -56,14 +77,26 @@ namespace Models
             WorldManager.Addrobot(r);
             return r;
         }
-
+        /// <summary>
+        /// maakt de producten aan.........................................
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="z"></param>
+        /// <returns></returns>
         private Product CreateProduct(double x, double y, double z)
         {
             Product p = new Product(x, y, z, 0, 0, 0);
             worldObjects.Add(p);
             return p;
         }
-
+        /// <summary>
+        /// maakt de vrachtwagen aan
+        /// </summary>
+        /// <param name="x">de x waarde waar de vrachtwagen gezet moet worden</param>
+        /// <param name="y">de y waarde waar de vrachtwagen gezet moet worden</param>
+        /// <param name="z">de z waarde waar de vrachtwagen gezet moet worden</param>
+        /// <returns></returns>
         private Lorry CreateLorry(double x, double y, double z)
         {
             Lorry l = new Lorry(x, y, z, 0, 0, 0);
@@ -71,12 +104,17 @@ namespace Models
             WorldManager.AddTruck(l);
             return l;
         }
-
+        /// <summary>
+        /// maakt de shelf aan
+        /// </summary>
+        /// <param name="x">de x waarde waar de shelf gezet moet worden</param>
+        /// <param name="y">de y waarde waar de shelf gezet moet worden</param>
+        /// <param name="z">de z waarde waar de shelf gezet moet worden</param>
+        /// <returns></returns>
         private Shelf CreateShelf(double x, double y, double z)
         {
             Shelf s = new Shelf(x, y, z, 0, 0, 0);
             worldObjects.Add(s);
-            //WorldManager.AddShelf(s);
             return s;
         }
 
@@ -106,7 +144,13 @@ namespace Models
                 obs.OnNext(new UpdateModel3DCommand(m3d));
             }
         }
-
+        /// <summary>
+        /// update alle 3d modellen in de wereld
+        /// ook hier wordt de route voor vrachtwagen bepaald
+        /// als laatste wordt gekeken of het magazijn moet worden bijgevuld 
+        /// </summary>
+        /// <param name="tick">aantal beeld updates per minuut</param>
+        /// <returns>bool</returns>
         public bool Update(int tick)
         {
             for (int i = 0; i < worldObjects.Count; i++)
@@ -116,36 +160,38 @@ namespace Models
                 if (vrachtwagen.GetRoute().Count == 0 && vrachtwagen.x < 16)
                 {
                     vrachtwagen.VrachtwagenRoute(WorldManager.ReturnNodes().shortest_path("VA", "VB"));
-                    //foreach (string l in WorldManager.ReturnNodes().shortest_path("VA", "VB"))
-                    //{
-                    //    var punt = from point in Punten
-                    //               where point.Id == l
-                    //               select point;
-                    //    vrachtwagen.AddRoute(punt.Single());
-                    //}
                 }
                 if (Math.Round(vrachtwagen.x, 1) == 20)
                 {
-                    WorldManager.AssignRobot();
-                    if (WorldManager.GetStorageStatus() == true)
+                    if (WorldManager.AvailableRobots() == 4)
                     {
-                        foreach (Node n in Punten)
+                        if (WorldManager.Shelfs().Count() == 12)
+                            WorldManager.AssignRobot();
+                        else if (WorldManager.Shelfs().Count() == 8)
+                        {
+                            StorageEmpty = true;
+                            WorldManager.SetFillStorage(true);
+                            WorldManager.FillStorage();
+                        }
+                    }
+                    else if (WorldManager.DockNodes().Count() == 4 && WorldManager.GetFillStorage() == false)
+                    {
+                        vrachtwagen.VrachtwagenRoute(WorldManager.ReturnNodes().shortest_path("VB", "VC"));
+                        foreach (Node n in WorldManager.points())
                         {
                             if (n.Id.Length == 4)
                             {
-                                Shelf s = CreateShelf(0, 0, 0);
-                                n.Shelf = s;
-                                s.Move(n.X, 0, n.Z);
-                                n.ShelfStatus = true;
+                                n.Shelf.Move(0, 1000, 0);
+
+                                n.ShelfStatus = false;
                             }
                         }
                     }
+
                 }
                 if (vrachtwagen.x > 39)
-                {
-                    if (Manager.TruckDelivery == true)
-                        Manager.TruckDelivery = false;
-
+                {  
+                    StorageEmpty = false;
                     vrachtwagen.Move(0, 0, -2);
                 }
 
