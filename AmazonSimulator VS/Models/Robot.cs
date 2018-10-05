@@ -77,19 +77,19 @@ namespace Models
                         DeltaX = Math.Round(DeltaX, 2);
                         DeltaZ = Math.Round(DeltaZ, 2);
 
-                        if (this.Route.First().X > Math.Round(this.x))
+                        if (this.Route.First().X > Math.Round(this.x, 2))
                         {
                             this.Rotate(this.rotationX, 0 + (Math.PI / 2), this.rotationZ);
                         }
-                        else if (this.Route.First().X < Math.Round(this.x))
+                        else if (this.Route.First().X < Math.Round(this.x, 2))
                         {
                             this.Rotate(this.rotationX, 0 - (Math.PI / 2), this.rotationZ);
                         }
-                        else if (this.Route.First().Z > Math.Round(this.z))
+                        else if (this.Route.First().Z > Math.Round(this.z, 2))
                         {
                             this.Rotate(this.rotationX, 0, this.rotationZ);
                         }
-                        else if (this.Route.First().Z < Math.Round(this.z))
+                        else if (this.Route.First().Z < Math.Round(this.z,  2))
                         {
                             this.Rotate(this.rotationX, 0 + Math.PI, this.rotationZ);
                         }                         
