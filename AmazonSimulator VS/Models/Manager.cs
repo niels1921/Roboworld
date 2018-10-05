@@ -163,7 +163,7 @@ namespace Models
         /// geeft alle nodes door
         /// </summary>
         /// <returns>node</returns>
-        public List<Node> points()
+        public List<Node> Points()
         {
             return Punten;
         }
@@ -185,7 +185,7 @@ namespace Models
                     NotAssignedShelfs.Add(punt1.Shelf);
                     ShelfList.RemoveAt(random);
 
-                    List<Node> RobotRouteHeenweg = Nodes.shortest_path("HA", punt1.Id);
+                    List<Node> RobotRouteHeenweg = Nodes.Shortest_path("HA", punt1.Id);
                     RobotMove move = new RobotMove(RobotRouteHeenweg);
                     r.AddTask(move);
 
@@ -195,21 +195,21 @@ namespace Models
                     punt1.ShelfStatus = false;
                     //Zorgt ervoor dat bij de volgende itteratie de robot niet naar dezelfde shelf gestuurd kan worden.
 
-                    List<Node> RobotRouteTerugweg = Nodes.shortest_path(punt1.Id, "HB");
+                    List<Node> RobotRouteTerugweg = Nodes.Shortest_path(punt1.Id, "HB");
                     RobotMove terugweg = new RobotMove(RobotRouteTerugweg);
                     r.AddTask(terugweg);
 
                     Node AvailableDockNode = null;
                     AvailableDockNode = Punten.FirstOrDefault(i => i.Id.Length == 4 && i.ShelfStatus == false);
                     AvailableDockNode.ShelfStatus = true;
-                    List<Node> RobotStoreShelf = Nodes.shortest_path("HB", AvailableDockNode.Id);
+                    List<Node> RobotStoreShelf = Nodes.Shortest_path("HB", AvailableDockNode.Id);
                     RobotMove storeshelf = new RobotMove(RobotStoreShelf);
                     r.AddTask(storeshelf);
 
                     RobotDropDown dropdown = new RobotDropDown(AvailableDockNode);
                     r.AddTask(dropdown);
 
-                    List<Node> RobotRouteStartPositie = Nodes.shortest_path(AvailableDockNode.Id, "HA");
+                    List<Node> RobotRouteStartPositie = Nodes.Shortest_path(AvailableDockNode.Id, "HA");
                     RobotMove startpositie = new RobotMove(RobotRouteStartPositie);
                     r.AddTask(startpositie);
                     move.StartTask(r);
@@ -244,14 +244,14 @@ namespace Models
                     AvailableDockNode = Punten.FirstOrDefault(i => i.Id.Length == 4 && i.ShelfStatus == true);
                     AvailableDockNode.ShelfStatus = false;
 
-                    List<Node> RobotRouteHeenweg = Nodes.shortest_path("HA", AvailableDockNode.Id);
+                    List<Node> RobotRouteHeenweg = Nodes.Shortest_path("HA", AvailableDockNode.Id);
                     RobotMove move = new RobotMove(RobotRouteHeenweg);
                     r.AddTask(move);
 
                     RobotPickUp pickup = new RobotPickUp(AvailableDockNode);
                     r.AddTask(pickup);
 
-                    List<Node> RobotStoreShelf = Nodes.shortest_path(AvailableDockNode.Id, "HB");
+                    List<Node> RobotStoreShelf = Nodes.Shortest_path(AvailableDockNode.Id, "HB");
                     RobotMove storeshelf = new RobotMove(RobotStoreShelf);
                     r.AddTask(storeshelf);
 
@@ -259,7 +259,7 @@ namespace Models
                     EmptyShelfNode = Punten.FirstOrDefault(i => i.Id.Length == 1 && i.ShelfStatus == false);
                     EmptyShelfNode.ShelfStatus = true;
 
-                    List<Node> RobotRouteTerugweg = Nodes.shortest_path("HB", EmptyShelfNode.Id);
+                    List<Node> RobotRouteTerugweg = Nodes.Shortest_path("HB", EmptyShelfNode.Id);
                     RobotMove terugweg = new RobotMove(RobotRouteTerugweg);
                     r.AddTask(terugweg);
 
@@ -267,7 +267,7 @@ namespace Models
                     r.AddTask(dropdown);
                     ShelfList.Add(EmptyShelfNode);
 
-                    List<Node> RobotRouteStartPositie = Nodes.shortest_path(EmptyShelfNode.Id, "HA");
+                    List<Node> RobotRouteStartPositie = Nodes.Shortest_path(EmptyShelfNode.Id, "HA");
                     RobotMove startpositie = new RobotMove(RobotRouteStartPositie);
                     r.AddTask(startpositie);
                     move.StartTask(r);

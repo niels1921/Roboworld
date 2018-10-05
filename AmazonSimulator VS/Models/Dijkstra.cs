@@ -10,15 +10,15 @@ namespace Models
         /// <summary>
         /// Dictionary met alle gelinkte nodes
         /// </summary>
-        Dictionary<string, Dictionary<string, Node>> tijdelijk = new Dictionary<string, Dictionary<string, Node>>();
+        private Dictionary<string, Dictionary<string, Node>> Tijdelijk = new Dictionary<string, Dictionary<string, Node>>();
         /// <summary>
         /// Dictionary met alle gelinkte nodes en afstanden
         /// </summary>
-        Dictionary<string, Dictionary<string, int>> vertices = new Dictionary<string, Dictionary<string, int>>();
+        private Dictionary<string, Dictionary<string, int>> Vertices = new Dictionary<string, Dictionary<string, int>>();
         /// <summary>
         /// De x en z waarde van de start node. Vanaf hier worden alle afstanden tot de start node berekend.
         /// </summary>
-        double OriginX, OriginZ;
+        private double OriginX, OriginZ;
         /// <summary>
         /// Voegt de node met alle connecties toe
         /// </summary>
@@ -26,14 +26,14 @@ namespace Models
         /// <param name="randen">nodes die aan de start node verbonden zijn</param>
         public void Add_Nodes(string name, Dictionary<string, Node> randen)
         {
-            tijdelijk[name] = randen;
+            Tijdelijk[name] = randen;
         }
         /// <summary>
         /// Berekent de afstanden tot de startnode
         /// </summary>
         public void CalculateDistance()
         {
-            foreach (KeyValuePair<string, Dictionary<string, Node>> node in tijdelijk)
+            foreach (KeyValuePair<string, Dictionary<string, Node>> node in Tijdelijk)
             {
                 Dictionary<string, int> vert = new Dictionary<string, int>();
                 foreach (var iets in node.Value)
@@ -55,7 +55,7 @@ namespace Models
                         vert.Add(iets.Key, TotaalAfstand);                   
                     }
                 }
-                vertices.Add(node.Key, vert);
+                Vertices.Add(node.Key, vert);
             }
         }
         /// <summary>
@@ -64,7 +64,7 @@ namespace Models
         /// <param name="start">start node</param>
         /// <param name="finish">finish node</param>
         /// <returns>list<node></returns>
-        public List<Node> shortest_path(string start, string finish)
+        public List<Node> Shortest_path(string start, string finish)
         {
 
             var previous = new Dictionary<string, string>();
@@ -78,7 +78,7 @@ namespace Models
             List<Node> node = null;
 
 
-            foreach (var vertex in vertices)
+            foreach (var vertex in Vertices)
 
             {
 
@@ -129,7 +129,7 @@ namespace Models
 
                     {
                         Manager manager = new Manager();
-                        foreach(Node n in manager.points())
+                        foreach(Node n in manager.Points())
                         {
                             if (smallest == n.Id)
                                 node.Add(n);
@@ -155,7 +155,7 @@ namespace Models
 
                 }
 
-                foreach (var neighbor in vertices[smallest])
+                foreach (var neighbor in Vertices[smallest])
 
                 {
 

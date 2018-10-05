@@ -23,7 +23,7 @@ namespace Models
         /// <summary>
         /// de vrachtwagen in de wereld
         /// </summary>
-        private Lorry vrachtwagen;
+        private Lorry Vrachtwagen;
         /// <summary>
         /// bool die aangeeft of er moet worden bijgevuld
         /// </summary>
@@ -38,16 +38,16 @@ namespace Models
             Robot r1 = CreateRobot(0, 0, 0);
             Robot r2 = CreateRobot(0, 0, 0);
             Robot r3 = CreateRobot(0, 0, 0);
-            vrachtwagen = CreateLorry(0, 0, 0);
+            Vrachtwagen = CreateLorry(0, 0, 0);
 
             r0.Move(2, 2, 1);
             r1.Move(2, 2, 2);
             r2.Move(2, 2, 3);
             r3.Move(2, 2, 4);
 
-            vrachtwagen.Move(0, 0, -2);
+            Vrachtwagen.Move(0, 0, -2);
 
-            foreach (var punt in WorldManager.points())
+            foreach (var punt in WorldManager.Points())
             {
                 if (punt.Id.Length == 1)
                 {
@@ -157,11 +157,11 @@ namespace Models
             {
                 _3DModel u = worldObjects[i];
 
-                if (vrachtwagen.GetRoute().Count == 0 && vrachtwagen.x < 16)
+                if (Vrachtwagen.GetRoute().Count == 0 && Vrachtwagen.x < 16)
                 {
-                    vrachtwagen.VrachtwagenRoute(WorldManager.ReturnNodes().shortest_path("VA", "VB"));
+                    Vrachtwagen.VrachtwagenRoute(WorldManager.ReturnNodes().Shortest_path("VA", "VB"));
                 }
-                if (Math.Round(vrachtwagen.x, 1) == 20)
+                if (Math.Round(Vrachtwagen.x, 1) == 20)
                 {
                     if (WorldManager.AvailableRobots() == 4)
                     {
@@ -176,8 +176,8 @@ namespace Models
                     }
                     else if (WorldManager.DockNodes().Count() == 4 && WorldManager.GetFillStorage() == false)
                     {
-                        vrachtwagen.VrachtwagenRoute(WorldManager.ReturnNodes().shortest_path("VB", "VC"));
-                        foreach (Node n in WorldManager.points())
+                        Vrachtwagen.VrachtwagenRoute(WorldManager.ReturnNodes().Shortest_path("VB", "VC"));
+                        foreach (Node n in WorldManager.Points())
                         {
                             if (n.Id.Length == 4)
                             {
@@ -189,10 +189,10 @@ namespace Models
                     }
 
                 }
-                if (vrachtwagen.x > 39)
+                if (Vrachtwagen.x > 39)
                 {  
                     StorageEmpty = false;
-                    vrachtwagen.Move(0, 0, -2);
+                    Vrachtwagen.Move(0, 0, -2);
                 }
 
                 if (u is IUpdatable)
