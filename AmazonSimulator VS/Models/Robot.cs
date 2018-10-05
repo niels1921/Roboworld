@@ -103,28 +103,28 @@ namespace Models
                 {
                     this.Move(this.x, this.y, this.z + 0.1);
                     if(Shelf != null)
-                        this.Shelf.Move(this.x, 0, this.z);
+                        this.Shelf.Move(this.x, 0.2, this.z);
                     DeltaZ -= 0.1;
                 }
                 else if (Math.Round(DeltaZ, 2) < 0)
                 {
                     this.Move(this.x, this.y, this.z - 0.1);
                     if (Shelf != null)
-                        this.Shelf.Move(this.x, 0, this.z);
+                        this.Shelf.Move(this.x, 0.2, this.z);
                     DeltaZ += 0.1;
                 }
                 else if (Math.Round(DeltaX, 2) > 0)
                 {
                     this.Move(this.x + 0.1, this.y, this.z);
                     if (Shelf != null)
-                        this.Shelf.Move(this.x, 0, this.z);
+                        this.Shelf.Move(this.x, 0.2, this.z);
                     DeltaX -= 0.1;
                 }
                 else if (Math.Round(DeltaX, 2) < 0)
                 {
                     this.Move(this.x - 0.1, this.y, this.z);
                     if (Shelf != null)
-                        this.Shelf.Move(this.x, 0, this.z);
+                        this.Shelf.Move(this.x, 0.2, this.z);
                     DeltaX += 0.1;
                 }
             }

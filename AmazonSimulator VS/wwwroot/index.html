@@ -102,8 +102,28 @@
                 scene.add(plane);
 
                 var light = new THREE.AmbientLight(0x404040);
-                light.intensity = 4;
+                light.intensity = 2.5;
                 scene.add(light);
+
+                var box = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.5, 0.5), new THREE.MeshBasicMaterial({ color: 0xffffff }));
+                box.position.set(6.9, 1, -2.83);
+                //scene.add(box);
+                addPointLight(scene, 0xffff00, 4.2, 1, -2.83, 0.8, 5);
+                addPointLight(scene, 0xffff00, 6.9, 1, -2.83, 0.8, 5);
+                addPointLight(scene, 0xffff00, 9.6, 1, -2.83, 0.8, 5);
+                addPointLight(scene, 0xffff00, 12.3, 1, -2.83, 0.8, 5);
+                addPointLight(scene, 0xffff00, 15, 1, -2.83, 0.8, 5);
+                addPointLight(scene, 0xffff00, 17.7, 1, -2.83, 0.8, 5);
+                addPointLight(scene, 0xffff00, 20.4, 1, -2.83, 0.8, 5);
+                addPointLight(scene, 0xffff00, 23.1, 1, -2.83, 0.8, 5);
+                addPointLight(scene, 0xffff00, 25.8, 1, -2.83, 0.8, 5);
+                addPointLight(scene, 0xffff00, 28.5, 1, -2.83, 0.8, 5);
+                addPointLight(scene, 0xffff00, 31.2, 1, -2.83, 0.8, 5);
+                addPointLight(scene, 0xffff00, 33.9, 1, -2.83, 0.8, 5);
+                addPointLight(scene, 0xffff00, 36.6, 1, -2.83, 0.8, 5);
+                addPointLight(scene, 0xffff00, 39.3, 1, -2.83, 0.8, 5);
+                addPointLight(scene, 0xffff00, 42, 1, -2.83, 0.8, 5);
+
             }
 
             function onWindowResize() {
@@ -163,8 +183,8 @@
 
                                 scene.add(groupRobot);
                                 worldObjects[command.parameters.guid] = groupRobot;
-
                             });
+                            addSpotLight(groupRobot, 0xffffff, 4, 0, 3, 0, 0, 0, 0);
 
                         }
 
